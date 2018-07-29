@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -19,7 +20,7 @@ import java.util.UUID;
  */
 public class FullscreenActivity extends AppCompatActivity {
 
-    private static final String TAG = "MyActivity";
+    private static final String tag = "MyActivity";
 
     /**
      * Some older devices needs a small delay between UI widget updates
@@ -63,14 +64,66 @@ public class FullscreenActivity extends AppCompatActivity {
     };
     private TextToSpeech tts;
 
-    private final View.OnClickListener btnHandler = new View.OnClickListener() {
+    private final View.OnTouchListener btnHandler = new View.OnTouchListener() {
         @Override
-        public void onClick(View btn) {
+        public boolean onTouch( View btn, MotionEvent event ) {
             ImageButton imgBtn = (ImageButton) btn;
             CharSequence text = imgBtn.getContentDescription();
-            Log.v( TAG, text.toString() );
+            Log.v(tag, text.toString());
             String uid = UUID.randomUUID().toString();
-            tts.speak(text, TextToSpeech.QUEUE_ADD, null, uid);
+            if (!tts.isSpeaking()) {
+                tts.speak(text, TextToSpeech.QUEUE_ADD, null, uid);
+            }
+            return true;
+        }
+    };
+
+    private int pointerMax = 0;
+    private Barycentre barycentre;
+    private final View.OnTouchListener barycentreHandler = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            int nbPointer = event.getPointerCount();
+
+            Log.v( tag, MotionEvent.actionToString( event.getAction() ) ) ;
+            if( event.getAction() == MotionEvent.ACTION_DOWN ) {
+                Log.v( tag, "Reset Barycentre" );
+                pointerMax = 0;
+                barycentre = new Barycentre();
+            }
+
+            if( nbPointer >= pointerMax ) {
+                pointerMax = nbPointer;
+                int i = 0;
+                int barySize = barycentre.nbCoords();
+                while( i < nbPointer ) {
+                    float x = event.getX( i );
+                    float y = event.getY( i );
+                    if( i == barySize ) {
+                        barycentre.add( x, y );
+                        barySize = barycentre.nbCoords();
+                    } else {
+                        try {
+                            barycentre.set( i , x, y  );
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    i++;
+                }
+            }
+
+            if( event.getAction() == MotionEvent.ACTION_UP ) {
+                MotionEvent.PointerCoords coords = barycentre.get();
+                float x = coords.getAxisValue(MotionEvent.AXIS_X);
+                float y = coords.getAxisValue(MotionEvent.AXIS_Y);
+                long now = 1;
+                Log.v(tag, "Fire new event" );
+                MotionEvent newEvent = MotionEvent.obtain(now, now, MotionEvent.ACTION_DOWN, x, y, event.getMetaState() );
+                findViewById(R.id.fullscreen_content).dispatchTouchEvent(newEvent);
+                return false;
+            }
+            return true;
         }
     };
 
@@ -88,8 +141,9 @@ public class FullscreenActivity extends AppCompatActivity {
                 tts.setLanguage( fr );
             }
         });
-        findViewById( R.id.btn1 ).setOnClickListener( btnHandler );
-        findViewById( R.id.btn2 ).setOnClickListener( btnHandler );
+        findViewById( R.id.btn1 ).setOnTouchListener( btnHandler );
+        findViewById( R.id.btn2 ).setOnTouchListener( btnHandler );
+        findViewById( R.id.mth ).setOnTouchListener( barycentreHandler );
     }
 
     @Override
@@ -129,4 +183,5 @@ public class FullscreenActivity extends AppCompatActivity {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
+
 }

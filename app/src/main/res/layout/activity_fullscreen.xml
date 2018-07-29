@@ -12,10 +12,10 @@
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
 
-    <LinearLayout
+    <org.eu.fr.nveo.manonparle.LinearIntercept
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent" app:layout_constraintTop_toTopOf="parent" android:id="@+id/mth">
         <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" app:srcCompat="@mipmap/yaourt" android:id="@+id/btn1"
@@ -24,5 +24,5 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" app:srcCompat="@mipmap/doudou" android:id="@+id/btn2"
                 android:layout_weight="1" android:scaleType="fitCenter" android:contentDescription="doudou"/>
-    </LinearLayout>
+    </org.eu.fr.nveo.manonparle.LinearIntercept>
 </FrameLayout>
