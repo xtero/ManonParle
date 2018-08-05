@@ -1,7 +1,15 @@
 package org.eu.fr.nveo.manonparle;
 
 import android.annotation.SuppressLint;
+import android.arch.persistence.db.SupportSQLiteDatabase;
+import android.arch.persistence.room.Room;
+import android.arch.persistence.room.RoomDatabase;
+import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.speech.tts.TextToSpeech;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +18,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import org.eu.fr.nveo.manonparle.model.Item;
+import org.eu.fr.nveo.manonparle.db.ItemDao;
+import org.eu.fr.nveo.manonparle.db.ItemDatabase;
 
+import java.io.*;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -21,6 +33,10 @@ import java.util.UUID;
 public class FullscreenActivity extends AppCompatActivity {
 
     private static final String tag = "MyActivity";
+    private Item itemLeft;
+    private Item itemRight;
+    private TextToSpeech tts;
+    private MediaPlayer mp;
 
     /**
      * Some older devices needs a small delay between UI widget updates
@@ -62,19 +78,21 @@ public class FullscreenActivity extends AppCompatActivity {
             hide();
         }
     };
-    private TextToSpeech tts;
 
     private final View.OnTouchListener btnHandler = new View.OnTouchListener() {
         @Override
         public boolean onTouch( View btn, MotionEvent event ) {
-            ImageButton imgBtn = (ImageButton) btn;
-            CharSequence text = imgBtn.getContentDescription();
-            Log.v(tag, text.toString());
-            String uid = UUID.randomUUID().toString();
-            if (!tts.isSpeaking()) {
-                tts.speak(text, TextToSpeech.QUEUE_ADD, null, uid);
+            btn.performClick();
+            Item item;
+            Log.v( tag, btn.getContentDescription().toString() );
+            if( btn.getContentDescription().toString().equals( "left" ) ) {
+                Log.v(tag, "I set left item");
+                item = itemLeft;
+            } else {
+                Log.v(tag, "I set right item");
+                item = itemRight;
             }
-            return true;
+            return playAudio( item );
         }
     };
 
@@ -127,10 +145,123 @@ public class FullscreenActivity extends AppCompatActivity {
         }
     };
 
+    public boolean playAudio( Item item ){
+        if( item.hasSound() ) {
+            if( ! mp.isPlaying() ) {
+                mp = MediaPlayer.create( getBaseContext(), item.getSoundUri( getBaseContext() ) );
+                mp.start();
+                return true;
+            } else {
+                return false;
+            }
+        } else if( ! tts.isSpeaking() ) {
+            String uid = UUID.randomUUID().toString();
+            String name = item.getName();
+            CharSequence text = name.subSequence( 0, name.length() - 1 );
+            tts.speak( text, TextToSpeech.QUEUE_ADD, null, uid );
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void copyFile( FileInputStream from, FileOutputStream to ) throws IOException {
+        byte[] buffer = new byte[1024];
+        int length = 0;
+        while( ( length = from.read( buffer ) ) > 0 ) {
+            to.write( buffer,0 , length );
+        }
+    }
+
+    RoomDatabase.Callback dbCreate = new RoomDatabase.Callback() {
+        @Override
+        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+            super.onCreate(db);
+
+            Log.v(tag, "Starting importing datas");
+            AssetFileDescriptor image;
+            AssetFileDescriptor audio;
+
+
+            String [] list = new String[0];
+            try {
+                list = getAssets().list("items");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            for (String item : list) {
+                Log.v( tag, "Importing "+item );
+                image = null;
+                audio = null;
+                String [] files = new String[0];
+                try {
+                    files = getAssets().list( "items/"+item );
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                for (String file : files) {
+                    Log.v( tag, "Cheking file '"+ file +"'");
+                    if ( file.matches(".*png$") ) {
+                        Log.v( tag, "Loading image");
+                        try {
+                            image = getAssets().openFd( "items/"+item + "/" + file );
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else if( file.matches( ".*mp3$") ) {
+                        Log.v( tag, "Loading audio");
+                        try {
+                            audio = getAssets().openFd( "items/" + item + "/" +  file );
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                int hasSound = audio == null ? 0 : 1;
+                String query  = "INSERT INTO item ( name, hasSound ) VALUES ( '"+item+"' , "+hasSound+" )";
+                Log.v( tag, "Running query : " + query );
+                db.execSQL( query );
+                Cursor res = db.query("SELECT max(id) FROM item");
+                res.moveToFirst();
+                long id = res.getLong(0);
+                Log.v( tag, "Created under id " + Long.toString( id ) );
+
+                String path = "item";
+                File dataFolder = getBaseContext().getDir( path, Context.MODE_PRIVATE );
+                try {
+                    Log.v(tag, "Copy image");
+                    FileInputStream fis = image.createInputStream();
+                    FileOutputStream fos = new FileOutputStream( new File( dataFolder , Long.toString(id)+".png" ) );
+                    copyFile( fis, fos );
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if( hasSound == 1 ) {
+                    try {
+                        Log.v(tag, "Copy audio");
+                        FileInputStream fis = audio.createInputStream();
+                        FileOutputStream fos = new FileOutputStream( new File( dataFolder , Long.toString(id)+".mp3" ) );
+                        copyFile( fis, fos );
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+            Log.v(tag, "Import complete" );
+        }
+    };
+
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        ItemDatabase db = Room.databaseBuilder( this.getBaseContext(), ItemDatabase.class , "manon")
+                .allowMainThreadQueries()
+                .addCallback( dbCreate )
+                .build();
+        ItemDao dao = db.itemDao();
         setContentView(R.layout.activity_fullscreen);
 
         mContentView = findViewById(R.id.fullscreen_content);
@@ -141,9 +272,24 @@ public class FullscreenActivity extends AppCompatActivity {
                 tts.setLanguage( fr );
             }
         });
-        findViewById( R.id.btn1 ).setOnTouchListener( btnHandler );
-        findViewById( R.id.btn2 ).setOnTouchListener( btnHandler );
+        mp = new MediaPlayer();
+
+        itemLeft = dao.itemByName("yaourt");
+        itemRight = dao.itemByName("doudou");
+        ImageButton btnLeft = findViewById( R.id.btnLeft );
+        ImageButton btnRight = findViewById( R.id.btnRight );
+        btnLeft.setImageURI( itemLeft.getImageUri( getBaseContext() ) );
+        btnRight.setImageURI( itemRight.getImageUri( getBaseContext() ) );
+        btnLeft.setOnTouchListener( btnHandler );
+        btnRight.setOnTouchListener( btnHandler );
         findViewById( R.id.mth ).setOnTouchListener( barycentreHandler );
+    }
+
+    @Override
+    protected void onDestroy(){
+        mp.release();
+        tts.shutdown();
+        super.onDestroy();
     }
 
     @Override

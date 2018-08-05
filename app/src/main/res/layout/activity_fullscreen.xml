@@ -18,11 +18,12 @@
             android:layout_height="match_parent" app:layout_constraintTop_toTopOf="parent" android:id="@+id/mth">
         <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent" app:srcCompat="@mipmap/yaourt" android:id="@+id/btn1"
-                android:layout_weight="1" android:scaleType="fitCenter" android:contentDescription="yaourt"/>
+                android:layout_height="match_parent" android:id="@+id/btnLeft"
+                android:layout_weight="1" android:scaleType="fitCenter" android:contentDescription="left"
+        />
         <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent" app:srcCompat="@mipmap/doudou" android:id="@+id/btn2"
-                android:layout_weight="1" android:scaleType="fitCenter" android:contentDescription="doudou"/>
+                android:layout_height="match_parent" android:id="@+id/btnRight"
+                android:layout_weight="1" android:scaleType="fitCenter" android:contentDescription="right"/>
     </org.eu.fr.nveo.manonparle.LinearIntercept>
 </FrameLayout>
