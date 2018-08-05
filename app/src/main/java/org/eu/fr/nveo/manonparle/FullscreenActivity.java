@@ -275,7 +275,7 @@ public class FullscreenActivity extends AppCompatActivity {
         mp = new MediaPlayer();
 
         itemLeft = dao.itemByName("yaourt");
-        itemRight = dao.itemByName("doudou");
+        itemRight = dao.itemByName("pelle");
         ImageButton btnLeft = findViewById( R.id.btnLeft );
         ImageButton btnRight = findViewById( R.id.btnRight );
         btnLeft.setImageURI( itemLeft.getImageUri( getBaseContext() ) );
