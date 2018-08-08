@@ -1,4 +1,4 @@
-package org.eu.fr.nveo.manonparle;
+package org.eu.fr.nveo.manonparle.Layout;
 
 import android.content.Context;
 import android.util.AttributeSet;

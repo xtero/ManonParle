@@ -1,4 +1,4 @@
-package org.eu.fr.nveo.manonparle;
+package org.eu.fr.nveo.manonparle.Helper;
 
 import android.util.Log;
 import android.view.MotionEvent;
@@ -9,29 +9,25 @@ public class Barycentre {
     private ArrayList<Float> xCoords;
     private ArrayList<Float> yCoords;
     private String tag = "Barycentre";
+    private int pointerMax = 0;
 
-    Barycentre(){
+    public Barycentre(){
         Log.v( tag, "Initialize coords ");
         xCoords = new ArrayList<>();
         yCoords = new ArrayList<>();
     }
 
-    Barycentre( float firstX, float firstY ){
-        this();
-        add( firstX, firstY );
-    }
-
-    public int nbCoords(){
+    private int nbCoords(){
         return xCoords.size();
     }
 
-    public int add( float x, float y ) {
+    private int add( float x, float y ) {
         xCoords.add( x );
         yCoords.add( y );
         return nbCoords();
     }
 
-    public void set( int index, float x, float y ) throws Exception {
+    private void set( int index, float x, float y ) throws Exception {
         if( index > nbCoords() ) throw new Exception();
         xCoords.set( index, x );
         yCoords.set( index, y );
@@ -50,5 +46,29 @@ public class Barycentre {
         coords.setAxisValue( MotionEvent.AXIS_X , xSum / nbCoords() );
         coords.setAxisValue( MotionEvent.AXIS_Y , ySum / nbCoords() );
         return coords;
+    }
+
+    public void updateBarycentre( MotionEvent event ){
+        int nbPointer = event.getPointerCount();
+        if( nbPointer >= pointerMax ) {
+            pointerMax = nbPointer;
+            int i = 0;
+            int barySize = nbCoords();
+            while( i < nbPointer ) {
+                float x = event.getX( i );
+                float y = event.getY( i );
+                if( i == barySize ) {
+                    add( x, y );
+                    barySize = nbCoords();
+                } else {
+                    try {
+                        set( i , x, y  );
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                i++;
+            }
+        }
     }
 }
