@@ -11,26 +11,37 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".FullscreenActivity"
+                android:name=".SelectItem"
                 android:configChanges="keyboardHidden|screenSize"
                 android:label="@string/app_name"
                 android:screenOrientation="landscape"
+                android:parentActivityName=".Welcome"
                 android:theme="@style/FullscreenTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+                <meta-data
+                        android:name="android.support.PARENT_ACTIVITY"
+                        android:value="org.eu.fr.nveo.manonparle.Welcome"/>
         </activity>
         <activity
                 android:name=".DatabaseCreation"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:label="@string/title_activity_database_creation"
-                android:parentActivityName=".FullscreenActivity"
+                android:screenOrientation="landscape"
+                android:parentActivityName=".Welcome"
                 android:theme="@style/FullscreenTheme">
-            <meta-data
+                <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="org.eu.fr.nveo.manonparle.FullscreenActivity"/>
+                    android:value="org.eu.fr.nveo.manonparle.Welcome"/>
+        </activity>
+        <activity
+                android:name=".Welcome"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:label="@string/title_activity_welcome"
+                android:screenOrientation="landscape"
+                android:theme="@style/FullscreenTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
     </application>
 

@@ -11,6 +11,15 @@ public interface ItemDao {
     @Query("SELECT * FROM Item WHERE name = :name ")
     Item itemByName(String name);
 
+    @Query("SELECT count(*) FROM Item")
+    int nbItem();
+
+    @Query("SELECT * from Item WHERE id = :id")
+    Item item( int id );
+
+    @Query("SELECT * from Item")
+    Item[] items();
+
     @Delete
     void deleteItem(Item item);
 
