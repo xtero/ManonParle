@@ -36,7 +36,7 @@ import java.util.UUID;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class FullscreenActivity extends AppCompatActivity {
+public class SelectItem extends AppCompatActivity {
 
     private static final String tag = "Main";
     private Item itemLeft;
@@ -114,7 +114,7 @@ public class FullscreenActivity extends AppCompatActivity {
             Log.v( tag, "Reading a new text with TTS" );
             String uid = UUID.randomUUID().toString();
             String name = item.getName();
-            CharSequence text = name.subSequence( 0, name.length() - 1 );
+            CharSequence text = name.subSequence( 0, name.length() );
             tts.speak( text, TextToSpeech.QUEUE_FLUSH, null, uid );
             return true;
         } else {
@@ -225,7 +225,7 @@ public class FullscreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_fullscreen);
+        setContentView(R.layout.activity_selectitem);
 
         ItemDatabase db = Room.databaseBuilder( this.getBaseContext(), ItemDatabase.class , "manon")
                 .allowMainThreadQueries()
