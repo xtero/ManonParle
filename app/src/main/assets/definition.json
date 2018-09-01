@@ -1,0 +1,36 @@
+{
+    "meta": {
+        "version": 1,
+        "name": "base"
+    },
+    "items": [ 
+        { 
+            "label": "yaourt",
+            "image": "yaourt.png",
+            "audio": "yaourt.mp3"
+        },
+        {
+            "label": "pelle",
+            "image": "pelle.png",
+            "audio": null
+        },
+        {
+            "label": "doudou",
+            "image": "doudou.png",
+            "audio": "doudou.mp3"
+        }
+    ],
+    "groups": [
+        { "label": "base" }
+    ],
+    "links": [
+        {
+            "group" : "base",
+            "items" : [
+                "yaourt",
+                "pelle",
+                "doudou"
+            ]
+        }
+    ]
+}

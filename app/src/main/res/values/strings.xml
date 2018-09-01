@@ -10,4 +10,10 @@
     <string name="choice">Choisissez les images à présenter</string>
 
     <string name="present">Présenter</string>
+
+    <string name="title_activity_loader">Loader</string>
+
+    <string name="title_activity_import">Import</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

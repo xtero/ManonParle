@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_manonparle" default="compile.module.manonparle">
+  <dirname property="module.manonparle.basedir" file="${ant.file.module_manonparle}"/>
+  
+  <property name="module.jdk.home.manonparle" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.manonparle" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.manonparle" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.manonparle" value="-encoding UTF-8 -source 7 -target 7 ${compiler.args}"/>
+  
+  <property name="manonparle.output.dir" value="${module.manonparle.basedir}/build/classes/production/ManonParle"/>
+  <property name="manonparle.testoutput.dir" value="${module.manonparle.basedir}/build/classes/test/ManonParle"/>
+  
+  <path id="manonparle.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="manonparle.module.production.classpath">
+    <path refid="${module.jdk.classpath.manonparle}"/>
+  </path>
+  
+  <path id="manonparle.runtime.production.module.classpath">
+    <pathelement location="${manonparle.output.dir}"/>
+  </path>
+  
+  <path id="manonparle.module.classpath">
+    <path refid="${module.jdk.classpath.manonparle}"/>
+    <pathelement location="${manonparle.output.dir}"/>
+  </path>
+  
+  <path id="manonparle.runtime.module.classpath">
+    <pathelement location="${manonparle.testoutput.dir}"/>
+    <pathelement location="${manonparle.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.manonparle">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.manonparle">
+    <patternset refid="excluded.from.module.manonparle"/>
+  </patternset>
+  
+  
+  <target name="compile.module.manonparle" depends="compile.module.manonparle.production,compile.module.manonparle.tests" description="Compile module ManonParle"/>
+  
+  <target name="compile.module.manonparle.production" depends="register.custom.compilers" description="Compile module ManonParle; production classes"/>
+  
+  <target name="compile.module.manonparle.tests" depends="register.custom.compilers,compile.module.manonparle.production" description="compile module ManonParle; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.manonparle" description="cleanup module">
+    <delete dir="${manonparle.output.dir}"/>
+    <delete dir="${manonparle.testoutput.dir}"/>
+  </target>
+</project>
