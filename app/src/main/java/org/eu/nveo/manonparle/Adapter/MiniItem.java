@@ -1,47 +1,36 @@
 package org.eu.nveo.manonparle.Adapter;
 
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
+import android.widget.*;
 import org.eu.nveo.manonparle.View.MiniItemView;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
-import org.eu.nveo.manonparle.db.ItemDao;
-import org.eu.nveo.manonparle.db.ItemDatabase;
 import org.eu.nveo.manonparle.model.Item;
 
-public class MiniItem extends BaseAdapter {
-    ItemDao mDao;
-    Context mContext;
-    int mGroupId;
-    Item[] items;
-    int basedPadding = 3;
-    int debugFactor = 10;
+public class MiniItem extends BaseAdapter implements Filterable  {
+    private Context mContext;
+    private long mGroupId;
+    private Item[] items;
+    private int basedPadding = 2;
 
-    public MiniItem ( Context ctx, int groupId ){
+    public MiniItem ( Context ctx, long groupId ){
         mContext = ctx;
         mGroupId = groupId;
-        ItemDatabase db = null;
         try {
-            db = Database.getConnection();
+            items = Database.getConnection().itemDao().itemsByGroupId( mGroupId );
         } catch (DatabaseException e) {
             e.printStackTrace();
         }
-        mDao = db.itemDao();
-        //TODO: make it dependant of mGroupId
-        items = mDao.items();
 
     }
 
     @Override
     public int getCount() {
-        return items.length * debugFactor;
+        return items.length ;
     }
 
     @Override
@@ -59,24 +48,41 @@ public class MiniItem extends BaseAdapter {
 
         GridView grid = (GridView) parent;
 
-        MiniItemView img;
-        if( convertView == null ){
-            img = new MiniItemView( mContext );
-        } else {
-            img = (MiniItemView) convertView;
-        }
-
-        Item item = items[ position % items.length ];
-
-        int padding = (int) TypedValue.applyDimension( TypedValue.COMPLEX_UNIT_DIP, basedPadding, mContext.getResources().getDisplayMetrics() );
-        int width = ( parent.getWidth() / grid.getNumColumns() ) - ( 2 * padding ) ;
-
-        img.setItem( item );
-        img.setLayoutParams( new ViewGroup.LayoutParams( width, width) );
-        img.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        img.setPadding( padding, padding, padding, padding );
+        MiniItemView img = new MiniItemView(mContext);
+        Item item = items[position % items.length];
+        img.setItem(item);
+        img.setScaleType(ImageView.ScaleType.FIT_CENTER);
         img.setTextColor(Color.WHITE);
 
+        int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, basedPadding, mContext.getResources().getDisplayMetrics());
+        int width = (parent.getWidth() / grid.getNumColumns()) - (2 * padding);
+        img.setLayoutParams(new ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT));
+        img.setPadding(padding, padding, padding, padding);
+
         return img;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults r = new FilterResults();
+                Item[] i = new Item[0];
+                try {
+                    i = Database.getConnection().itemDao().itemsByGroupIdLike( mGroupId, constraint.toString() );
+                } catch (DatabaseException e) {
+                    e.printStackTrace();
+                }
+                r.count = i.length;
+                r.values = i;
+                return r;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results){
+                items = (Item[]) results.values;
+            }
+        };
     }
 }

@@ -13,56 +13,71 @@
          android:fitsSystemWindows. -->
 
     <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        <GridView
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:layout_weight="0.40" android:id="@+id/itemList"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp" android:scrollbars="vertical"/>
+        <SearchView
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/bg_search_round"
+                android:textColor="#000000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/searchitems"/>
         <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="0dp"
-                android:layout_weight="0.60"
-                android:layout_height="match_parent" android:gravity="center_vertical">
-            <TextView
-                    android:text="@string/choice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/textView"
-                    android:textColor="@color/colorBaseText" android:gravity="center_horizontal"
-                    android:textSize="18sp"
-                    android:paddingBottom="20dp"/>
+                android:orientation="horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <GridView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.40"
+                    android:layout_height="match_parent"
+                    android:id="@+id/itemList"
+                    android:scrollbars="vertical">
+            </GridView>
             <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:gravity="center_vertical">
-                <ImageView
-                        android:padding="5dp"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.60"
+                    android:layout_height="match_parent" android:gravity="center_vertical">
+                <TextView
+                        android:text="@string/choice"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" app:srcCompat="@mipmap/placeholder"
-                        android:id="@+id/imageView" android:layout_weight="1" android:scaleType="fitCenter"
-                        android:contentDescription="previewLeft" android:adjustViewBounds="true"/>
-                <ImageView
-                        android:padding="5dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView"
+                        android:textColor="@color/colorBaseText" android:gravity="center_horizontal"
+                        android:textSize="18sp"
+                        android:paddingBottom="20dp"/>
+                <LinearLayout
+                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" app:srcCompat="@mipmap/placeholder"
-                        android:id="@+id/imageView2" android:layout_weight="1" android:scaleType="fitCenter"
-                        android:contentDescription="previewRight" android:adjustViewBounds="true"/>
-            </LinearLayout>
-            <android.support.constraint.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:layout_gravity="center_horizontal">
+                        android:layout_height="wrap_content" android:gravity="center_vertical">
+                    <ImageView
+                            android:layout_margin="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" app:srcCompat="@mipmap/placeholder"
+                            android:id="@+id/imageView" android:layout_weight="1" android:scaleType="fitCenter"
+                            android:contentDescription="previewLeft" android:adjustViewBounds="true"/>
+                    <ImageView
+                            android:layout_margin="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" app:srcCompat="@mipmap/placeholder"
+                            android:id="@+id/imageView2" android:layout_weight="1" android:scaleType="fitCenter"
+                            android:contentDescription="previewRight" android:adjustViewBounds="true"/>
+                </LinearLayout>
+                <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:layout_gravity="center_horizontal">
 
-                <Button
-                        android:layout_width="150dp"
-                        android:layout_height="40dp" android:id="@+id/button" android:text="@string/present"
-                        android:gravity="center" app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"/>
-            </android.support.constraint.ConstraintLayout>
+                    <Button
+                            android:layout_width="150dp"
+                            android:layout_height="40dp" android:id="@+id/button" android:text="@string/present"
+                            android:gravity="center" app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"/>
+                </android.support.constraint.ConstraintLayout>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

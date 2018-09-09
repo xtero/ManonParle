@@ -16,7 +16,7 @@
                 android:label="@string/app_name"
                 android:parentActivityName=".Select"
                 android:screenOrientation="landscape"
-                android:theme="@style/FullscreenTheme">
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="org.eu.nveo.manonparle.Select"/>
@@ -38,7 +38,7 @@
                 android:label="@string/title_activity_welcome"
                 android:parentActivityName=".Loader"
                 android:screenOrientation="landscape"
-                android:theme="@style/FullscreenTheme">
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="org.eu.nveo.manonparle.Loader"/>
@@ -48,7 +48,7 @@
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:label="@string/app_name"
                 android:screenOrientation="landscape"
-                android:theme="@style/FullscreenTheme">
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

@@ -10,14 +10,39 @@
             "audio": "yaourt.mp3"
         },
         {
-            "label": "pelle",
-            "image": "pelle.png",
-            "audio": null
-        },
-        {
             "label": "doudou",
             "image": "doudou.png",
             "audio": "doudou.mp3"
+        },
+        {
+            "label": "oui",
+            "image": "oui.png",
+            "audio": null
+        },
+        {
+            "label": "non",
+            "image": "non.png",
+            "audio": null
+        },
+        {
+            "label": "compote",
+            "image": "compote.png",
+            "audio": null
+        },
+        {
+            "label": "crème au chocolat",
+            "image": "creme_chocolat.png",
+            "audio": null
+        },
+        {
+            "label": "petit pot",
+            "image": "petit_pot.png",
+            "audio": null
+        },
+        {
+            "label": "siège",
+            "image": "siege.png",
+            "audio": null
         }
     ],
     "groups": [
@@ -28,8 +53,13 @@
             "group" : "base",
             "items" : [
                 "yaourt",
-                "pelle",
-                "doudou"
+                "doudou",
+                "oui",
+                "non",
+                "compote",
+                "siège",
+                "petit pot",
+                "crème au chocolat"
             ]
         }
     ]

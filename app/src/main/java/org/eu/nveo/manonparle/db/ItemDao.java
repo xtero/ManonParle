@@ -22,6 +22,15 @@ public interface ItemDao {
     @Query("SELECT * from item")
     Item[] items();
 
+    @Query("SELECT i.* FROM item as i, ritemgroup as rig WHERE i.id = rig.itemId and rig.groupId = :groupId ")
+    Item[] itemsByGroupId( long groupId );
+
+    @Query("SELECT count(*) FROM ritemgroup WHERE ritemgroup.groupId = :groupId ")
+    int countItemsByGroupId( long groupId );
+
+    @Query("SELECT item.* FROM item, RItemGroup AS link WHERE link.groupId = :groupId AND link.itemId == item.id AND item.name LIKE :constrain")
+    Item[] itemsByGroupIdLike( long groupId, String constrain );
+
     @Query("DELETE FROM item")
     void deleteAllItems();
 
@@ -39,12 +48,6 @@ public interface ItemDao {
 
     @Insert
     long insertGroup(Group group);
-
-    @Query("SELECT i.* FROM item as i, ritemgroup as rig WHERE i.id = rig.itemId and rig.groupId = :groupId ")
-    Item[] itemsByGroupId( long groupId );
-
-    @Query("SELECT count(*) FROM ritemgroup WHERE ritemgroup.groupId = :groupId ")
-    int countItemsByGroupId( long groupId );
 
     @Query("SELECT * FROM `group` WHERE name = :name ")
     Group groupByName( String name );

@@ -7,10 +7,8 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GestureDetectorCompat;
 import android.util.AttributeSet;
-import android.view.GestureDetector;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
+import android.util.Log;
+import android.view.*;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,7 +17,10 @@ import org.eu.nveo.manonparle.model.Item;
 
 public class MiniItemView extends LinearLayout implements GestureDetector.OnGestureListener {
 
+    private String tag = "MiniItemView";
+
     private ImageView mImage;
+    private LinearLayout mLayout;
     private TextView mLabel;
     private Item mItem;
     private Context mContext;
@@ -42,12 +43,16 @@ public class MiniItemView extends LinearLayout implements GestureDetector.OnGest
         initializeViews(context);
     }
 
-    private void initializeViews (Context context) {
+    private void initializeViews (Context context) {;
         mContext = context;
         this.setOrientation( LinearLayout.VERTICAL );
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.view_miniitem, this);
         mGest = new GestureDetectorCompat( mContext, this, handler );
+    }
+
+    public long getItemId(){
+        return mItem.getId();
     }
 
     @Override
@@ -66,6 +71,13 @@ public class MiniItemView extends LinearLayout implements GestureDetector.OnGest
         mLabel = this.findViewById( R.id.miniitem_text );
         mLabel.setText( mItem.getName() );
         mLabel.setGravity(Gravity.CENTER);
+    }
+
+    @Override
+    public void setLayoutParams(ViewGroup.LayoutParams params ){
+        super.setLayoutParams( params );
+        int width = params.width;
+        mImage.setLayoutParams( new LayoutParams(width, width) );
     }
 
     public void setScaleType( ImageView.ScaleType scaleType ){

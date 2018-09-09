@@ -199,7 +199,7 @@ public class SelectItem extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        fs.ensureFullscreen( 100 );
+        fs.ensureFullscreen();
     }
 
     @Override
@@ -225,6 +225,6 @@ public class SelectItem extends AppCompatActivity {
                 }
             };
         }
-        fs.ensureFullscreen( 100 );
+        fs.ensureFullscreen();
     }
 }

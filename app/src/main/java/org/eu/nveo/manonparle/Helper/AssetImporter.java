@@ -2,6 +2,7 @@ package org.eu.nveo.manonparle.Helper;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
+import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.speech.tts.UtteranceProgressListener;
@@ -20,44 +21,41 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.UUID;
 
-public class AssetImporter {
+public class AssetImporter implements OnInitListener  {
 
     private static String tag = "AssetImporter";
     private HashMap<String,Long> itemHash;
     private HashMap<String,Long> groupHash;
+    private HashMap<String,Long> uidHash;
     private File dataFolder;
     private TextToSpeech tts;
+    private OnImportComplete listener;
+    private Context ctx;
+    private File importFolder;
 
-    public AssetImporter(Context context, OnInitListener callback){
-        tts = new TextToSpeech(context, callback );
-        tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
-            @Override
-            public void onStart(String utteranceId) {
-                Log.v(tag, "Starting generating file "+utteranceId );
+    private Handler ttsHandler = new Handler();
+
+    private Runnable onComplete = new Runnable() {
+        @Override
+        public void run() {
+            if( uidHash.size() == 0 ){
+                tts.shutdown();
+                listener.onComplete();
+            } else {
+                ttsHandler.postAtTime( onComplete, 100 );
             }
+        }
+    };
 
-            @Override
-            public void onDone(String utteranceId) {
-                Log.v(tag, "Generation complete for "+utteranceId );
-
-            }
-
-            @Override
-            public void onError(String utteranceId ) {
-                Log.v(tag, "Generation failed for "+utteranceId );
-
-            }
-            @Override
-            public void onError(String utteranceId, int errorCode) {
-                Log.v(tag, "Generation failed for "+utteranceId+" error: "+errorCode );
-                onError(utteranceId);
-            }
-        });
+    public AssetImporter(Context context ){
+        ctx = context;
         dataFolder = context.getDir(Item.STORAGE_PATH, Context.MODE_PRIVATE);
         itemHash = new HashMap<>();
         groupHash = new HashMap<>();
+        uidHash = new HashMap<>();
 
     }
 
@@ -113,7 +111,8 @@ public class AssetImporter {
         } else {
             String uid = UUID.randomUUID().toString();
             Log.v(tag, "Synthesized audio "+name+ " with uid " + uid);
-            tts.synthesizeToFile( name.subSequence(0, name.length() ), null, new File( dataFolder,Long.toString(id)+".mp3" ), uid  );
+            tts.synthesizeToFile( name.subSequence( 0, name.length() ), null, new File( dataFolder,Long.toString(id)+".mp3" ), uid  );
+            uidHash.put(uid, (long) 1);
         }
 
 
@@ -162,44 +161,35 @@ public class AssetImporter {
 
     }
 
-    public void importFolder( File folder ) throws IOException, JSONException {
-        // Load json file
-        Log.v( tag, "Loading definition.json");
-        File defPath = new File( folder, "definition.json" );
-        FileInputStream is = new FileInputStream( defPath );
-        String jsonString = IOUtils.toString( is, "UTF-8" );
-        JSONObject json = new JSONObject( jsonString );
-        // import Items
-        Log.v( tag, "Loading items array");
-        JSONArray items = json.getJSONArray( "items" );
-        for( int i = 0 ; i < items.length(); i++ ){
-            JSONObject item = items.getJSONObject( i );
-            long id = importItem( item, folder );
-            String name = item.getString("label");
-            itemHash.put(name, id);
-        }
-        // import Groups
-        Log.v( tag, "Loading groups array");
-        JSONArray groups = json.getJSONArray( "groups" );
-        for( int i = 0 ; i < groups.length(); i++ ){
-            JSONObject group = groups.getJSONObject( i );
-            long id = importGroup( group );
-            String name = group.getString("label");
-            groupHash.put( name, id );
-        }
-        // create RItemGroups
-        Log.v( tag, "Loading links array");
-        JSONArray links = json.getJSONArray( "links" );
-        for( int i = 0 ; i < links.length(); i++ ){
-            JSONObject el = links.getJSONObject( i );
-            createLink( el );
-        }
+    public void importFolder( File folder, OnImportComplete complete ) throws IOException, JSONException {
+        listener = complete;
+        importFolder = folder;
+        tts = new TextToSpeech( ctx, this );
+        tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+            @Override
+            public void onStart(String utteranceId) {
+                Log.v(tag, "Starting generating file "+utteranceId );
+            }
 
-        FileUtils.listFolderContent( dataFolder );
+            @Override
+            public void onDone(String utteranceId) {
+                Log.v(tag, "Generation complete for "+utteranceId );
+                uidHash.remove( utteranceId );
+            }
 
-        // Cleanup to avoid memory useless usage
-        itemHash = null;
-        groupHash = null;
+            @Override
+            public void onError(String utteranceId ) {
+                Log.v(tag, "Generation failed for "+utteranceId );
+
+            }
+            @Override
+            public void onError(String utteranceId, int errorCode) {
+                Log.v(tag, "Generation failed for "+utteranceId+" error: "+errorCode );
+                onError(utteranceId);
+            }
+        });
+
+
     }
 
     public static void cloneBaseAssetTo( Context ctx, File tmpFolder ){
@@ -244,4 +234,66 @@ public class AssetImporter {
         dataFolder.delete();
     }
 
+    private void internalImportFolder() throws IOException, JSONException {
+        // Load json file
+        Log.v( tag, "Loading definition.json");
+        File defPath = new File( importFolder, "definition.json" );
+        FileInputStream is = new FileInputStream( defPath );
+        String jsonString = IOUtils.toString( is, "UTF-8" );
+        JSONObject json = new JSONObject( jsonString );
+        // import Items
+        Log.v( tag, "Loading items array");
+        JSONArray items = json.getJSONArray( "items" );
+        for( int i = 0 ; i < items.length(); i++ ){
+            JSONObject item = items.getJSONObject( i );
+            long id = importItem( item, importFolder );
+            String name = item.getString("label");
+            itemHash.put(name, id);
+        }
+        // import Groups
+        Log.v( tag, "Loading groups array");
+        JSONArray groups = json.getJSONArray( "groups" );
+        for( int i = 0 ; i < groups.length(); i++ ){
+            JSONObject group = groups.getJSONObject( i );
+            long id = importGroup( group );
+            String name = group.getString("label");
+            groupHash.put( name, id );
+        }
+        // create RItemGroups
+        Log.v( tag, "Loading links array");
+        JSONArray links = json.getJSONArray( "links" );
+        for( int i = 0 ; i < links.length(); i++ ){
+            JSONObject el = links.getJSONObject( i );
+            createLink( el );
+        }
+
+        FileUtils.listFolderContent( dataFolder );
+
+        // Cleanup to avoid memory useless usage
+        itemHash = null;
+        groupHash = null;
+
+    }
+
+    @Override
+    public void onInit(int status) {
+        if( status == TextToSpeech.SUCCESS) {
+            Log.v(tag, "Ready to import");
+            tts.setLanguage(new Locale("fr"));
+            try {
+                internalImportFolder();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            ttsHandler.post( onComplete );
+        }
+
+    }
+
+    public abstract static class OnImportComplete {
+        public abstract void onComplete();
+    }
 }
