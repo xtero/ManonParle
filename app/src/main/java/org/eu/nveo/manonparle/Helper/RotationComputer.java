@@ -41,4 +41,9 @@ public abstract class RotationComputer implements SensorEventListener {
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
+    public void stop(){
+        mSensorManager.unregisterListener( this );
+
+    }
 }

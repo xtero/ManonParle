@@ -15,11 +15,8 @@ import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
 import org.eu.nveo.manonparle.model.Group;
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- */
 public class Select extends AppCompatActivity {
+    private String tag = "Select";
     private Fullscreen fs;
     private ImageView left;
     private ImageView right;
@@ -134,6 +131,24 @@ public class Select extends AppCompatActivity {
             }
         });
 
+        search.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                return false;
+            }
+        });
+        int searchCloseId = search.getContext().getResources().getIdentifier("android:id/search_close_btn", null, null);
+        ImageView mSearchClose = search.findViewById( searchCloseId );
+        mSearchClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int searchTextId = search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+                TextView mSearchText = search.findViewById( searchTextId );
+                mSearchText.setText("");
+                search.setQuery("", false);
+                search.onActionViewCollapsed();
+            }
+        });
     }
 
     @Override

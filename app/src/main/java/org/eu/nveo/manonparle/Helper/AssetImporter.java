@@ -35,12 +35,18 @@ public class AssetImporter implements OnInitListener  {
     private OnImportComplete listener;
     private Context ctx;
     private File importFolder;
+    private int nbSynthesized = 0;
 
     private Handler ttsHandler = new Handler();
 
     private Runnable onComplete = new Runnable() {
         @Override
         public void run() {
+            Log.v(tag, "Running loop to check end of process");
+            Log.v( tag,"Pending synthetizing :" + uidHash.size() );
+            listener.onUpdate();
+
+
             if( uidHash.size() == 0 ){
                 tts.shutdown();
                 listener.onComplete();
@@ -113,10 +119,19 @@ public class AssetImporter implements OnInitListener  {
             Log.v(tag, "Synthesized audio "+name+ " with uid " + uid);
             tts.synthesizeToFile( name.subSequence( 0, name.length() ), null, new File( dataFolder,Long.toString(id)+".mp3" ), uid  );
             uidHash.put(uid, (long) 1);
+            nbSynthesized++;
         }
 
 
         return id;
+    }
+
+    public int getNbSynthesized(){
+        return nbSynthesized;
+    }
+
+    public int getRemainingSynthesized(){
+        return uidHash.size();
     }
 
     private long importGroup( JSONObject group ) throws JSONException {
@@ -180,6 +195,7 @@ public class AssetImporter implements OnInitListener  {
             @Override
             public void onError(String utteranceId ) {
                 Log.v(tag, "Generation failed for "+utteranceId );
+                uidHash.remove( utteranceId );
 
             }
             @Override
@@ -241,6 +257,7 @@ public class AssetImporter implements OnInitListener  {
         FileInputStream is = new FileInputStream( defPath );
         String jsonString = IOUtils.toString( is, "UTF-8" );
         JSONObject json = new JSONObject( jsonString );
+
         // import Items
         Log.v( tag, "Loading items array");
         JSONArray items = json.getJSONArray( "items" );
@@ -250,6 +267,7 @@ public class AssetImporter implements OnInitListener  {
             String name = item.getString("label");
             itemHash.put(name, id);
         }
+
         // import Groups
         Log.v( tag, "Loading groups array");
         JSONArray groups = json.getJSONArray( "groups" );
@@ -259,6 +277,7 @@ public class AssetImporter implements OnInitListener  {
             String name = group.getString("label");
             groupHash.put( name, id );
         }
+
         // create RItemGroups
         Log.v( tag, "Loading links array");
         JSONArray links = json.getJSONArray( "links" );
@@ -279,7 +298,7 @@ public class AssetImporter implements OnInitListener  {
     public void onInit(int status) {
         if( status == TextToSpeech.SUCCESS) {
             Log.v(tag, "Ready to import");
-            tts.setLanguage(new Locale("fr"));
+            tts.setLanguage( new Locale("fr") );
             try {
                 internalImportFolder();
             } catch (IOException e) {
@@ -295,5 +314,7 @@ public class AssetImporter implements OnInitListener  {
 
     public abstract static class OnImportComplete {
         public abstract void onComplete();
+
+        public abstract void onUpdate();
     }
 }

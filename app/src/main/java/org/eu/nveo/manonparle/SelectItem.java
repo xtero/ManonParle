@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,19 +24,11 @@ import org.eu.nveo.manonparle.model.Item;
 import org.eu.nveo.manonparle.db.ItemDao;
 import org.eu.nveo.manonparle.db.ItemDatabase;
 
-import java.util.Locale;
-import java.util.UUID;
-
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- */
 public class SelectItem extends AppCompatActivity {
 
     private static final String tag = "Main";
     private Item itemLeft;
     private Item itemRight;
-    private TextToSpeech tts;
     private MediaPlayer mp;
     private Fullscreen fs;
     private Barycentre barycentre;
@@ -95,28 +86,15 @@ public class SelectItem extends AppCompatActivity {
     private RotationComputer r;
 
     private boolean playAudio( Item item ){
-        if( item.hasSound() ) {
-            Log.v( tag, "The item " + item.getName() + " has sound");
-            if( ! mp.isPlaying() ) {
-                Log.v( tag, "Playing the new sound ");
-                Uri audioUri = item.getSoundUri( getBaseContext() );
-                Log.v(tag, audioUri.toString() );
-                mp = MediaPlayer.create( getBaseContext(), audioUri );
-                mp.start();
-                return true;
-            } else {
-                Log.v( tag, "Media Player already playing");
-                return false;
-            }
-        } else if( ! tts.isSpeaking() ) {
-            Log.v( tag, "Reading a new text with TTS" );
-            String uid = UUID.randomUUID().toString();
-            String name = item.getName();
-            CharSequence text = name.subSequence( 0, name.length() );
-            tts.speak( text, TextToSpeech.QUEUE_FLUSH, null, uid );
+        if( item.hasSound() && ! mp.isPlaying() ) {
+            Log.v( tag, "Playing the new sound ");
+            Uri audioUri = item.getSoundUri( getBaseContext() );
+            Log.v(tag, audioUri.toString() );
+            mp = MediaPlayer.create( getBaseContext(), audioUri );
+            mp.start();
             return true;
         } else {
-            Log.v( tag, "Status of tts : " + tts.isSpeaking() );
+            Log.v( tag, "Media Player already playing");
             return false;
         }
     }
@@ -159,16 +137,6 @@ public class SelectItem extends AppCompatActivity {
 
         fs = new Fullscreen( this );
 
-        tts = new TextToSpeech( this.getBaseContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if( status == TextToSpeech.SUCCESS ) {
-                    Locale fr = new Locale("fr");
-                    tts.setLanguage(fr);
-                }
-            }
-        });
-
         mp = new MediaPlayer();
 
         btnLeft = findViewById( R.id.btnLeft );
@@ -187,7 +155,8 @@ public class SelectItem extends AppCompatActivity {
     @Override
     protected void onDestroy(){
         mp.release();
-        tts.shutdown();
+        r.stop();
+        r = null;
         super.onDestroy();
     }
 
