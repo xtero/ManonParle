@@ -44,4 +44,5 @@ public class RItemGroup {
     public void setItemId(long itemId) {
         this.itemId = itemId;
     }
+
 }

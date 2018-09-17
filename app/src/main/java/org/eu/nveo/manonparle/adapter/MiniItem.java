@@ -1,4 +1,4 @@
-package org.eu.nveo.manonparle.Adapter;
+package org.eu.nveo.manonparle.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -6,7 +6,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import org.eu.nveo.manonparle.View.MiniItemView;
+import org.eu.nveo.manonparle.view.MiniItemView;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
 import org.eu.nveo.manonparle.model.Item;
@@ -21,7 +21,7 @@ public class MiniItem extends BaseAdapter implements Filterable  {
         mContext = ctx;
         mGroupId = groupId;
         try {
-            items = Database.getConnection().itemDao().itemsByGroupId( mGroupId );
+            items = Database.getConnection().item().byGroupId( mGroupId );
         } catch (DatabaseException e) {
             e.printStackTrace();
         }
@@ -70,7 +70,7 @@ public class MiniItem extends BaseAdapter implements Filterable  {
                 FilterResults r = new FilterResults();
                 Item[] i = new Item[0];
                 try {
-                    i = Database.getConnection().itemDao().itemsByGroupIdLike( mGroupId, constraint.toString() );
+                    i = Database.getConnection().item().byGroupIdLike( mGroupId, constraint.toString() );
                 } catch (DatabaseException e) {
                     e.printStackTrace();
                 }

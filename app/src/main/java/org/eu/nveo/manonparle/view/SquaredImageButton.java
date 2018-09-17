@@ -1,4 +1,4 @@
-package org.eu.nveo.manonparle.View;
+package org.eu.nveo.manonparle.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -22,5 +22,10 @@ public class SquaredImageButton extends android.support.v7.widget.AppCompatImage
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int width = getMeasuredWidth();
         setMeasuredDimension(width, width);
+    }
+
+    @Override
+    public boolean performClick(){
+        return super.performClick();
     }
 }

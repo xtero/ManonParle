@@ -4,20 +4,18 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.*;
-import org.eu.nveo.manonparle.Adapter.MiniItem;
-import org.eu.nveo.manonparle.Helper.Fullscreen;
+import org.eu.nveo.manonparle.Activity.BaseActivity;
+import org.eu.nveo.manonparle.adapter.MiniItem;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
 import org.eu.nveo.manonparle.model.Group;
 
-public class Select extends AppCompatActivity {
+public class Select extends BaseActivity {
     private String tag = "Select";
-    private Fullscreen fs;
     private ImageView left;
     private ImageView right;
     private GridView grid;
@@ -67,9 +65,11 @@ public class Select extends AppCompatActivity {
 
         setContentView(R.layout.activity_select);
 
+        Intent args = getIntent();
+        long groupId = Long.parseLong(args.getStringExtra("groupId"));
         Group group = null;
         try {
-            group = Database.getConnection().itemDao().groupByName( "base" );
+            group = Database.getConnection().group().byId( groupId );
         } catch (DatabaseException e) {
             e.printStackTrace();
         }
@@ -87,20 +87,18 @@ public class Select extends AppCompatActivity {
         left.setContentDescription("");
         right.setContentDescription("");
 
-
-        fs = new Fullscreen( this );
-
         Button btn = findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if( left.getContentDescription() == "" || right.getContentDescription() == "" ){
-                    Toast message = Toast.makeText( getApplicationContext(), "Il faut selectionner 2 images", Toast.LENGTH_SHORT );
+                    String text = getResources().getString(R.string.please_select);
+                    Toast message = Toast.makeText( getApplicationContext(), text, Toast.LENGTH_SHORT );
                     message.show();
                     return;
                 } else {
-                    Intent i = new Intent(Select.this, SelectItem.class);
+                    Intent i = new Intent(Select.this, DisplaySelection.class);
                     String idLeft = (String) left.getContentDescription();
                     String idRight = (String) right.getContentDescription();
                     i.putExtra("idLeft", idLeft);
@@ -149,17 +147,5 @@ public class Select extends AppCompatActivity {
                 search.onActionViewCollapsed();
             }
         });
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        fs.ensureFullscreen();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        fs.ensureFullscreen();
     }
 }

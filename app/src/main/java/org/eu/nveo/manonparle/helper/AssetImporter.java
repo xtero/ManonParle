@@ -1,4 +1,4 @@
-package org.eu.nveo.manonparle.Helper;
+package org.eu.nveo.manonparle.helper;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
@@ -10,7 +10,6 @@ import android.util.Log;
 import org.apache.commons.io.IOUtils;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
-import org.eu.nveo.manonparle.db.ItemDao;
 import org.eu.nveo.manonparle.db.ItemDatabase;
 import org.eu.nveo.manonparle.model.Group;
 import org.eu.nveo.manonparle.model.Item;
@@ -20,9 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.UUID;
+import java.util.*;
 
 public class AssetImporter implements OnInitListener  {
 
@@ -36,14 +33,30 @@ public class AssetImporter implements OnInitListener  {
     private Context ctx;
     private File importFolder;
     private int nbSynthesized = 0;
+    private String keyString = "";
 
     private Handler ttsHandler = new Handler();
+
+    private void updateKeyString(){
+        Set<String> contains = uidHash.keySet();
+        Iterator<String> i = contains.iterator();
+        String keys = "";
+        while( i.hasNext() ){
+            keys += i.next();
+        }
+        keyString = keys;
+    }
+
+    private void logConainedKeys(){
+        Log.v( tag,"Pending synthetizing :" + uidHash.size() );
+        Log.v( tag, "Contains keys :" + keyString );
+    }
 
     private Runnable onComplete = new Runnable() {
         @Override
         public void run() {
             Log.v(tag, "Running loop to check end of process");
-            Log.v( tag,"Pending synthetizing :" + uidHash.size() );
+            logConainedKeys();
             listener.onUpdate();
 
 
@@ -77,11 +90,10 @@ public class AssetImporter implements OnInitListener  {
             e.printStackTrace();
         }
 
-        ItemDao dao = db.itemDao();
         Item el = new Item();
         el.setName( name );
         el.setHasSound(  true );
-        long id = dao.insertItem( el );
+        long id = db.item().insert( el );
 
         // import image
         FileInputStream image = null;
@@ -117,8 +129,9 @@ public class AssetImporter implements OnInitListener  {
         } else {
             String uid = UUID.randomUUID().toString();
             Log.v(tag, "Synthesized audio "+name+ " with uid " + uid);
-            tts.synthesizeToFile( name.subSequence( 0, name.length() ), null, new File( dataFolder,Long.toString(id)+".mp3" ), uid  );
             uidHash.put(uid, (long) 1);
+            updateKeyString();
+            tts.synthesizeToFile( name.subSequence( 0, name.length() ), null, new File( dataFolder,Long.toString(id)+".mp3" ), uid  );
             nbSynthesized++;
         }
 
@@ -145,10 +158,9 @@ public class AssetImporter implements OnInitListener  {
             e.printStackTrace();
         }
 
-        ItemDao dao = db.itemDao();
         Group el = new Group();
         el.setName( name );
-        long id = dao.insertGroup( el );
+        long id = db.group().insert( el );
         return id;
     }
 
@@ -159,7 +171,6 @@ public class AssetImporter implements OnInitListener  {
         } catch (DatabaseException e) {
             e.printStackTrace();
         }
-        ItemDao dao = db.itemDao();
 
         String groupName = link.getString("group" );
         Log.v( tag, "Creating links for group "+groupName);
@@ -171,7 +182,7 @@ public class AssetImporter implements OnInitListener  {
             RItemGroup el = new RItemGroup();
             el.setGroupId( groupId );
             el.setItemId( itemId );
-            dao.insertRItemGroup( el );
+            db.ritemgroup().insert( el );
         }
 
     }
@@ -190,13 +201,16 @@ public class AssetImporter implements OnInitListener  {
             public void onDone(String utteranceId) {
                 Log.v(tag, "Generation complete for "+utteranceId );
                 uidHash.remove( utteranceId );
+                updateKeyString();
+                logConainedKeys();
             }
 
             @Override
             public void onError(String utteranceId ) {
                 Log.v(tag, "Generation failed for "+utteranceId );
                 uidHash.remove( utteranceId );
-
+                updateKeyString();
+                logConainedKeys();
             }
             @Override
             public void onError(String utteranceId, int errorCode) {

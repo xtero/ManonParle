@@ -8,6 +8,17 @@
     <string name="title_activity_welcome">Welcome</string>
 
     <string name="choice">Choisissez les images à présenter</string>
+    <string name="please_select">Il faut selectionner 2 images</string>
+    <string name="menu_group_title">Choix du groupe d\'image à présenter</string>
+    <string name="settings_title">Paramétrage de l\'application</string>
+    <string name="edit_group_title">Edition du groupe</string>
+
+    <string name="skew_text">Renfort d\'une main</string>
+    <string name="left">gauche</string>
+    <string name="right">droite</string>
+    <string name="neutral">neutre</string>
+
+    <string name="visual_confirmation">Confirmation visuel</string>
 
     <string name="present">Présenter</string>
 

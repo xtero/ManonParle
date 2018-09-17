@@ -30,8 +30,8 @@ android {
             }
         }
         targetSdkVersion 26
-        versionCode 5
-        versionName '0.2.1'
+        versionCode 6
+        versionName '0.3.0'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -55,6 +55,10 @@ android {
     }
     aaptOptions {
         noCompress '.json'
+    }
+    compileOptions {
+        targetCompatibility 1.7
+        sourceCompatibility 1.7
     }
 }
 

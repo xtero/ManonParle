@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_overlay"
+    android:orientation="vertical"
+    tools:context=".Settings">
+
+    <TextView
+        android:id="@+id/title"
+        android:textColor="@color/colorBaseText"
+        android:textSize="16dp"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp">
+
+        <TextView
+            android:id="@+id/skew_text"
+            android:textColor="@color/colorBaseText"
+            android:textSize="16sp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:layout_marginStart="30dp"
+            android:gravity="center_vertical"
+            android:text="@string/skew_text" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/skew_left"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:contentDescription="-1"
+                    android:gravity="center"
+                    android:textAllCaps="true"
+                    android:text="@string/left"
+                    android:textColor="@color/colorBaseText"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/skew_neutral"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:contentDescription="0"
+                    android:gravity="center"
+                    android:textAllCaps="true"
+                    android:text="@string/neutral"
+                    android:textColor="@color/colorBaseText"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/skew_right"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:contentDescription="1"
+                    android:gravity="center"
+                    android:textAllCaps="true"
+                    android:text="@string/right"
+                    android:textColor="@color/colorBaseText"
+                    android:textSize="24sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+
+                <EditText
+                    android:id="@+id/skew_factor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_search_round"
+                    android:ems="4"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:textColor="@color/inputFieldText"
+                    tools:text="0" />
+
+                <TextView
+                    android:id="@+id/skew_factor_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="%"
+                    android:textColor="@color/colorBaseText"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -2,21 +2,20 @@ package org.eu.nveo.manonparle;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-import org.eu.nveo.manonparle.Helper.AssetImporter;
-import org.eu.nveo.manonparle.Helper.FileUtils;
-import org.eu.nveo.manonparle.Helper.Fullscreen;
+import org.eu.nveo.manonparle.Activity.BaseActivity;
+import org.eu.nveo.manonparle.helper.AssetImporter;
+import org.eu.nveo.manonparle.helper.FileUtils;
+import org.eu.nveo.manonparle.helper.Fullscreen;
 import org.eu.nveo.manonparle.db.Database;
 import org.json.JSONException;
 
 import java.io.File;
 import java.io.IOException;
 
-public class Loader extends AppCompatActivity {
-    private Fullscreen fs;
+public class Loader extends BaseActivity {
     private static String tag = "Loader";
 
     private void doDataCleanup(){
@@ -30,8 +29,6 @@ public class Loader extends AppCompatActivity {
 
         setContentView(R.layout.activity_loader);
 
-        fs = new Fullscreen( this );
-
         Database.initConnection( getBaseContext() );
 
         doDataCleanup();
@@ -40,8 +37,6 @@ public class Loader extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
-        fs.ensureFullscreen();
 
         String tmpPath = "tmp";
         final File tmpFolder = getBaseContext().getDir( tmpPath, Context.MODE_PRIVATE );
@@ -57,8 +52,8 @@ public class Loader extends AppCompatActivity {
                 public void onComplete() {
                     FileUtils.cleanFolder( tmpFolder );
 
-                    Log.v(tag, "Starting Select page");
-                    Intent i = new Intent(Loader.this, Select.class);
+                    Log.v(tag, "Starting MenuGroup page");
+                    Intent i = new Intent(Loader.this, MenuGroup.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(i);
                 }
@@ -77,9 +72,4 @@ public class Loader extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        fs.ensureFullscreen();
-    }
 }

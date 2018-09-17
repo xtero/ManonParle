@@ -1,4 +1,4 @@
-package org.eu.nveo.manonparle.View;
+package org.eu.nveo.manonparle.view;
 
 import android.content.ClipData;
 import android.content.ClipDescription;
@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GestureDetectorCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.*;
 import android.widget.ImageView;
 import android.widget.LinearLayout;

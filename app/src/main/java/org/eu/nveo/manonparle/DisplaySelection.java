@@ -3,41 +3,39 @@ package org.eu.nveo.manonparle;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.ImageButton;
-import org.eu.nveo.manonparle.Helper.Barycentre;
-import org.eu.nveo.manonparle.Helper.Fullscreen;
-import org.eu.nveo.manonparle.Helper.RotationComputer;
-import org.eu.nveo.manonparle.View.SquaredImageButton;
+import org.eu.nveo.manonparle.Activity.BaseActivity;
+import org.eu.nveo.manonparle.helper.Barycentre;
+import org.eu.nveo.manonparle.helper.RotationComputer;
+import org.eu.nveo.manonparle.view.SquaredImageButton;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
 import org.eu.nveo.manonparle.model.Item;
-import org.eu.nveo.manonparle.db.ItemDao;
 import org.eu.nveo.manonparle.db.ItemDatabase;
 
-public class SelectItem extends AppCompatActivity {
+import static org.eu.nveo.manonparle.helper.Preferences.DEFAULT_SKEW_SIDE;
+import static org.eu.nveo.manonparle.helper.Preferences.GLOBAL_PREFS;
+
+public class DisplaySelection extends BaseActivity {
 
     private static final String tag = "Main";
     private Item itemLeft;
     private Item itemRight;
     private MediaPlayer mp;
-    private Fullscreen fs;
     private Barycentre barycentre;
     private SquaredImageButton btnLeft;
     private SquaredImageButton btnRight;
-    private String item1 = "yaourt";
-    private String item2 = "doudou";
     private int previousOrientation = -1;
-    private ObjectAnimator anim;
+    private SharedPreferences prefs;
 
     private final View.OnTouchListener btnHandler = new View.OnTouchListener() {
         @Override
@@ -65,18 +63,21 @@ public class SelectItem extends AppCompatActivity {
             Log.v( tag, MotionEvent.actionToString( event.getAction() ) ) ;
             if( event.getAction() == MotionEvent.ACTION_DOWN ) {
                 Log.v( tag, "Reset Barycentre" );
-                barycentre = new Barycentre();
+                barycentre = new Barycentre( getApplicationContext() );
             }
 
             barycentre.updateBarycentre( event );
 
             if( event.getAction() == MotionEvent.ACTION_UP ) {
                 Log.v(tag, "Fire new event" );
-                MotionEvent.PointerCoords coords = barycentre.get();
-                float x = coords.getAxisValue(MotionEvent.AXIS_X);
-                float y = coords.getAxisValue(MotionEvent.AXIS_Y);
+                Float[] coords;
+                if( Math.abs( prefs.getInt("skew_side", DEFAULT_SKEW_SIDE) ) == 1 ) {
+                    coords = barycentre.getSkewed();
+                } else {
+                    coords = barycentre.get();
+                }
                 long now = 1;
-                MotionEvent newEvent = MotionEvent.obtain(now, now, MotionEvent.ACTION_DOWN, x, y, event.getMetaState() );
+                MotionEvent newEvent = MotionEvent.obtain(now, now, MotionEvent.ACTION_DOWN, coords[0], coords[1], event.getMetaState() );
                 findViewById(R.id.fullscreen_content).dispatchTouchEvent(newEvent);
                 return false;
             }
@@ -90,6 +91,9 @@ public class SelectItem extends AppCompatActivity {
             Log.v( tag, "Playing the new sound ");
             Uri audioUri = item.getSoundUri( getBaseContext() );
             Log.v(tag, audioUri.toString() );
+            if( mp != null ){
+                mp.release();
+            }
             mp = MediaPlayer.create( getBaseContext(), audioUri );
             mp.start();
             return true;
@@ -101,7 +105,7 @@ public class SelectItem extends AppCompatActivity {
 
     private void blinkButton( ImageButton btn ) {
         Log.v(tag, "Setting the animation");
-        anim = ObjectAnimator.ofInt( btn, "backgroundColor" , Color.BLACK, Color.rgb( 200,200,200), Color.BLACK, Color.rgb( 200,200,200), Color.BLACK  );
+        ObjectAnimator anim = ObjectAnimator.ofInt(btn, "backgroundColor", Color.BLACK, Color.rgb(200, 200, 200), Color.BLACK, Color.rgb(200, 200, 200), Color.BLACK);
         anim.setDuration(1000);
         anim.setEvaluator( new ArgbEvaluator() );
         anim.setRepeatMode( ValueAnimator.RESTART );
@@ -111,17 +115,18 @@ public class SelectItem extends AppCompatActivity {
 
 
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Intent args = getIntent();
-        item1 = args.getStringExtra("idLeft");
-        item2 = args.getStringExtra("idRight");
-
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_display_selection);
 
-        setContentView(R.layout.activity_selectitem);
+        prefs = getSharedPreferences( GLOBAL_PREFS, MODE_PRIVATE );
+
+        Intent args = getIntent();
+        String item1 = args.getStringExtra("idLeft");
+        String item2 = args.getStringExtra("idRight");
+
 
         ItemDatabase db = null;
         try {
@@ -130,12 +135,8 @@ public class SelectItem extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        ItemDao dao = db.itemDao();
-
-        itemLeft  = dao.item( Long.parseLong(item1) );
-        itemRight = dao.item( Long.parseLong(item2) );
-
-        fs = new Fullscreen( this );
+        itemLeft  = db.item().byId( Long.parseLong(item1) );
+        itemRight = db.item().byId( Long.parseLong(item2) );
 
         mp = new MediaPlayer();
 
@@ -150,26 +151,14 @@ public class SelectItem extends AppCompatActivity {
         findViewById( R.id.mth ).setOnTouchListener( barycentreHandler );
     }
 
-
-
     @Override
-    protected void onDestroy(){
+    protected void onPause(){
         mp.release();
         r.stop();
         r = null;
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onPause() {
         super.onPause();
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        fs.ensureFullscreen();
-    }
 
     @Override
     protected void onResume() {
@@ -194,6 +183,5 @@ public class SelectItem extends AppCompatActivity {
                 }
             };
         }
-        fs.ensureFullscreen();
     }
 }

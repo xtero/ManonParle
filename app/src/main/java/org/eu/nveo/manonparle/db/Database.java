@@ -10,9 +10,9 @@ public class Database {
     private static Context ctx;
 
     public static void empty(){
-        db.itemDao().deleteAllRItemGroups();
-        db.itemDao().deleteAllGroups();
-        db.itemDao().deleteAllItems();
+        db.ritemgroup().deleteAll();
+        db.group().deleteAll();
+        db.item().deleteAll();
     }
 
     public static void initConnection( Context context ) {
