@@ -116,7 +116,7 @@ public class Select extends BaseActivity {
                 searchHandler.removeCallbacks( refreshGrid );
                 searchHandler.postDelayed( refreshGrid, 500 );
                 search.clearFocus();
-                fs.ensureFullscreen();
+                ensureFullscreen();
                 return true;
             }
 

@@ -8,7 +8,6 @@ import android.widget.TextView;
 import org.eu.nveo.manonparle.Activity.BaseActivity;
 import org.eu.nveo.manonparle.helper.AssetImporter;
 import org.eu.nveo.manonparle.helper.FileUtils;
-import org.eu.nveo.manonparle.helper.Fullscreen;
 import org.eu.nveo.manonparle.db.Database;
 import org.json.JSONException;
 

@@ -122,7 +122,7 @@ public class Settings extends BaseActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if( ! hasFocus ){
-                    fs.ensureFullscreen();
+                    ensureFullscreen();
                 }
             }
         });
