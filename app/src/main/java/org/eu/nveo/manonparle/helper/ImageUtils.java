@@ -3,6 +3,7 @@ package org.eu.nveo.manonparle.helper;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.net.Uri;
 
 public class ImageUtils {
@@ -14,7 +15,20 @@ public class ImageUtils {
         String scheme = ContentResolver.SCHEME_ANDROID_RESOURCE;
         String name = res.getResourceEntryName(resId);
 
-        Uri path = Uri.parse( scheme +"://"+ pack +"/"+ type +"/"+ name );
-        return path;
+        return Uri.parse( scheme +"://"+ pack +"/"+ type +"/"+ name );
+    }
+
+    public static int optimalFontColor( int color ){
+        int red = Color.red( color );
+        int green = Color.green( color );
+        int blue = Color.blue( color );
+
+        int trigger = ( ( red * 299 ) + ( green * 587 ) + ( blue * 114 ) ) / 1000;
+
+        if( trigger < 125 ) {
+            return Color.WHITE;
+        } else {
+            return Color.BLACK;
+        }
     }
 }

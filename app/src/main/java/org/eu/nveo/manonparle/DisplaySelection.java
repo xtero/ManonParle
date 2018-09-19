@@ -22,8 +22,7 @@ import org.eu.nveo.manonparle.db.DatabaseException;
 import org.eu.nveo.manonparle.model.Item;
 import org.eu.nveo.manonparle.db.ItemDatabase;
 
-import static org.eu.nveo.manonparle.helper.Preferences.DEFAULT_SKEW_SIDE;
-import static org.eu.nveo.manonparle.helper.Preferences.GLOBAL_PREFS;
+import static org.eu.nveo.manonparle.helper.Preferences.*;
 
 public class DisplaySelection extends BaseActivity {
 
@@ -105,8 +104,12 @@ public class DisplaySelection extends BaseActivity {
 
     private void blinkButton( ImageButton btn ) {
         Log.v(tag, "Setting the animation");
-        ObjectAnimator anim = ObjectAnimator.ofInt(btn, "backgroundColor", Color.BLACK, Color.rgb(200, 200, 200), Color.BLACK, Color.rgb(200, 200, 200), Color.BLACK);
-        anim.setDuration(1000);
+        SharedPreferences prefs = getSharedPreferences( GLOBAL_PREFS, MODE_PRIVATE );
+        int color = prefs.getInt("confirm_color", CONFIRM_COLOR );
+        // Higher is faster, so we need to negate it
+        int speed = ( 1500 - prefs.getInt( "confirm_speed", CONFIRM_SPEED ) ) + CONFIRM_BASE_SPEED ;
+        ObjectAnimator anim = ObjectAnimator.ofInt(btn, "backgroundColor", Color.BLACK, color, Color.BLACK, color, Color.BLACK);
+        anim.setDuration( speed );
         anim.setEvaluator( new ArgbEvaluator() );
         anim.setRepeatMode( ValueAnimator.RESTART );
         anim.setRepeatCount( 0 );

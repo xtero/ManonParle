@@ -10,6 +10,8 @@
     <color name="inputTextClick">#4FBBD1</color>
 
     <color name="colorBaseText">#ffffff</color>
-    <color name="black_overlay">#000000</color>
+    <color name="baseRevOverlay">#ffffff</color>
+    <color name="baseOverlay">#000000</color>
+    <color name="basePlaceholder">#3090AA</color>
 
 </resources>

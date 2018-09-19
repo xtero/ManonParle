@@ -7,12 +7,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import org.eu.nveo.manonparle.Activity.BaseActivity;
+import top.defaults.colorpicker.ColorPickerPopup;
 
-import static org.eu.nveo.manonparle.helper.Preferences.DEFAULT_SKEW_FACTOR;
-import static org.eu.nveo.manonparle.helper.Preferences.DEFAULT_SKEW_SIDE;
-import static org.eu.nveo.manonparle.helper.Preferences.GLOBAL_PREFS;
+import static org.eu.nveo.manonparle.helper.ImageUtils.*;
+import static org.eu.nveo.manonparle.helper.Preferences.*;
 
 public class Settings extends BaseActivity {
     private String tag = "Settings";
@@ -21,13 +23,16 @@ public class Settings extends BaseActivity {
     private TextView skew_neutral;
     private TextView skew_right;
     private EditText skew;
+    private LinearLayout confirmColor;
+    private TextView confirmInvite;
+    private SeekBar confirmSpeed;
 
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
 
     private void resetGlowEffect( View v ){
         TextView text = (TextView) v;
-        text.setShadowLayer( 0, 0,0, getResources().getColor(R.color.black_overlay) );
+        text.setShadowLayer( 0, 0,0, getResources().getColor(R.color.baseOverlay) );
         text.setTextColor( getResources().getColor(R.color.colorBaseText) );
     }
 
@@ -124,6 +129,62 @@ public class Settings extends BaseActivity {
                 if( ! hasFocus ){
                     ensureFullscreen();
                 }
+            }
+        });
+
+        final int color = prefs.getInt("confirm_color", CONFIRM_COLOR );
+        confirmInvite = findViewById(R.id.confirm_color_invite);
+        confirmInvite.setTextColor( optimalFontColor( color ) );
+        confirmColor = findViewById( R.id.confirm_color );
+        confirmColor.setBackgroundColor( color );
+        confirmColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ColorPickerPopup.Builder( Settings.this )
+                        .initialColor( prefs.getInt("confirm_color", CONFIRM_COLOR ) )
+                        .enableAlpha(true)
+                        .okTitle((String) getResources().getText(R.string.select))
+                        .cancelTitle((String) getResources().getText(R.string.cancel))
+                        .showIndicator(true)
+                        .showValue(true)
+                        .build()
+                        .show(v, new ColorPickerPopup.ColorPickerObserver() {
+                            @Override
+                            public void onColorPicked(int i) {
+                                editor.putInt("confirm_color", i);
+                                editor.commit();
+                                confirmColor.setBackgroundColor( i );
+                                confirmInvite.setTextColor( optimalFontColor( i ) );
+
+                            }
+
+                            @Override
+                            public void onColor(int i, boolean b) {
+
+                            }
+                        });
+            }
+        });
+
+        int speed = prefs.getInt("confirm_speed", CONFIRM_SPEED );
+        confirmSpeed = findViewById( R.id.confirm_speed_value );
+        confirmSpeed.setProgress( speed );
+        confirmSpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                int speed = seekBar.getProgress();
+                editor.putInt( "confirm_speed", speed );
+                editor.commit();
             }
         });
     }

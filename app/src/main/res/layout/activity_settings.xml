@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_overlay"
+    android:background="@color/baseOverlay"
     android:orientation="vertical"
     tools:context=".Settings">
 
     <TextView
         android:id="@+id/title"
         android:textColor="@color/colorBaseText"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:gravity="center"
         android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
@@ -37,16 +37,14 @@
             android:text="@string/skew_text" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/skew_left"
@@ -89,9 +87,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp">
+                android:layout_gravity="center">
 
                 <EditText
                     android:id="@+id/skew_factor"
@@ -116,6 +112,110 @@
                     android:textSize="18sp" />
 
             </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="#ffffff" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp">
+
+        <TextView
+            android:id="@+id/confirm_color_text"
+            android:textColor="@color/colorBaseText"
+            android:textSize="16sp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:layout_marginStart="30dp"
+            android:gravity="center_vertical"
+            android:text="@string/confirm_color_text" />
+
+        <LinearLayout
+            android:id="@+id/confirm_color"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@color/basePlaceholder"
+            android:layout_weight="0.7">
+            <TextView
+                android:id="@+id/confirm_color_invite"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="@string/confirm_color_invite" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="#ffffff" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp">
+
+        <TextView
+            android:id="@+id/confirm_speed_text"
+            android:textColor="@color/colorBaseText"
+            android:textSize="16sp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:layout_marginStart="30dp"
+            android:gravity="center_vertical"
+            android:text="@string/confirm_speed_text" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_weight="0.7">
+
+            <TextView
+                android:id="@+id/confirm_speed_text_slow"
+                android:textColor="@color/colorBaseText"
+                android:textSize="16sp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="@string/slow" />
+
+            <SeekBar
+                android:id="@+id/confirm_speed_value"
+                android:max="1500"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"/>
+
+            <TextView
+                android:id="@+id/confirm_speed_text_fast"
+                android:textColor="@color/colorBaseText"
+                android:textSize="16sp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:text="@string/fast" />
         </LinearLayout>
     </LinearLayout>
 
