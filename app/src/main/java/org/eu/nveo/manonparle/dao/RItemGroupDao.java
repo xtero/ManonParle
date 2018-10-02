@@ -1,6 +1,7 @@
-package org.eu.nveo.manonparle.db;
+package org.eu.nveo.manonparle.dao;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import org.eu.nveo.manonparle.model.Item;
@@ -17,7 +18,19 @@ public interface RItemGroupDao {
     @Query("SELECT count(*) FROM ritemgroup WHERE groupId = :id ")
     int countByGroupId( long id);
 
+    @Query("SELECT * FROM ritemgroup WHERE groupId = :id ")
+    RItemGroup[] byGroupId( long id );
+
+    @Query("SELECT count(*) FROM ritemgroup WHERE itemId = :id ")
+    int countByItemId( long id);
+
+    @Query("SELECT * FROM ritemgroup WHERE itemId = :id ")
+    RItemGroup[] byItemId( long id );
+
     @Query("SELECT item.* FROM item, ritemgroup WHERE item.id = ritemgroup.itemId AND ritemgroup.groupId = :id ORDER BY item.id LIMIT 1")
     Item firstGroupItem(long id );
+
+    @Delete
+    void delete( RItemGroup rItemGroup );
 
 }

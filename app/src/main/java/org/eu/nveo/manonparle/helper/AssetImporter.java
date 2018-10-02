@@ -2,226 +2,34 @@ package org.eu.nveo.manonparle.helper;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
-import android.os.Handler;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeech.OnInitListener;
-import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
-import org.apache.commons.io.IOUtils;
-import org.eu.nveo.manonparle.db.Database;
-import org.eu.nveo.manonparle.db.DatabaseException;
-import org.eu.nveo.manonparle.db.ItemDatabase;
-import org.eu.nveo.manonparle.model.Group;
-import org.eu.nveo.manonparle.model.Item;
-import org.eu.nveo.manonparle.model.RItemGroup;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.*;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
-public class AssetImporter implements OnInitListener  {
+public class AssetImporter {
+
+    public static int PACK_SUCCESS = 0;
+    public static int PACK_ERROR_NOT_ZIP = 1;
+    public static int PACK_ERROR_WRONG_FORMAT = 2;
+    public static int PACK_ERROR_INVALID_DEF = 3;
+    public static int PACK_ERROR_WRONG_FILE_FORMAT = 4;
+    public static String[] PACK_FORMAT_SUPPORTED = {
+            ".png",
+            ".mp3"
+        };
 
     private static String tag = "AssetImporter";
-    private HashMap<String,Long> itemHash;
-    private HashMap<String,Long> groupHash;
-    private HashMap<String,Long> uidHash;
-    private File dataFolder;
-    private TextToSpeech tts;
-    private OnImportComplete listener;
-    private Context ctx;
-    private File importFolder;
-    private int nbSynthesized = 0;
-    private String keyString = "";
 
-    private Handler ttsHandler = new Handler();
-
-    private void updateKeyString(){
-        Set<String> contains = uidHash.keySet();
-        Iterator<String> i = contains.iterator();
-        String keys = "";
-        while( i.hasNext() ){
-            keys += i.next();
-        }
-        keyString = keys;
-    }
-
-    private void logConainedKeys(){
-        Log.v( tag,"Pending synthetizing :" + uidHash.size() );
-        Log.v( tag, "Contains keys :" + keyString );
-    }
-
-    private Runnable onComplete = new Runnable() {
-        @Override
-        public void run() {
-            Log.v(tag, "Running loop to check end of process");
-            logConainedKeys();
-            listener.onUpdate();
+    private static String tmp_path = "tmp";
+    private static String data_path = "item";
+    private static String pack_path = "pack";
 
 
-            if( uidHash.size() == 0 ){
-                tts.shutdown();
-                listener.onComplete();
-            } else {
-                ttsHandler.postAtTime( onComplete, 100 );
-            }
-        }
-    };
-
-    public AssetImporter(Context context ){
-        ctx = context;
-        dataFolder = context.getDir(Item.STORAGE_PATH, Context.MODE_PRIVATE);
-        itemHash = new HashMap<>();
-        groupHash = new HashMap<>();
-        uidHash = new HashMap<>();
-
-    }
-
-    private long importItem( JSONObject item, File folder ) throws JSONException {
-        String name = item.getString("label");
-        Log.v( tag, "Creating item "+name);
-        String imageName = item.getString( "image" );
-        String audioName = item.getString( "audio" );
-        ItemDatabase db = null;
-        try {
-            db = Database.getConnection();
-        } catch (DatabaseException e) {
-            e.printStackTrace();
-        }
-
-        Item el = new Item();
-        el.setName( name );
-        el.setHasSound(  true );
-        long id = db.item().insert( el );
-
-        // import image
-        FileInputStream image = null;
-        try {
-            image = new FileInputStream( new File( folder ,  "medias/" + imageName ) );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            Log.v(tag, "Copy image");
-            FileOutputStream fos = new FileOutputStream( new File( dataFolder , Long.toString(id)+".png" ) );
-            FileUtils.copyFile( image, fos );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // import audio - synthesized if not provided
-        if( audioName != "null" ) {
-            FileInputStream audio = null;
-            try {
-                audio = new FileInputStream( new File( folder,  "medias/" + audioName ) );
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                Log.v(tag, "Copy audio");
-                FileOutputStream fos = new FileOutputStream( new File( dataFolder , Long.toString(id)+".mp3" ) );
-                FileUtils.copyFile( audio, fos );
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        } else {
-            String uid = UUID.randomUUID().toString();
-            Log.v(tag, "Synthesized audio "+name+ " with uid " + uid);
-            uidHash.put(uid, (long) 1);
-            updateKeyString();
-            tts.synthesizeToFile( name.subSequence( 0, name.length() ), null, new File( dataFolder,Long.toString(id)+".mp3" ), uid  );
-            nbSynthesized++;
-        }
-
-
-        return id;
-    }
-
-    public int getNbSynthesized(){
-        return nbSynthesized;
-    }
-
-    public int getRemainingSynthesized(){
-        return uidHash.size();
-    }
-
-    private long importGroup( JSONObject group ) throws JSONException {
-        String name = group.getString("label");
-        Log.v( tag, "Creating group "+name);
-        ItemDatabase db = null;
-
-        try {
-            db = Database.getConnection();
-        } catch (DatabaseException e) {
-            e.printStackTrace();
-        }
-
-        Group el = new Group();
-        el.setName( name );
-        long id = db.group().insert( el );
-        return id;
-    }
-
-    private void createLink( JSONObject link ) throws JSONException {
-        ItemDatabase db = null;
-        try {
-            db = Database.getConnection();
-        } catch (DatabaseException e) {
-            e.printStackTrace();
-        }
-
-        String groupName = link.getString("group" );
-        Log.v( tag, "Creating links for group "+groupName);
-        long groupId = groupHash.get( groupName );
-        JSONArray items = link.getJSONArray( "items" );
-        for( int i = 0; i< items.length(); i++ ){
-            String itemName = items.getString( i );
-            long itemId = itemHash.get( itemName );
-            RItemGroup el = new RItemGroup();
-            el.setGroupId( groupId );
-            el.setItemId( itemId );
-            db.ritemgroup().insert( el );
-        }
-
-    }
-
-    public void importFolder( File folder, OnImportComplete complete ) throws IOException, JSONException {
-        listener = complete;
-        importFolder = folder;
-        tts = new TextToSpeech( ctx, this );
-        tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
-            @Override
-            public void onStart(String utteranceId) {
-                Log.v(tag, "Starting generating file "+utteranceId );
-            }
-
-            @Override
-            public void onDone(String utteranceId) {
-                Log.v(tag, "Generation complete for "+utteranceId );
-                uidHash.remove( utteranceId );
-                updateKeyString();
-                logConainedKeys();
-            }
-
-            @Override
-            public void onError(String utteranceId ) {
-                Log.v(tag, "Generation failed for "+utteranceId );
-                uidHash.remove( utteranceId );
-                updateKeyString();
-                logConainedKeys();
-            }
-            @Override
-            public void onError(String utteranceId, int errorCode) {
-                Log.v(tag, "Generation failed for "+utteranceId+" error: "+errorCode );
-                onError(utteranceId);
-            }
-        });
-
-
-    }
-
+    @Deprecated
     public static void cloneBaseAssetTo( Context ctx, File tmpFolder ){
 
         // Import data from asset
@@ -256,7 +64,7 @@ public class AssetImporter implements OnInitListener  {
     }
 
     public static void cleanDataFolder( Context context ){
-        File dataFolder = context.getDir(Item.STORAGE_PATH, Context.MODE_PRIVATE);
+        File dataFolder = getDataFolder(context);
         File[] files = dataFolder.listFiles();
         for (File file : files) {
             file.delete();
@@ -264,71 +72,90 @@ public class AssetImporter implements OnInitListener  {
         dataFolder.delete();
     }
 
-    private void internalImportFolder() throws IOException, JSONException {
-        // Load json file
-        Log.v( tag, "Loading definition.json");
-        File defPath = new File( importFolder, "definition.json" );
-        FileInputStream is = new FileInputStream( defPath );
-        String jsonString = IOUtils.toString( is, "UTF-8" );
-        JSONObject json = new JSONObject( jsonString );
-
-        // import Items
-        Log.v( tag, "Loading items array");
-        JSONArray items = json.getJSONArray( "items" );
-        for( int i = 0 ; i < items.length(); i++ ){
-            JSONObject item = items.getJSONObject( i );
-            long id = importItem( item, importFolder );
-            String name = item.getString("label");
-            itemHash.put(name, id);
+    public static int checkZipIntegrity( File pack ){
+        ZipFile file;
+        try {
+            file = new ZipFile( pack );
+        } catch (IOException e) {
+            return PACK_ERROR_NOT_ZIP;
         }
 
-        // import Groups
-        Log.v( tag, "Loading groups array");
-        JSONArray groups = json.getJSONArray( "groups" );
-        for( int i = 0 ; i < groups.length(); i++ ){
-            JSONObject group = groups.getJSONObject( i );
-            long id = importGroup( group );
-            String name = group.getString("label");
-            groupHash.put( name, id );
-        }
+        ZipEntry zipDef = null;
+        Enumeration<? extends ZipEntry> entries = file.entries();
+        while( entries.hasMoreElements() ) {
+            ZipEntry entry = entries.nextElement();
 
-        // create RItemGroups
-        Log.v( tag, "Loading links array");
-        JSONArray links = json.getJSONArray( "links" );
-        for( int i = 0 ; i < links.length(); i++ ){
-            JSONObject el = links.getJSONObject( i );
-            createLink( el );
-        }
-
-        FileUtils.listFolderContent( dataFolder );
-
-        // Cleanup to avoid memory useless usage
-        itemHash = null;
-        groupHash = null;
-
-    }
-
-    @Override
-    public void onInit(int status) {
-        if( status == TextToSpeech.SUCCESS) {
-            Log.v(tag, "Ready to import");
-            tts.setLanguage( new Locale("fr") );
-            try {
-                internalImportFolder();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
+            if( entry.isDirectory() ) {
+                if( entry.getName() != "medias" ) {
+                    return PACK_ERROR_WRONG_FORMAT;
+                }
+            } else {
+                if( entry.getName() == "definition.json" ) {
+                    zipDef = entry;
+                }
+                boolean validFormat = false;
+                for( int i = 0; i < PACK_FORMAT_SUPPORTED.length; i++ ){
+                    if( entry.getName().endsWith( PACK_FORMAT_SUPPORTED[i] ) ) {
+                        validFormat = true;
+                    }
+                }
+                if( ! validFormat ) {
+                    return PACK_ERROR_WRONG_FILE_FORMAT;
+                }
             }
-
-            ttsHandler.post( onComplete );
+        }
+        // After parsing all entries, there is no definition.json
+        if(zipDef == null) {
+            return PACK_ERROR_WRONG_FORMAT;
         }
 
+        InputStream defIs;
+        try {
+            defIs = file.getInputStream( zipDef );
+            new Definition( defIs );
+            defIs.close();
+        } catch (IOException| JSONException e ) {
+            return PACK_ERROR_INVALID_DEF;
+        }
+
+        return PACK_SUCCESS;
     }
 
-    public abstract static class OnImportComplete {
-        public abstract void onComplete();
-
-        public abstract void onUpdate();
+    public static void extractPackToTmp( File pack, Context ctx  ){
+        ZipFile file;
+        File tmpFolder = getTmpFolder( ctx );
+        File tmpMediaFolder = new File( tmpFolder, "medias");
+        if( ! tmpMediaFolder.exists() ){
+            tmpMediaFolder.mkdir();
+        }
+        try {
+            file = new ZipFile( pack );
+            Enumeration<? extends ZipEntry> entries = file.entries();
+            while( entries.hasMoreElements() ) {
+                ZipEntry entry = entries.nextElement();
+                if( ! entry.isDirectory() ) {
+                    InputStream fis = file.getInputStream(entry);
+                    FileOutputStream fos = new FileOutputStream(new File(tmpFolder, entry.getName()));
+                    FileUtils.copyFile( fis, fos );
+                    fis.close();
+                    fos.close();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+    public static File getTmpFolder( Context ctx ){
+        return ctx.getDir(tmp_path, Context.MODE_PRIVATE );
+    }
+
+    public static File getDataFolder( Context ctx ){
+        return ctx.getDir( data_path, Context.MODE_PRIVATE );
+    }
+
+    public static File getPackFolder( Context ctx ){
+        return ctx.getDir( pack_path, Context.MODE_PRIVATE );
+    }
+
 }

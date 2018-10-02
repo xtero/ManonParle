@@ -7,7 +7,10 @@
 
     <color name="inputFieldText">#000000</color>
     <color name="inputFieldBackground">#ffffff</color>
-    <color name="inputTextClick">#4FBBD1</color>
+
+    <color name="glowSetting">#4FBBD1</color>
+    <color name="glowConfirm">#5AAE7C</color>
+    <color name="glowInvalid">#CF3D3D</color>
 
     <color name="colorBaseText">#ffffff</color>
     <color name="baseRevOverlay">#ffffff</color>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/baseOverlay"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/complete_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/import_complete"
+        android:textSize="24sp"
+        android:textColor="@color/colorBaseText" />
+
+    <TextView
+        android:id="@+id/imported_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/items"
+        android:textSize="20sp"
+        android:textColor="@color/colorBaseText" />
+
+    <TextView
+        android:id="@+id/imported_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/groups"
+        android:textSize="20sp"
+        android:textColor="@color/colorBaseText" />
+
+    <TextView
+        android:id="@+id/imported_links"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/links"
+        android:textSize="20sp"
+        android:textColor="@color/colorBaseText" />
+
+    <TextView
+        android:id="@+id/ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@android:string/ok"
+        android:textSize="20sp"
+        android:textColor="@color/colorBaseText" />
+
+</LinearLayout>

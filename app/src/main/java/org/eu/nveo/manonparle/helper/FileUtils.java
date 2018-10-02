@@ -2,19 +2,25 @@ package org.eu.nveo.manonparle.helper;
 
 import android.util.Log;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 public class FileUtils {
 
     private static String tag = "FileUtils";
 
-    public static void copyFile(FileInputStream from, FileOutputStream to ) throws IOException {
+    public static void copyFile( InputStream from, FileOutputStream to ) throws IOException {
         byte[] buffer = new byte[1024];
-        while( from.read( buffer ) > 0 ) {
-            to.write( buffer );
+        int len;
+        while( ( len = from.read( buffer ) ) > 0 ) {
+            to.write( buffer, 0, len );
+        }
+    }
+
+    public static void copyFromInputStream(InputStream from, FileOutputStream to ) throws IOException {
+        byte[] buffer = new byte[1024];
+        int len=0;
+        while( ( len = from.read( buffer ) ) > 0 ) {
+            to.write( buffer, 0, len );
         }
     }
 

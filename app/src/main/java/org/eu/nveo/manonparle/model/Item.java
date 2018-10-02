@@ -3,6 +3,10 @@ package org.eu.nveo.manonparle.model;
 import android.arch.persistence.room.*;
 import android.content.Context;
 import android.net.Uri;
+import org.eu.nveo.manonparle.db.DatabaseException;
+import org.eu.nveo.manonparle.db.ItemDatabase;
+import org.eu.nveo.manonparle.helper.AssetImporter;
+
 import java.io.File;
 
 @Entity(
@@ -16,9 +20,6 @@ public class Item {
     private String name;
     private Boolean hasSound;
     private Boolean soundSynth;
-
-    public static String STORAGE_PATH = "item";
-
 
     public Item( long id, String name, Boolean hasSound ){
         this.id = id;
@@ -63,7 +64,7 @@ public class Item {
 
 
     public Uri getImageUri( Context ctx ){
-        File dir = ctx.getDir( STORAGE_PATH, Context.MODE_PRIVATE );
+        File dir = AssetImporter.getDataFolder( ctx );
         File image = new File( dir, id+".png");
         return Uri.fromFile( image );
     }
@@ -72,7 +73,7 @@ public class Item {
         if( ! hasSound ) {
             return null;
         }
-        File dir = ctx.getDir( STORAGE_PATH, Context.MODE_PRIVATE );
+        File dir = AssetImporter.getDataFolder( ctx );
         File image = new File( dir, id+".mp3");
         return Uri.fromFile( image );
     }
@@ -82,7 +83,30 @@ public class Item {
             return hasSound;
     }
 
-    /*
-    */
+    public void delete(){
+        ItemDatabase db = null;
+        try {
+            db = org.eu.nveo.manonparle.db.Database.getConnection();
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
+        RItemGroup[] links = db.ritemgroup().byItemId( getId() );
+        for (RItemGroup link : links) {
+            db.ritemgroup().delete( link );
+        }
+        db.item().delete( this );
+    }
+
+
+    public int countGroupIn(){
+        ItemDatabase db = null;
+        try {
+            db = org.eu.nveo.manonparle.db.Database.getConnection();
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
+        return db.ritemgroup().countByItemId( getId() );
+
+    }
 }
 

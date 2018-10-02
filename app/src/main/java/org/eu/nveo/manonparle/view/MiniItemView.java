@@ -42,7 +42,7 @@ public class MiniItemView extends LinearLayout implements GestureDetector.OnGest
         initializeViews(context);
     }
 
-    private void initializeViews (Context context) {;
+    private void initializeViews (Context context) {
         mContext = context;
         this.setOrientation( LinearLayout.VERTICAL );
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -129,11 +129,7 @@ public class MiniItemView extends LinearLayout implements GestureDetector.OnGest
 
     @Override
     public boolean onTouchEvent(MotionEvent event ){
-        if( mGest.onTouchEvent( event ) ){
-            return false;
-        } else {
-            return true;
-        }
+        return !mGest.onTouchEvent(event);
     }
 
 }

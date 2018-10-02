@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
+import android.widget.TextView;
+import org.eu.nveo.manonparle.R;
+import org.w3c.dom.Text;
 
 public class ImageUtils {
     public static Uri resImageUri(int resId, Context ctx){
@@ -30,5 +33,15 @@ public class ImageUtils {
         } else {
             return Color.BLACK;
         }
+    }
+
+    public static void setGlowEffect(TextView v, int color ){
+        v.setShadowLayer( 10, 0,0, color);
+        v.setTextColor( color );
+    }
+
+    public static void resetGlowEffect( TextView v, int color ){
+        v.setShadowLayer( 0, 0,0, color);
+        v.setTextColor( color );
     }
 }

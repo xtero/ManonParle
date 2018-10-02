@@ -1,4 +1,4 @@
-package org.eu.nveo.manonparle.db;
+package org.eu.nveo.manonparle.dao;
 
 import android.arch.persistence.room.*;
 import org.eu.nveo.manonparle.model.Item;

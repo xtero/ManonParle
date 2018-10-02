@@ -156,7 +156,10 @@ public class DisplaySelection extends BaseActivity {
 
     @Override
     protected void onPause(){
-        mp.release();
+        if( mp != null ){
+            mp.release();
+        }
+        mp = null;
         r.stop();
         r = null;
         super.onPause();
@@ -185,6 +188,9 @@ public class DisplaySelection extends BaseActivity {
                     }
                 }
             };
+        }
+        if( mp == null ){
+            mp = new MediaPlayer();
         }
     }
 }

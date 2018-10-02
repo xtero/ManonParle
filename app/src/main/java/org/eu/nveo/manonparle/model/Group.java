@@ -1,19 +1,16 @@
 package org.eu.nveo.manonparle.model;
 
 import android.arch.persistence.room.*;
-import android.content.ContentResolver;
 import android.util.Log;
 import org.eu.nveo.manonparle.R;
 import android.content.Context;
-import android.content.res.Resources;
 import android.net.Uri;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
+import org.eu.nveo.manonparle.db.ItemDatabase;
+import org.eu.nveo.manonparle.helper.AssetImporter;
 import org.eu.nveo.manonparle.helper.ImageUtils;
-
 import java.io.File;
-
-import static org.eu.nveo.manonparle.model.Item.STORAGE_PATH;
 
 @Entity(indices = {@Index("name")} )
 public class Group {
@@ -93,7 +90,7 @@ public class Group {
 
     public Uri getImageUri( Context ctx ){
         long imgId = getImageItemId();
-        File dir = ctx.getDir( STORAGE_PATH, Context.MODE_PRIVATE );
+        File dir = AssetImporter.getDataFolder( ctx );
         if( imgId != -1 ) {
             File image = new File(dir, imgId + ".png");
             return Uri.fromFile( image );
@@ -101,5 +98,16 @@ public class Group {
             int resId = R.mipmap.placeholder;
             return ImageUtils.resImageUri( resId, ctx );
         }
+    }
+
+    public boolean isEmpty(){
+        ItemDatabase db = null;
+        try {
+            db = Database.getConnection();
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
+        int nb = db.ritemgroup().countByGroupId( getId() );
+        return nb == 0;
     }
 }

@@ -9,13 +9,17 @@
     <string name="settings_title">Paramétrage de l\'application</string>
     <string name="edit_group_title">Edition du groupe</string>
 
-    <string name="skew_text">Renfort d\'une main</string>
+    <string name="skew_text">Renfort des doigts de la main à</string>
 
     <string name="left">gauche</string>
     <string name="right">droite</string>
     <string name="neutral">neutre</string>
     <string name="select">choisir</string>
     <string name="cancel">annuler</string>
+    <string name="warn">attention</string>
+    <string name="items">éléments</string>
+    <string name="groups">groupes</string>
+    <string name="links">liens</string>
 
     <string name="confirm_color_text">Couleur de la confirmation visuel</string>
     <string name="confirm_color_invite">Taper pour éditer</string>
@@ -26,4 +30,14 @@
     <string name="confirm_speed_text">Vitesse de la confirmation visuelle</string>
     <string name="fast">rapide</string>
     <string name="slow">lent</string>
+
+    <string name="waiting_tts">Initialisation du module de syntèse vocale</string>
+    <string name="tts_offline">Impossible de démarrer le module de syntèse vocale. <br/>Voulez vous quand même importer le package</string>
+    <string name="import_complete">L\'import du package est terminé</string>
+
+    <string name="report_item">Elements importés : %1$d/%2$d</string>
+    <string name="report_group">Groups importés : %1$d/%2$d</string>
+    <string name="report_links">Liens créés : %1$d/%2$d</string>
+
+    <string name="loader_first_run">C\'est la première fois que vous lancez l\'application.<br/>Voulez vous importer le package d\'image de base</string>
 </resources>

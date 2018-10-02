@@ -30,6 +30,7 @@ public class Settings extends BaseActivity {
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
 
+    /*
     private void resetGlowEffect( View v ){
         TextView text = (TextView) v;
         text.setShadowLayer( 0, 0,0, getResources().getColor(R.color.baseOverlay) );
@@ -38,11 +39,12 @@ public class Settings extends BaseActivity {
 
     private void setGlowEffect( View v ){
         TextView text = (TextView) v;
-        int color = getResources().getColor(R.color.inputTextClick) ;
+        int color = getResources().getColor(R.color.glowSetting) ;
         text.setShadowLayer( 10, 0,0, color);
         text.setTextColor( color );
 
     }
+    */
 
     private void setSkewEdit( boolean enabled ){
         skew.setEnabled( enabled );
@@ -56,10 +58,10 @@ public class Settings extends BaseActivity {
     private View.OnClickListener skew_side_select = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            resetGlowEffect( skew_left );
-            resetGlowEffect( skew_neutral );
-            resetGlowEffect( skew_right );
-            setGlowEffect( v );
+            resetGlowEffect( skew_left, getResources().getColor(R.color.colorBaseText));
+            resetGlowEffect( skew_neutral, getResources().getColor(R.color.colorBaseText) );
+            resetGlowEffect( skew_right, getResources().getColor(R.color.colorBaseText) );
+            setGlowEffect( (TextView) v, getResources().getColor(R.color.glowSetting));
             int skew_side = Integer.parseInt( v.getContentDescription().toString() );
             editor.putInt( "skew_side", skew_side );
             editor.commit();
@@ -87,15 +89,15 @@ public class Settings extends BaseActivity {
 
         switch ( skew_side ){
             case -1:
-                setGlowEffect( skew_left );
+                setGlowEffect( skew_left, getResources().getColor(R.color.glowSetting) );
                 setSkewEdit( true );
                 break;
             case 0:
-                setGlowEffect( skew_neutral );
+                setGlowEffect( skew_neutral, getResources().getColor(R.color.glowSetting) );
                 setSkewEdit( false );
                 break;
             case 1:
-                setGlowEffect( skew_right );
+                setGlowEffect( skew_right, getResources().getColor(R.color.glowSetting) );
                 setSkewEdit( true );
                 break;
         }
