@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <external-path
+        name="tmp_image"
+        path="Android/data/org.eu.nveo.manonparle/files/Pictures"/>
+</paths>

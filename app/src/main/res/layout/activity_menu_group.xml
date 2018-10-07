@@ -14,28 +14,34 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/menu_group_title"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:textSize="16dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="15"
+                android:textSize="20sp"
                 android:textColor="@color/colorBaseText"
                 android:text="@string/menu_group_title"
                 android:gravity="center"
                 tools:layout_editor_absoluteY="727dp" />
 
             <ImageView
+                android:id="@+id/new_item"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_camera_alt" />
+
+            <ImageView
                 android:id="@+id/settings"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="10dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/settings"
+                app:srcCompat="@drawable/ic_settings"
                 tools:layout_editor_absoluteY="727dp" />
         </LinearLayout>
 

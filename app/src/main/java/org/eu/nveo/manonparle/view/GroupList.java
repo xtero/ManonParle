@@ -70,7 +70,7 @@ public class GroupList extends LinearLayout {
         mLabel.setTextSize(24);
         mLabel.setTextColor(Color.WHITE );
 
-        int resId = R.drawable.edit;
+        int resId = R.drawable.ic_edit;
         mTool.setImageURI( ImageUtils.resImageUri(resId, ctx) );
         mTool.setOnClickListener(new OnClickListener() {
             @Override

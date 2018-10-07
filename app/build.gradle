@@ -63,6 +63,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation "android.arch.persistence.room:testing:$roomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"
+    implementation 'com.android.support:gridlayout-v7:27.1.1'
 }
 
 project.afterEvaluate {
@@ -70,10 +71,10 @@ project.afterEvaluate {
 }
 
 
-task generateZipAsset(type:Zip) {
+task generateZipAsset(type: Zip) {
     from "res/"
     include "definition.json"
     include "medias/*"
     archiveName "base.zip"
-    destinationDir( file( "src/main/assets" ) )
+    destinationDir(file("src/main/assets"))
 }

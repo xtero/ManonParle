@@ -13,6 +13,7 @@
     <color name="glowInvalid">#CF3D3D</color>
 
     <color name="colorBaseText">#ffffff</color>
+    <color name="colorDisabledText">#888888</color>
     <color name="baseRevOverlay">#ffffff</color>
     <color name="baseOverlay">#000000</color>
     <color name="basePlaceholder">#3090AA</color>

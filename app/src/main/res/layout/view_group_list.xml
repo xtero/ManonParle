@@ -30,6 +30,6 @@
         android:layout_marginEnd="10dp"
         android:layout_height="match_parent"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/edit"
+        app:srcCompat="@drawable/ic_edit"
         />
 </merge>

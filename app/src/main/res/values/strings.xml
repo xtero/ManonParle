@@ -32,12 +32,16 @@
     <string name="slow">lent</string>
 
     <string name="waiting_tts">Initialisation du module de syntèse vocale</string>
-    <string name="tts_offline">Impossible de démarrer le module de syntèse vocale. <br/>Voulez vous quand même importer le package</string>
+    <string name="tts_offline">Impossible de démarrer le module de syntèse vocale. <br />Voulez vous quand même importer le package</string>
     <string name="import_complete">L\'import du package est terminé</string>
 
     <string name="report_item">Elements importés : %1$d/%2$d</string>
     <string name="report_group">Groups importés : %1$d/%2$d</string>
     <string name="report_links">Liens créés : %1$d/%2$d</string>
 
-    <string name="loader_first_run">C\'est la première fois que vous lancez l\'application.<br/>Voulez vous importer le package d\'image de base</string>
+    <string name="loader_first_run">C\'est la première fois que vous lancez l\'application.<br />Voulez vous importer le package d\'image de base</string>
+
+    <string name="edit_item_name">Nom de la fiche</string>
+    <string name="edit_item_synth">Utiliser la synthèse vocal</string>
+    <string name="edit_item_rec">Enregistrer</string>
 </resources>

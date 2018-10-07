@@ -1,10 +1,13 @@
 package org.eu.nveo.manonparle;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static org.eu.nveo.manonparle.helper.ImageUtils.setGlowEffect;
 import static org.eu.nveo.manonparle.helper.Preferences.GLOBAL_PREFS;
@@ -27,6 +31,8 @@ public class Loader extends BaseActivity {
     private static String tag = "Loader";
 
     private Handler deffered = new Handler();
+
+    private static final int PERM = 1 ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,9 @@ public class Loader extends BaseActivity {
         SharedPreferences prefs = getApplicationContext().getSharedPreferences( GLOBAL_PREFS, MODE_PRIVATE);
 
         if( prefs.getBoolean("first_run", true) ){
+
+            checkPerm();
+
             View import_popup = getLayoutInflater().inflate(R.layout.popup_load_import, null );
             PopupWindow popup = new PopupWindow( import_popup, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT );
 
@@ -90,6 +99,23 @@ public class Loader extends BaseActivity {
             startActivity( next );
         }
 
+    }
+
+    private void checkPerm() {
+        ArrayList<String> permissions = new ArrayList<>();
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ){
+            permissions.add(  Manifest.permission.WRITE_EXTERNAL_STORAGE );
+        }
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ){
+            permissions.add( Manifest.permission.CAMERA );
+        }
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED ){
+            permissions.add( Manifest.permission.RECORD_AUDIO );
+        }
+        if( permissions.size() > 0) {
+            String[] array = permissions.toArray( new String[permissions.size()] );
+            ActivityCompat.requestPermissions(this, array, PERM);
+        }
     }
 
 }

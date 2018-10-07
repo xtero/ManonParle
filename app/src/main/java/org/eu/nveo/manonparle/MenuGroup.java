@@ -1,7 +1,10 @@
 package org.eu.nveo.manonparle;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,7 +15,6 @@ import org.eu.nveo.manonparle.adapter.GroupAdapter;
 public class MenuGroup extends BaseActivity {
 
     private String tag = "MenuGroup";
-    private ImageView settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +24,8 @@ public class MenuGroup extends BaseActivity {
 
         ListView list = findViewById( R.id.groups );
         list.setAdapter(new GroupAdapter( getApplicationContext() ) );
-        settings = findViewById(R.id.settings);
+
+        ImageView settings = findViewById(R.id.settings);
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -31,6 +34,20 @@ public class MenuGroup extends BaseActivity {
                 startActivity( i );
             }
         });
+
+        ImageView newItem = findViewById( R.id.new_item);
+        if( ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ) {
+            newItem.setVisibility( View.INVISIBLE );
+        } else {
+            newItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent( MenuGroup.this, NewItemShot.class );
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity( i );
+                }
+            });
+        }
     }
 
 }
