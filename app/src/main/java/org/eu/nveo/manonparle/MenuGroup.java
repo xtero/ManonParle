@@ -22,9 +22,6 @@ public class MenuGroup extends BaseActivity {
         Log.v(tag, "Creating activity MenuGroup");
         setContentView(R.layout.activity_menu_group);
 
-        ListView list = findViewById( R.id.groups );
-        list.setAdapter(new GroupAdapter( getApplicationContext() ) );
-
         ImageView settings = findViewById(R.id.settings);
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,5 +46,16 @@ public class MenuGroup extends BaseActivity {
             });
         }
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        ListView list = findViewById( R.id.groups );
+        list.setAdapter(new GroupAdapter( getApplicationContext() ) );
+
+    }
+
 
 }

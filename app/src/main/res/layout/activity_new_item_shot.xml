@@ -24,61 +24,70 @@
             <ImageView
                 android:id="@+id/imageView4"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="0dp"
                 android:layout_marginTop="10dp"
+                android:layout_weight="2"
                 android:src="@mipmap/placeholder" />
-
-            <TextView
-                android:id="@+id/itemLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/edit_item_name"
-                android:textColor="@color/colorBaseText"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/editText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_search_round"
-                android:ems="10"
-                android:inputType="textPersonName" />
-
-            <Switch
-                android:id="@+id/edit_item_synth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/edit_item_synth"
-                android:textColor="@color/colorBaseText"
-                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/edit_item_record"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/edit_item_rec"
-                    android:textColor="@color/colorDisabledText"
+                    android:id="@+id/edit_item_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/edit_item_name"
+                    android:textColor="@color/colorBaseText"
                     android:textSize="16sp" />
 
-                <ImageView
-                    android:id="@+id/edit_item_rec_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="26dp"
-                    app:srcCompat="@drawable/ic_record_disabled" />
+                <EditText
+                    android:id="@+id/edit_item_label_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_search_round"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="textPersonName" />
 
-                <ImageView
-                    android:id="@+id/edit_item_play_btn"
+                <Switch
+                    android:id="@+id/edit_item_synth"
                     android:layout_width="wrap_content"
-                    android:layout_height="26dp"
-                    app:srcCompat="@drawable/ic_play_disabled" />
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:textColor="@color/colorBaseText"
+                    android:textOff="@string/edit_item_rec"
+                    android:textOn="@string/edit_item_synth"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/edit_item_rec_btn"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@drawable/ic_record_disabled" />
+
+                    <ImageView
+                        android:id="@+id/edit_item_play_btn"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@drawable/ic_play_disabled" />
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
@@ -90,17 +99,18 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/select_group_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="@color/colorBaseText" />
+                android:text="@string/edit_item_select_group"
+                android:textColor="@color/colorBaseText"
+                android:textSize="20sp" />
 
-            <android.support.v7.widget.GridLayout
+            <GridView
+                android:id="@+id/edit_item_group_select"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent" />
 
-            </android.support.v7.widget.GridLayout>
         </LinearLayout>
 
     </LinearLayout>

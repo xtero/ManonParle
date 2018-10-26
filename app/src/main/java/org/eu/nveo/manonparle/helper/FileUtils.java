@@ -44,4 +44,10 @@ public class FileUtils {
             file.delete();
         }
     }
+
+    public static String findExt( String name ){
+        Log.v( tag, name );
+        String[] tokens = name.split("\\.");
+        return tokens[ tokens.length - 1 ];
+    }
 }

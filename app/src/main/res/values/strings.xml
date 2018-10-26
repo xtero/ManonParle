@@ -39,9 +39,15 @@
     <string name="report_group">Groups importés : %1$d/%2$d</string>
     <string name="report_links">Liens créés : %1$d/%2$d</string>
 
+    <string name="report_live_item">Elements importés</string>
+    <string name="report_live_group">Groups importés</string>
+    <string name="report_live_links">Liens créés</string>
+
     <string name="loader_first_run">C\'est la première fois que vous lancez l\'application.<br />Voulez vous importer le package d\'image de base</string>
 
     <string name="edit_item_name">Nom de la fiche</string>
-    <string name="edit_item_synth">Utiliser la synthèse vocal</string>
-    <string name="edit_item_rec">Enregistrer</string>
+    <string name="edit_item_synth">Synthèse vocal</string>
+    <string name="edit_item_rec">Enregistrement vocal</string>
+    <string name="edit_item_select_group">Sélection des groupes de la fiche</string>
+    <string name="edit_item_not_complete">Le formulaire n\'est pas complet</string>
 </resources>

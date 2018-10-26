@@ -2,9 +2,9 @@ package org.eu.nveo.manonparle.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -67,8 +67,8 @@ public class GroupList extends LinearLayout {
 
         String label = g.getName() + " ( "+g.getNbItem()+" images )" ;
         mLabel.setText( label );
-        mLabel.setTextSize(24);
-        mLabel.setTextColor(Color.WHITE );
+        mLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+        mLabel.setTextColor( getResources().getColor(R.color.colorBaseText) );
 
         int resId = R.drawable.ic_edit;
         mTool.setImageURI( ImageUtils.resImageUri(resId, ctx) );

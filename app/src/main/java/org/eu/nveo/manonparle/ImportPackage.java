@@ -1,19 +1,17 @@
 package org.eu.nveo.manonparle;
 
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import org.eu.nveo.manonparle.Activity.BaseActivity;
 import org.eu.nveo.manonparle.db.Database;
@@ -139,6 +137,17 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
     };
 
     private void updateDisplay() {
+        ProgressBar item = findViewById(R.id.progress_items);
+        item.setMax(def.countItem() );
+        item.setProgress(itemImported);
+
+        ProgressBar group = findViewById(R.id.progress_groups);
+        group.setMax(def.countGroup() );
+        group.setProgress(groupImported);
+
+        ProgressBar link = findViewById(R.id.progress_links);
+        link.setMax(def.countRItemGroup() );
+        link.setProgress(linksImported);
     }
 
     private UtteranceProgressListener ttsProgress = new UtteranceProgressListener() {
@@ -274,7 +283,9 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
         String name = item.getString("label");
         Log.v( tag, "Creating item "+name);
         String imageName = item.getString( "image" );
+        String imageExt = FileUtils.findExt( imageName );
         String audioName = item.getString( "audio" );
+        String audioExt = FileUtils.findExt( audioName );
 
         // if TTS is disabled, and the item doesn't have a sound, skipped it
         if( audioName == null && ! ttsEnabled ) {
@@ -284,14 +295,21 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
         Item el = new Item();
         el.setName( name );
         el.setHasSound(  true );
-        el.setSoundSynth( audioName == null );
+        el.setSoundSynth( audioName == "null" );
+        el.setImageExt( imageExt );
+        if( el.getSoundSynth() ) {
+            el.setAudioExt( "wav" );
+        } else {
+            el.setAudioExt(audioExt);
+        }
+
         long id = db.item().insert( el );
 
         // import image
         try {
             FileInputStream image = new FileInputStream( new File( tmpFolder ,  "medias/" + imageName ) );
             Log.v(tag, "Copy image");
-            FileOutputStream fos = new FileOutputStream( new File( dataFolder , Long.toString(id)+".png" ) );
+            FileOutputStream fos = new FileOutputStream( new File( dataFolder , Long.toString(id)+"." + imageExt ) );
             FileUtils.copyFile( image, fos );
             image.close();
             fos.close();
@@ -300,11 +318,11 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
         }
 
         // import audio - synthesized if not provided
-        if( audioName != "null" ) {
+        if( ! el.getSoundSynth() ) {
             try {
                 FileInputStream audio = new FileInputStream( new File( tmpFolder,  "medias/" + audioName ) );
                 Log.v(tag, "Copy audio");
-                FileOutputStream fos = new FileOutputStream( new File( dataFolder , Long.toString(id)+".mp3" ) );
+                FileOutputStream fos = new FileOutputStream( new File( dataFolder , Long.toString(id)+"."+ audioExt ) );
                 FileUtils.copyFile( audio, fos );
                 audio.close();
                 fos.close();
@@ -315,7 +333,7 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
             String uid = UUID.randomUUID().toString();
             Log.v(tag, "Synthesized audio "+name+ " with uid " + uid);
             uidHash.put(uid, id);
-            tts.synthesizeToFile( name.subSequence( 0, name.length() ), null, new File( dataFolder,Long.toString(id)+".mp3" ), uid  );
+            tts.synthesizeToFile( name.subSequence( 0, name.length() ), null, new File( dataFolder,Long.toString(id)+".wav" ), uid  );
         }
 
         itemImported++;

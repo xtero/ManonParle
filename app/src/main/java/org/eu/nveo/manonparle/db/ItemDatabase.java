@@ -16,7 +16,7 @@ import org.eu.nveo.manonparle.model.Package;
                 PackageGroup.class,
                 PackageRItemGroup.class
         },
-        version = 4,
+        version = 5,
         exportSchema = true
 )
 public abstract class ItemDatabase extends RoomDatabase {

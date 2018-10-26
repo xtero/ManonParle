@@ -11,75 +11,102 @@
         android:id="@+id/import_progress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:visibility="gone">
 
-        <LinearLayout
-            android:id="@+id/items"
-            android:layout_width="match_parent"
+        <Space
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_weight="1" />
 
-            <TextView
-                android:id="@+id/item_imported"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/items"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text=""
-                android:textColor="@color/colorBaseText" />
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <ProgressBar
-                android:id="@+id/progress_items"
-                style="?android:attr/progressBarStyleHorizontal"
+                <TextView
+                    android:id="@+id/item_imported"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="@string/report_live_item"
+                    android:textColor="@color/colorBaseText"
+                    android:textSize="20sp" />
+
+                <ProgressBar
+                    android:id="@+id/progress_items"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/groups"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/group_imported"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="@string/report_live_group"
+                    android:textColor="@color/colorBaseText"
+                    android:textSize="20sp" />
+
+                <ProgressBar
+                    android:id="@+id/progress_groups"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/links_imported"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="@string/report_live_links"
+                    android:textColor="@color/colorBaseText"
+                    android:textSize="20sp" />
+
+                <ProgressBar
+                    android:id="@+id/progress_links"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/groups"
-            android:layout_width="match_parent"
+        <Space
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/group_imported"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text=""
-                android:textColor="@color/colorBaseText" />
-
-            <ProgressBar
-                android:id="@+id/progress_groups"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/links_imported"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text=""
-                android:textColor="@color/colorBaseText" />
-
-            <ProgressBar
-                android:id="@+id/progress_links"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-        </LinearLayout>
-
+            android:layout_weight="1" />
     </LinearLayout>
 
     <LinearLayout

@@ -20,6 +20,8 @@ public class Item {
     private String name;
     private Boolean hasSound;
     private Boolean soundSynth;
+    private String audioExt;
+    private String imageExt;
 
     public Item( long id, String name, Boolean hasSound ){
         this.id = id;
@@ -62,10 +64,27 @@ public class Item {
         this.soundSynth = soundSynth;
     }
 
+    public String getAudioExt() {
+        return audioExt;
+    }
+
+    public void setAudioExt(String audioExt) {
+        this.audioExt = audioExt;
+    }
+
+    public String getImageExt() {
+        return imageExt;
+    }
+
+    public void setImageExt(String imageExt) {
+        this.imageExt = imageExt;
+    }
+
+
 
     public Uri getImageUri( Context ctx ){
         File dir = AssetImporter.getDataFolder( ctx );
-        File image = new File( dir, id+".png");
+        File image = new File( dir, id+"." + imageExt);
         return Uri.fromFile( image );
     }
 
@@ -74,7 +93,7 @@ public class Item {
             return null;
         }
         File dir = AssetImporter.getDataFolder( ctx );
-        File image = new File( dir, id+".mp3");
+        File image = new File( dir, id+"." + audioExt );
         return Uri.fromFile( image );
     }
 
