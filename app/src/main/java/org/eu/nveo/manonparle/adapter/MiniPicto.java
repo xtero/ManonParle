@@ -6,22 +6,22 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import org.eu.nveo.manonparle.view.MiniItemView;
+import org.eu.nveo.manonparle.model.Picto;
+import org.eu.nveo.manonparle.view.MiniPictoView;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
-import org.eu.nveo.manonparle.model.Item;
 
-public class MiniItem extends BaseAdapter implements Filterable  {
+public class MiniPicto extends BaseAdapter implements Filterable  {
     private Context mContext;
     private long mGroupId;
-    private Item[] items;
+    private Picto[] pictos;
     private int basedPadding = 2;
 
-    public MiniItem ( Context ctx, long groupId ){
+    public MiniPicto(Context ctx, long groupId ){
         mContext = ctx;
         mGroupId = groupId;
         try {
-            items = Database.getConnection().item().byGroupId( mGroupId );
+            pictos = Database.getConnection().picto().byGroupId( mGroupId );
         } catch (DatabaseException e) {
             e.printStackTrace();
         }
@@ -30,17 +30,17 @@ public class MiniItem extends BaseAdapter implements Filterable  {
 
     @Override
     public int getCount() {
-        return items.length ;
+        return pictos.length ;
     }
 
     @Override
     public Object getItem(int position) {
-        return items[ position % items.length ];
+        return pictos[ position % pictos.length ];
     }
 
     @Override
     public long getItemId(int position) {
-        return items[ position % items.length ].getId();
+        return pictos[ position % pictos.length ].getId();
     }
 
     @Override
@@ -48,9 +48,9 @@ public class MiniItem extends BaseAdapter implements Filterable  {
 
         GridView grid = (GridView) parent;
 
-        MiniItemView img = new MiniItemView(mContext);
-        Item item = items[position % items.length];
-        img.setItem(item);
+        MiniPictoView img = new MiniPictoView(mContext);
+        Picto picto = pictos[position % pictos.length];
+        img.setPicto(picto);
         img.setScaleType(ImageView.ScaleType.FIT_CENTER);
         img.setTextColor(Color.WHITE);
 
@@ -68,9 +68,9 @@ public class MiniItem extends BaseAdapter implements Filterable  {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults r = new FilterResults();
-                Item[] i = new Item[0];
+                Picto[] i = new Picto[0];
                 try {
-                    i = Database.getConnection().item().byGroupIdLike( mGroupId, constraint.toString() );
+                    i = Database.getConnection().picto().byGroupIdLike( mGroupId, constraint.toString() );
                 } catch (DatabaseException e) {
                     e.printStackTrace();
                 }
@@ -81,7 +81,7 @@ public class MiniItem extends BaseAdapter implements Filterable  {
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results){
-                items = (Item[]) results.values;
+                pictos = (Picto[]) results.values;
             }
         };
     }

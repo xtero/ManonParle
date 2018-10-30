@@ -32,14 +32,14 @@ public class MenuGroup extends BaseActivity {
             }
         });
 
-        ImageView newItem = findViewById( R.id.new_item);
+        ImageView newPicto = findViewById( R.id.new_picto);
         if( ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ) {
-            newItem.setVisibility( View.INVISIBLE );
+            newPicto.setVisibility( View.INVISIBLE );
         } else {
-            newItem.setOnClickListener(new View.OnClickListener() {
+            newPicto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent( MenuGroup.this, NewItemShot.class );
+                    Intent i = new Intent( MenuGroup.this, PictoForm.class );
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity( i );
                 }

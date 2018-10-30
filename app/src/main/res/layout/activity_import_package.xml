@@ -27,24 +27,24 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/items"
+                android:id="@+id/pictos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/item_imported"
+                    android:id="@+id/picto_imported"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="@string/report_live_item"
+                    android:text="@string/report_live_picto"
                     android:textColor="@color/colorBaseText"
                     android:textSize="20sp" />
 
                 <ProgressBar
-                    android:id="@+id/progress_items"
+                    android:id="@+id/progress_pictos"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

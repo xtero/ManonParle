@@ -15,11 +15,11 @@
         android:textColor="@color/colorBaseText" />
 
     <TextView
-        android:id="@+id/imported_item"
+        android:id="@+id/imported_picto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/items"
+        android:text="@string/pictos"
         android:textSize="20sp"
         android:textColor="@color/colorBaseText" />
 

@@ -16,7 +16,7 @@ import android.widget.TextView;
 import org.eu.nveo.manonparle.Activity.BaseActivity;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
-import org.eu.nveo.manonparle.db.ItemDatabase;
+import org.eu.nveo.manonparle.db.ManonDatabase;
 import org.eu.nveo.manonparle.helper.AssetImporter;
 import org.eu.nveo.manonparle.helper.Definition;
 import org.eu.nveo.manonparle.helper.FileUtils;
@@ -36,18 +36,18 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
     private boolean importInProgress = false;
     private boolean hasRun = false;
     private boolean ttsEnabled = false;
-    private int itemImported = 0;
+    private int pictoImported = 0;
     private int groupImported = 0;
     private int linksImported = 0;
     private Definition def;
     private TextToSpeech tts;
     private String tag = "ImportPackage";
-    private ItemDatabase db;
+    private ManonDatabase db;
     private File dataFolder;
     private File tmpFolder;
-    private HashMap<String,Long> itemHash;
+    private HashMap<String,Long> pictoHash;
     private HashMap<String,Long> groupHash;
-    private HashMap<String,Long> rItemgroupHash;
+    private HashMap<String,Long> rPictogroupHash;
     private HashMap<String,Long> uidHash;
     private List<Long> toDelete;
     private Handler importHandler = new Handler();
@@ -78,10 +78,10 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
         });
         setGlowEffect( ok, getResources().getColor(R.color.glowConfirm));
 
-        TextView items = import_report.findViewById(R.id.imported_item);
-        String itemReport = getResources().getString(R.string.report_item);
-        itemReport = String.format( itemReport, itemImported, def.countItem() );
-        items.setText(itemReport);
+        TextView pictos = import_report.findViewById(R.id.imported_picto);
+        String pictoReport = getResources().getString(R.string.report_picto);
+        pictoReport = String.format( pictoReport, pictoImported, def.countPicto() );
+        pictos.setText(pictoReport);
 
         TextView groups = import_report.findViewById(R.id.imported_group);
         String groupReport = getResources().getString(R.string.report_group);
@@ -90,7 +90,7 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
 
         TextView links = import_report.findViewById(R.id.imported_links);
         String linksReport = getResources().getString(R.string.report_links);
-        linksReport = String.format( linksReport, linksImported, def.countRItemGroup() );
+        linksReport = String.format( linksReport, linksImported, def.countRPictoGroup() );
         links.setText( linksReport );
 
         View root = findViewById(R.id.root);
@@ -121,9 +121,9 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
                 if( hasRun ){
                     if( toDelete.size() > 0 ){
                         for (Long aLong : toDelete) {
-                            Item el = db.item().byId( aLong );
+                            Picto el = db.picto().byId( aLong );
                             int nbLinks = el.countGroupIn();
-                            itemImported--;
+                            pictoImported--;
                             linksImported = linksImported - nbLinks;
                             el.delete();
                         }
@@ -137,16 +137,16 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
     };
 
     private void updateDisplay() {
-        ProgressBar item = findViewById(R.id.progress_items);
-        item.setMax(def.countItem() );
-        item.setProgress(itemImported);
+        ProgressBar picto = findViewById(R.id.progress_pictos);
+        picto.setMax(def.countPicto() );
+        picto.setProgress(pictoImported);
 
         ProgressBar group = findViewById(R.id.progress_groups);
         group.setMax(def.countGroup() );
         group.setProgress(groupImported);
 
         ProgressBar link = findViewById(R.id.progress_links);
-        link.setMax(def.countRItemGroup() );
+        link.setMax(def.countRPictoGroup() );
         link.setProgress(linksImported);
     }
 
@@ -183,9 +183,9 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
 
         dataFolder = AssetImporter.getDataFolder( this );
         tmpFolder = AssetImporter.getTmpFolder( this );
-        itemHash = new HashMap<>();
+        pictoHash = new HashMap<>();
         groupHash = new HashMap<>();
-        rItemgroupHash = new HashMap<>();
+        rPictogroupHash = new HashMap<>();
         uidHash = new HashMap<>();
         toDelete = new ArrayList<>();
 
@@ -247,7 +247,7 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
             completeHandler.postDelayed( checkComplete, 1000 );
         } else {
             ttsEnabled = false;
-            if( def.hasItemWithoutSound() ){
+            if( def.hasPictoWithoutSound() ){
                 View tts_offline = getLayoutInflater().inflate( R.layout.popup_import_confirm_no_tts, null);
                 PopupWindow popup = new PopupWindow( tts_offline, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
                 TextView cancel = tts_offline.findViewById(R.id.cancel);
@@ -279,20 +279,20 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
         }
     }
 
-    private long importItem( JSONObject item ) throws JSONException {
-        String name = item.getString("label");
-        Log.v( tag, "Creating item "+name);
-        String imageName = item.getString( "image" );
+    private long importPicto( JSONObject picto ) throws JSONException {
+        String name = picto.getString("label");
+        Log.v( tag, "Creating picto "+name);
+        String imageName = picto.getString( "image" );
         String imageExt = FileUtils.findExt( imageName );
-        String audioName = item.getString( "audio" );
+        String audioName = picto.getString( "audio" );
         String audioExt = FileUtils.findExt( audioName );
 
-        // if TTS is disabled, and the item doesn't have a sound, skipped it
+        // if TTS is disabled, and the picto doesn't have a sound, skipped it
         if( audioName == null && ! ttsEnabled ) {
             return -1;
         }
 
-        Item el = new Item();
+        Picto el = new Picto();
         el.setName( name );
         el.setHasSound(  true );
         el.setSoundSynth( audioName == "null" );
@@ -303,7 +303,7 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
             el.setAudioExt(audioExt);
         }
 
-        long id = db.item().insert( el );
+        long id = db.picto().insert( el );
 
         // import image
         try {
@@ -336,7 +336,7 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
             tts.synthesizeToFile( name.subSequence( 0, name.length() ), null, new File( dataFolder,Long.toString(id)+".wav" ), uid  );
         }
 
-        itemImported++;
+        pictoImported++;
 
         return id;
     }
@@ -352,21 +352,21 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
         return id;
     }
 
-    private void importRItemGroup(JSONObject link ) throws JSONException {
+    private void importRPictoGroup(JSONObject link ) throws JSONException {
 
         String groupName = link.getString("group" );
         Log.v( tag, "Creating links for group "+groupName);
         long groupId = groupHash.get( groupName );
-        JSONArray items = link.getJSONArray( "items" );
-        for( int i = 0; i< items.length(); i++ ){
-            String itemName = items.getString( i );
-            long itemId = itemHash.get( itemName );
-            RItemGroup el = new RItemGroup();
+        JSONArray pictos = link.getJSONArray( "pictos" );
+        for( int i = 0; i< pictos.length(); i++ ){
+            String pictoName = pictos.getString( i );
+            long pictoId = pictoHash.get( pictoName );
+            RPictoGroup el = new RPictoGroup();
             el.setGroupId( groupId );
-            el.setItemId( itemId );
-            long id = db.ritemgroup().insert( el );
-            String itemGroup = itemId + ":" + groupId;
-            rItemgroupHash.put( itemGroup, id );
+            el.setPictoId( pictoId );
+            long id = db.rpictogroup().insert( el );
+            String pictoGroup = pictoId + ":" + groupId;
+            rPictogroupHash.put( pictoGroup, id );
             linksImported++;
         }
 
@@ -379,15 +379,15 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
         pack.setVersion( def.getVersion() );
         long id = db.pack().insertPackage( pack );
 
-        // create all PackageItem
-        Set<String> items = itemHash.keySet();
-        for (String item : items) {
-            long itemId = itemHash.get( item );
-            PackageItem packItem = new PackageItem();
-            packItem.setItemId( itemId );
-            packItem.setItemName( item );
-            packItem.setPackageId( id );
-            db.packitem().insertPackageItem( packItem );
+        // create all PackagePicto
+        Set<String> pictos = pictoHash.keySet();
+        for (String picto : pictos) {
+            long pictoId = pictoHash.get( picto );
+            PackagePicto packPicto = new PackagePicto();
+            packPicto.setPictoId( pictoId );
+            packPicto.setPictoName( picto );
+            packPicto.setPackageId( id );
+            db.packpicto().insertPackagePicto( packPicto );
         }
         // create all PackageGroup
         Set<String> groups = groupHash.keySet();
@@ -400,19 +400,19 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
             db.packgroup().insertPackageGroup( packGroup );
         }
 
-        // create all PackageRItemGroup
-        Set<String>itemGroups = rItemgroupHash.keySet();
-        for (String itemGroup : itemGroups) {
-            long ritemgroupId = rItemgroupHash.get( itemGroup );
-            String[] split = itemGroup.split(":");
-            long itemId = Long.parseLong( split[0] );
+        // create all PackageRPictoGroup
+        Set<String>pictoGroups = rPictogroupHash.keySet();
+        for (String pictoGroup : pictoGroups) {
+            long rpictogroupId = rPictogroupHash.get( pictoGroup );
+            String[] split = pictoGroup.split(":");
+            long pictoId = Long.parseLong( split[0] );
             long groupId = Long.parseLong( split[1] );
-            PackageRItemGroup packageRItemGroup = new PackageRItemGroup();
-            packageRItemGroup.setRitemgroupId(ritemgroupId);
-            packageRItemGroup.setGroupId(groupId);
-            packageRItemGroup.setItemId(itemId);
-            packageRItemGroup.setPackageId(id);
-            db.packritemgroup().insertPackageRItemGroup( packageRItemGroup );
+            PackageRPictoGroup packageRPictoGroup = new PackageRPictoGroup();
+            packageRPictoGroup.setRpictogroupId(rpictogroupId);
+            packageRPictoGroup.setGroupId(groupId);
+            packageRPictoGroup.setPictoId(pictoId);
+            packageRPictoGroup.setPackageId(id);
+            db.packrpictogroup().insertPackageRPictoGroup(packageRPictoGroup);
         }
 
     }
@@ -423,16 +423,16 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
         Log.v( tag, "Loading definition.json");
         Definition def = new Definition( new FileInputStream( new File( tmpFolder, "definition.json" ) ) );
 
-        // import Items
-        Log.v( tag, "Loading items array");
-        JSONArray items = def.getItems();
-        for( int i = 0 ; i < items.length(); i++ ){
-            JSONObject item = items.getJSONObject( i );
-            long id = importItem( item );
-            // If id == -1, the item, has not been created
+        // import Pictos
+        Log.v( tag, "Loading pictos array");
+        JSONArray pictos = def.getPictos();
+        for( int i = 0 ; i < pictos.length(); i++ ){
+            JSONObject picto = pictos.getJSONObject( i );
+            long id = importPicto( picto );
+            // If id == -1, the picto, has not been created
             if( id != -1 ) {
-                String name = item.getString("label");
-                itemHash.put(name, id);
+                String name = picto.getString("label");
+                pictoHash.put(name, id);
             }
             updateDisplay();
         }
@@ -448,19 +448,19 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
             updateDisplay();
         }
 
-        // create RItemGroups
+        // create RPictoGroups
         Log.v( tag, "Loading links array");
-        JSONArray links = def.getRItemGroups();
+        JSONArray links = def.getRPictoGroups();
         for( int i = 0 ; i < links.length(); i++ ){
             JSONObject el = links.getJSONObject( i );
-            importRItemGroup( el );
+            importRPictoGroup( el );
             updateDisplay();
         }
 
         createPack( def );
 
         // Cleanup to avoid memory useless usage
-        itemHash = null;
+        pictoHash = null;
         groupHash = null;
 
         importInProgress = false;

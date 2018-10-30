@@ -46,40 +46,40 @@ public class Definition {
         return version;
     }
 
-    public int countItem(){
-        return getItems().length();
+    public int countPicto(){
+        return getPictos().length();
     }
 
-    public int countItemWithoutSound(){
-        int itemWithoutSound = 0;
-        JSONArray items = getItems();
-        for( int i = 0; i < items.length(); i++ ){
+    public int countPictoWithoutSound(){
+        int pictoWithoutSound = 0;
+        JSONArray pictos = getPictos();
+        for( int i = 0; i < pictos.length(); i++ ){
             try {
-                JSONObject item = items.getJSONObject( i );
-                String audio = item.getString("audio");
+                JSONObject picto = pictos.getJSONObject( i );
+                String audio = picto.getString("audio");
                 if( audio.equals("null")){
-                    itemWithoutSound++;
+                    pictoWithoutSound++;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        return itemWithoutSound;
+        return pictoWithoutSound;
     }
 
     public int countGroup(){
         return getGroups().length();
     }
 
-    public int countRItemGroup(){
+    public int countRPictoGroup(){
         int count = 0;
-        JSONArray groups = getRItemGroups();
+        JSONArray groups = getRPictoGroups();
         for( int i = 0; i < groups.length(); i++ ){
             JSONObject group = null;
             try {
                 group = groups.getJSONObject( i );
-                JSONArray items = group.getJSONArray("items");
-                count += items.length();
+                JSONArray pictos = group.getJSONArray("pictos");
+                count += pictos.length();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -87,15 +87,15 @@ public class Definition {
         return count;
     }
 
-    public boolean hasItemWithoutSound(){
-        return countItemWithoutSound() > 0;
+    public boolean hasPictoWithoutSound(){
+        return countPictoWithoutSound() > 0;
     }
 
 
-    public JSONArray getItems(){
+    public JSONArray getPictos(){
         JSONArray obj = null;
         try {
-             obj = def.getJSONArray("items");
+             obj = def.getJSONArray("pictos");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -113,7 +113,7 @@ public class Definition {
     }
 
 
-    public JSONArray getRItemGroups() {
+    public JSONArray getRPictoGroups() {
         JSONArray obj = null;
         try {
             obj = def.getJSONArray("links")               ;

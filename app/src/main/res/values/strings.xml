@@ -17,7 +17,7 @@
     <string name="select">choisir</string>
     <string name="cancel">annuler</string>
     <string name="warn">attention</string>
-    <string name="items">éléments</string>
+    <string name="pictos">éléments</string>
     <string name="groups">groupes</string>
     <string name="links">liens</string>
 
@@ -35,19 +35,19 @@
     <string name="tts_offline">Impossible de démarrer le module de syntèse vocale. <br />Voulez vous quand même importer le package</string>
     <string name="import_complete">L\'import du package est terminé</string>
 
-    <string name="report_item">Elements importés : %1$d/%2$d</string>
+    <string name="report_picto">Elements importés : %1$d/%2$d</string>
     <string name="report_group">Groups importés : %1$d/%2$d</string>
     <string name="report_links">Liens créés : %1$d/%2$d</string>
 
-    <string name="report_live_item">Elements importés</string>
+    <string name="report_live_picto">Elements importés</string>
     <string name="report_live_group">Groups importés</string>
     <string name="report_live_links">Liens créés</string>
 
     <string name="loader_first_run">C\'est la première fois que vous lancez l\'application.<br />Voulez vous importer le package d\'image de base</string>
 
-    <string name="edit_item_name">Nom de la fiche</string>
-    <string name="edit_item_synth">Synthèse vocal</string>
-    <string name="edit_item_rec">Enregistrement vocal</string>
-    <string name="edit_item_select_group">Sélection des groupes de la fiche</string>
-    <string name="edit_item_not_complete">Le formulaire n\'est pas complet</string>
+    <string name="edit_picto_name">Nom de la fiche</string>
+    <string name="edit_picto_synth">Synthèse vocal</string>
+    <string name="edit_picto_rec">Enregistrement vocal</string>
+    <string name="edit_picto_select_group">Sélection des groupes de la fiche</string>
+    <string name="picto_form_not_complete">Le formulaire n\'est pas complet</string>
 </resources>

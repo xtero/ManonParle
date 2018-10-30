@@ -25,7 +25,7 @@ public class AssetImporter {
     private static String tag = "AssetImporter";
 
     private static String tmp_path = "tmp";
-    private static String data_path = "item";
+    private static String data_path = "picto";
     private static String pack_path = "pack";
 
 
@@ -47,11 +47,11 @@ public class AssetImporter {
             fis.close();
             fos.close();
             String[] list = ctx.getAssets().list("medias");
-            for (String item : list) {
-                Log.v( tag , "Cloning medias/" + item );
-                fd = ctx.getAssets().openFd( "medias/" + item );
+            for (String picto : list) {
+                Log.v( tag , "Cloning medias/" + picto );
+                fd = ctx.getAssets().openFd( "medias/" + picto );
                 fis = fd.createInputStream();
-                fos = new FileOutputStream( new File( tmpMediaFolder, item ) );
+                fos = new FileOutputStream( new File( tmpMediaFolder, picto ) );
                 FileUtils.copyFile( fis, fos );
                 fis.close();
                 fos.close();

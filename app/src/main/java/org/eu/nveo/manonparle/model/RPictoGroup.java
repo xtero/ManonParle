@@ -8,18 +8,18 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity (
         foreignKeys = {
                 @ForeignKey( entity = Group.class, parentColumns = "id", childColumns = "groupId" ),
-                @ForeignKey( entity = Item.class, parentColumns = "id", childColumns = "itemId" )
+                @ForeignKey( entity = Picto.class, parentColumns = "id", childColumns = "pictoId" )
         },
         indices = {
-                @Index("groupId"),
-            @Index("itemId")
+            @Index("groupId"),
+            @Index("pictoId")
         }
 )
-public class RItemGroup {
+public class RPictoGroup {
     @PrimaryKey(autoGenerate = true)
     private long id;
     private long groupId;
-    private long itemId;
+    private long pictoId;
 
     public long getId() {
         return id;
@@ -37,12 +37,12 @@ public class RItemGroup {
         this.groupId = groupId;
     }
 
-    public long getItemId() {
-        return itemId;
+    public long getPictoId() {
+        return pictoId;
     }
 
-    public void setItemId(long itemId) {
-        this.itemId = itemId;
+    public void setPictoId(long pictoId) {
+        this.pictoId = pictoId;
     }
 
 }

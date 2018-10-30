@@ -6,21 +6,21 @@ import android.arch.persistence.room.PrimaryKey;
 
 @Entity(
         indices = {
-                @Index("ritemgroupId"),
-                @Index("itemId"),
+                @Index("rpictogroupId"),
+                @Index("pictoId"),
                 @Index("groupId"),
                 @Index("packageId")
         }
 )
-public class PackageRItemGroup {
+public class PackageRPictoGroup {
     @PrimaryKey(autoGenerate = true)
     private long id;
     private long packageId;
-    private long ritemgroupId;
-    private long itemId;
+    private long rpictogroupId;
+    private long pictoId;
     private long groupId;
 
-    public PackageRItemGroup(){
+    public PackageRPictoGroup(){
 
     }
 
@@ -40,20 +40,20 @@ public class PackageRItemGroup {
         this.packageId = packageId;
     }
 
-    public long getRitemgroupId() {
-        return ritemgroupId;
+    public long getRpictogroupId() {
+        return rpictogroupId;
     }
 
-    public void setRitemgroupId(long ritemgroupId) {
-        this.ritemgroupId = ritemgroupId;
+    public void setRpictogroupId(long rpictogroupId) {
+        this.rpictogroupId = rpictogroupId;
     }
 
-    public long getItemId() {
-        return itemId;
+    public long getPictoId() {
+        return pictoId;
     }
 
-    public void setItemId(long itemId) {
-        this.itemId = itemId;
+    public void setPictoId(long pictoId) {
+        this.pictoId = pictoId;
     }
 
     public long getGroupId() {

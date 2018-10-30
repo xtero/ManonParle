@@ -12,32 +12,32 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import org.eu.nveo.manonparle.R;
-import org.eu.nveo.manonparle.model.Item;
+import org.eu.nveo.manonparle.model.Picto;
 
-public class MiniItemView extends LinearLayout implements GestureDetector.OnGestureListener {
+public class MiniPictoView extends LinearLayout implements GestureDetector.OnGestureListener {
 
-    private String tag = "MiniItemView";
+    private String tag = "MiniPictoView";
 
     private ImageView mImage;
     private LinearLayout mLayout;
     private TextView mLabel;
-    private Item mItem;
+    private Picto mPicto;
     private Context mContext;
     private GestureDetectorCompat mGest;
 
     private static Handler handler = new Handler();
 
-    public MiniItemView(Context context) {
+    public MiniPictoView(Context context) {
         super(context);
         initializeViews(context);
     }
 
-    public MiniItemView(Context context, @Nullable AttributeSet attrs) {
+    public MiniPictoView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         initializeViews(context);
     }
 
-    public MiniItemView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public MiniPictoView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initializeViews(context);
     }
@@ -46,29 +46,29 @@ public class MiniItemView extends LinearLayout implements GestureDetector.OnGest
         mContext = context;
         this.setOrientation( LinearLayout.VERTICAL );
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.view_miniitem, this);
+        inflater.inflate(R.layout.view_minipicto, this);
         mGest = new GestureDetectorCompat( mContext, this, handler );
     }
 
-    public long getItemId(){
-        return mItem.getId();
+    public long getPictoId(){
+        return mPicto.getId();
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mImage = this.findViewById( R.id.miniitem_image );
-        mLabel = this.findViewById( R.id.miniitem_text );
+        mImage = this.findViewById( R.id.minipicto_image);
+        mLabel = this.findViewById( R.id.minipicto_text);
     }
 
-    public void setItem( Item item ){
-        mItem = item;
+    public void setPicto(Picto picto){
+        mPicto = picto;
 
-        mImage = this.findViewById( R.id.miniitem_image );
-        mImage.setImageURI( mItem.getImageUri( mContext ) );
+        mImage = this.findViewById( R.id.minipicto_image);
+        mImage.setImageURI( mPicto.getImageUri( mContext ) );
 
-        mLabel = this.findViewById( R.id.miniitem_text );
-        mLabel.setText( mItem.getName() );
+        mLabel = this.findViewById( R.id.minipicto_text);
+        mLabel.setText( mPicto.getName() );
         mLabel.setGravity(Gravity.CENTER);
     }
 
@@ -80,11 +80,11 @@ public class MiniItemView extends LinearLayout implements GestureDetector.OnGest
     }
 
     public void setScaleType( ImageView.ScaleType scaleType ){
-        mImage = this.findViewById( R.id.miniitem_image );
+        mImage = this.findViewById( R.id.minipicto_image);
         mImage.setScaleType( scaleType );
     }
     public void setTextColor( int textColor ) {
-        mLabel = this.findViewById(R.id.miniitem_text);
+        mLabel = this.findViewById(R.id.minipicto_text);
         mLabel.setTextColor( textColor );
     }
 
@@ -110,13 +110,13 @@ public class MiniItemView extends LinearLayout implements GestureDetector.OnGest
 
     @Override
     public void onLongPress(MotionEvent e) {
-        String uri = mItem.getImageUri( mContext ).toString();
+        String uri = mPicto.getImageUri( mContext ).toString();
         ClipData.Item curi =  new ClipData.Item( uri.subSequence(0, uri.length() ) );
-        ClipData.Item cid = new ClipData.Item( Long.toString( mItem.getId()) );
+        ClipData.Item cid = new ClipData.Item( Long.toString( mPicto.getId()) );
         String[] mimes = new String[2];
         mimes[0] = "text/plain";
         mimes[1] = "text/plain";
-        ClipDescription desc = new ClipDescription("itemUri", mimes );
+        ClipDescription desc = new ClipDescription("pictoUri", mimes );
         ClipData data = new ClipData( desc , curi );
         data.addItem( cid );
         this.startDrag( data, new DragShadowBuilder(this), this, 0 );

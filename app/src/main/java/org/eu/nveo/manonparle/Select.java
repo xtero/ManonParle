@@ -9,7 +9,7 @@ import android.view.DragEvent;
 import android.view.View;
 import android.widget.*;
 import org.eu.nveo.manonparle.Activity.BaseActivity;
-import org.eu.nveo.manonparle.adapter.MiniItem;
+import org.eu.nveo.manonparle.adapter.MiniPicto;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
 import org.eu.nveo.manonparle.model.Group;
@@ -19,7 +19,7 @@ public class Select extends BaseActivity {
     private ImageView left;
     private ImageView right;
     private GridView grid;
-    private MiniItem miniItem;
+    private MiniPicto miniPicto;
     private String searchStr;
     private SearchView search;
 
@@ -49,11 +49,11 @@ public class Select extends BaseActivity {
         @Override
         public void run() {
 
-            Filter phil = miniItem.getFilter();
+            Filter phil = miniPicto.getFilter();
             phil.filter(searchStr, new Filter.FilterListener() {
                 @Override
                 public void onFilterComplete(int count) {
-                    miniItem.notifyDataSetChanged();
+                    miniPicto.notifyDataSetChanged();
                 }
             });
         }
@@ -74,11 +74,11 @@ public class Select extends BaseActivity {
             e.printStackTrace();
         }
 
-        grid = findViewById( R.id.itemList );
+        grid = findViewById( R.id.picto_list);
         grid.setNumColumns( 2 );
 
-        miniItem = new MiniItem( getBaseContext(), group.getId() );
-        grid.setAdapter( miniItem );
+        miniPicto = new MiniPicto( getBaseContext(), group.getId() );
+        grid.setAdapter(miniPicto);
 
         left = findViewById( R.id.imageView);
         right = findViewById( R.id.imageView2);
@@ -108,7 +108,7 @@ public class Select extends BaseActivity {
             }
         });
 
-        search = findViewById( R.id.searchitems );
+        search = findViewById( R.id.search_pictos);
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

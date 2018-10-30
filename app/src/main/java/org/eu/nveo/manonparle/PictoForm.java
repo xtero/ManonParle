@@ -19,26 +19,26 @@ import org.eu.nveo.manonparle.Activity.BaseActivity;
 import org.eu.nveo.manonparle.adapter.GroupGridAdapter;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
-import org.eu.nveo.manonparle.db.ItemDatabase;
+import org.eu.nveo.manonparle.db.ManonDatabase;
 import org.eu.nveo.manonparle.helper.AssetImporter;
 import org.eu.nveo.manonparle.helper.FileUtils;
 import org.eu.nveo.manonparle.model.Group;
-import org.eu.nveo.manonparle.model.Item;
-import org.eu.nveo.manonparle.model.RItemGroup;
+import org.eu.nveo.manonparle.model.Picto;
+import org.eu.nveo.manonparle.model.RPictoGroup;
 
 import java.io.*;
 import java.util.Locale;
 import java.util.UUID;
 
-public class NewItemShot extends BaseActivity implements TextToSpeech.OnInitListener {
+public class PictoForm extends BaseActivity implements TextToSpeech.OnInitListener {
 
-    private String tag = "NewItemShot";
+    private String tag = "PictoForm";
 
-    public final int ITEM_COMPLETE = 0;
-    public final int ITEM_NOT_NAMED = 1;
-    public final int ITEM_NO_GROUP = 2;
-    public final int ITEM_NO_SOUND = 3;
-    public final int ITEM_NO_IMAGE = 4;
+    public final int PICTO_COMPLETE = 0;
+    public final int PICTO_NOT_NAMED = 1;
+    public final int PICTO_NO_GROUP = 2;
+    public final int PICTO_NO_SOUND = 3;
+    public final int PICTO_NO_IMAGE = 4;
 
 
     private final int TAKE_A_SHOT = 1;
@@ -46,7 +46,7 @@ public class NewItemShot extends BaseActivity implements TextToSpeech.OnInitList
 
     private Uri photoUri;
     private File photoFile;
-    private MediaRecorder itemRec;
+    private MediaRecorder recorder;
     private ImageView recBtn;
     private ImageView recPlay;
     private File output;
@@ -89,7 +89,7 @@ public class NewItemShot extends BaseActivity implements TextToSpeech.OnInitList
         @Override
         public void onClick(View v) {
             if( output.exists() ){
-                MediaPlayer mp = MediaPlayer.create( NewItemShot.this, Uri.fromFile( output ) );
+                MediaPlayer mp = MediaPlayer.create( PictoForm.this, Uri.fromFile( output ) );
                 mp.start();
                 recPlay.setImageResource( R.drawable.ic_playing );
                 mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -133,9 +133,9 @@ public class NewItemShot extends BaseActivity implements TextToSpeech.OnInitList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_item_shot);
+        setContentView(R.layout.activity_picto_form);
 
-        label = findViewById( R.id.edit_item_label_input );
+        label = findViewById( R.id.picto_form_label_input);
         label.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -156,14 +156,14 @@ public class NewItemShot extends BaseActivity implements TextToSpeech.OnInitList
             }
         });
 
-        recBtn = findViewById( R.id.edit_item_rec_btn );
-        recPlay = findViewById( R.id.edit_item_play_btn );
+        recBtn = findViewById( R.id.picto_form_rec_btn);
+        recPlay = findViewById( R.id.picto_form_play_btn);
 
-        synth = findViewById(R.id.edit_item_synth);
+        synth = findViewById(R.id.picto_form_synth);
         synth.setOnCheckedChangeListener( synthChange );
         synthChange.onCheckedChanged( synth, synth.isChecked() );
 
-        output = new File( AssetImporter.getTmpFolder( this ), "item.mp4" );
+        output = new File( AssetImporter.getTmpFolder( this ), "picto.mp4" );
         if( output.exists() ){
             output.delete();
         }
@@ -174,16 +174,16 @@ public class NewItemShot extends BaseActivity implements TextToSpeech.OnInitList
         }
         photoUri = FileProvider.getUriForFile(this, "org.eu.nveo.manonparle", photoFile );
 
-        ImageView valid = findViewById(R.id.valid_item);
+        ImageView valid = findViewById(R.id.picto_form_valid);
         valid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if( checkForm() != ITEM_COMPLETE ) {
-                    Toast msg = Toast.makeText( NewItemShot.this, getResources().getText( R.string.edit_item_not_complete ), Toast.LENGTH_SHORT );
+                if( checkForm() != PICTO_COMPLETE ) {
+                    Toast msg = Toast.makeText( PictoForm.this, getResources().getText( R.string.picto_form_not_complete), Toast.LENGTH_SHORT );
                     msg.show();
                 } else {
                     if( synth.isChecked() ) {
-                        tts = new TextToSpeech( NewItemShot.this, NewItemShot.this );
+                        tts = new TextToSpeech( PictoForm.this, PictoForm.this );
                         // next of the flow in onInit
                     } else {
                         saveForm();
@@ -193,7 +193,7 @@ public class NewItemShot extends BaseActivity implements TextToSpeech.OnInitList
         });
 
         adapter =  new GroupGridAdapter( this );
-        grid = findViewById( R.id.edit_item_group_select );
+        grid = findViewById( R.id.picto_form_group_select);
         grid.setNumColumns( 2 );
         grid.setAdapter( adapter );
 
@@ -227,17 +227,17 @@ public class NewItemShot extends BaseActivity implements TextToSpeech.OnInitList
     }
 
     private int checkForm(){
-        Log.v(tag, "Nom de l'item: '"+label.getText().toString()+"'" );
+        Log.v(tag, "Nom de l'picto: '"+label.getText().toString()+"'" );
         if( label.getText().toString().isEmpty()  ) {
-            return ITEM_NOT_NAMED;
+            return PICTO_NOT_NAMED;
         } else if( ! synth.isChecked() && ! recorded ) {
-            return ITEM_NO_SOUND;
+            return PICTO_NO_SOUND;
         } else if( adapter.countChecked() == 0  ) {
-            return ITEM_NO_GROUP;
+            return PICTO_NO_GROUP;
         } else if( ! photoTaken ) {
-            return ITEM_NO_IMAGE;
+            return PICTO_NO_IMAGE;
         } else {
-            return ITEM_COMPLETE;
+            return PICTO_COMPLETE;
         }
 
     }
@@ -245,7 +245,7 @@ public class NewItemShot extends BaseActivity implements TextToSpeech.OnInitList
     private void saveForm(){
 
         boolean bSynth = synth.isChecked();
-        ItemDatabase conn = null;
+        ManonDatabase conn = null;
         try {
             conn = Database.getConnection();
         } catch (DatabaseException e) {
@@ -258,14 +258,14 @@ public class NewItemShot extends BaseActivity implements TextToSpeech.OnInitList
             audioExt = "wav";
         }
 
-        // Create Item
-        Item el = new Item();
+        // Create Picto
+        Picto el = new Picto();
         el.setName( label.getText().toString() );
         el.setHasSound( true );
         el.setSoundSynth( bSynth );
         el.setImageExt( imageExt );
         el.setAudioExt( audioExt );
-        long itemId = conn.item().insert( el );
+        long pictoId = conn.picto().insert( el );
 
         // Create links with groups
         int count = adapter.getCount();
@@ -273,18 +273,18 @@ public class NewItemShot extends BaseActivity implements TextToSpeech.OnInitList
             Group g = (Group) adapter.getItem(i);
             if( adapter.isChecked( i ) ){
                 long groupId = g.getId();
-                RItemGroup link = new RItemGroup();
-                link.setItemId( itemId );
+                RPictoGroup link = new RPictoGroup();
+                link.setPictoId( pictoId );
                 link.setGroupId( groupId );
-                conn.ritemgroup().insert( link );
+                conn.rpictogroup().insert( link );
             }
         }
 
-        File dataFolder = AssetImporter.getDataFolder( NewItemShot.this );
+        File dataFolder = AssetImporter.getDataFolder( PictoForm.this );
         // Save image
         try {
             FileInputStream fis = new FileInputStream( photoFile );
-            FileOutputStream fos = new FileOutputStream( new File( dataFolder , Long.toString(itemId)+"."+imageExt ) );
+            FileOutputStream fos = new FileOutputStream( new File( dataFolder , Long.toString(pictoId)+"."+imageExt ) );
             FileUtils.copyFile( fis, fos );
             fis.close();
             fos.close();
@@ -295,7 +295,7 @@ public class NewItemShot extends BaseActivity implements TextToSpeech.OnInitList
 
         try {
             FileInputStream fis = new FileInputStream( output );
-            FileOutputStream fos = new FileOutputStream( new File( dataFolder , Long.toString(itemId)+"."+audioExt ) );
+            FileOutputStream fos = new FileOutputStream( new File( dataFolder , Long.toString(pictoId)+"."+audioExt ) );
             FileUtils.copyFile( fis, fos );
             fis.close();
             fos.close();
@@ -323,25 +323,25 @@ public class NewItemShot extends BaseActivity implements TextToSpeech.OnInitList
     }
 
     private void ret(){
-        Intent intent = new Intent( NewItemShot.this, MenuGroup.class );
+        Intent intent = new Intent( PictoForm.this, MenuGroup.class );
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity( intent );
     }
 
     private void startRecording(){
         recorded = false;
-        itemRec = new MediaRecorder();
-        itemRec.setAudioSource(MediaRecorder.AudioSource.CAMCORDER );
-        itemRec.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        itemRec.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-        itemRec.setOutputFile( output.getAbsolutePath() );
+        recorder = new MediaRecorder();
+        recorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER );
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+        recorder.setOutputFile( output.getAbsolutePath() );
         try {
-            itemRec.prepare();
+            recorder.prepare();
         } catch (IOException e) {
             e.printStackTrace();
         }
         isRecording = true;
-        itemRec.start();
+        recorder.start();
         recordTimeout.postDelayed( timeoutAct, 1000 * maxDuration );
         recPlay.setImageResource(R.drawable.ic_play);
         recPlay.setOnClickListener( null );
@@ -352,9 +352,9 @@ public class NewItemShot extends BaseActivity implements TextToSpeech.OnInitList
         recordTimeout.removeCallbacks( timeoutAct );
         recorded = true;
         isRecording = false;
-        itemRec.stop();
-        itemRec.release();
-        itemRec = null;
+        recorder.stop();
+        recorder.release();
+        recorder = null;
         recBtn.setImageResource( R.drawable.ic_record );
         recPlay.setImageResource( R.drawable.ic_play );
         recPlay.setOnClickListener( recPlayListener );
@@ -379,14 +379,14 @@ public class NewItemShot extends BaseActivity implements TextToSpeech.OnInitList
                 @Override
                 public void onError(String utteranceId) {
                     tts.shutdown();
-                    Toast msg = Toast.makeText( NewItemShot.this, "Failed to synthesized audio", Toast.LENGTH_SHORT);
+                    Toast msg = Toast.makeText( PictoForm.this, "Failed to synthesized audio", Toast.LENGTH_SHORT);
                     msg.show();
                 }
             });
             String uuid = UUID.randomUUID().toString();
             tts.synthesizeToFile( label.getText().subSequence(0, label.length() ), null, output,  uuid );
         } else {
-            Toast msg = Toast.makeText( NewItemShot.this, "Failed to init TTS module", Toast.LENGTH_SHORT);
+            Toast msg = Toast.makeText( PictoForm.this, "Failed to init TTS module", Toast.LENGTH_SHORT);
             msg.show();
         }
     }

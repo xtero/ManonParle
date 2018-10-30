@@ -4,7 +4,7 @@ import android.arch.persistence.room.*;
 import android.content.Context;
 import android.net.Uri;
 import org.eu.nveo.manonparle.db.DatabaseException;
-import org.eu.nveo.manonparle.db.ItemDatabase;
+import org.eu.nveo.manonparle.db.ManonDatabase;
 import org.eu.nveo.manonparle.helper.AssetImporter;
 
 import java.io.File;
@@ -14,7 +14,7 @@ import java.io.File;
                 @Index("name")
         }
         )
-public class Item {
+public class Picto {
     @PrimaryKey(autoGenerate = true)
     private long id;
     private String name;
@@ -23,14 +23,14 @@ public class Item {
     private String audioExt;
     private String imageExt;
 
-    public Item( long id, String name, Boolean hasSound ){
+    public Picto(long id, String name, Boolean hasSound ){
         this.id = id;
         this.name = name;
         this.hasSound = hasSound;
     }
 
     @Ignore
-    public Item(){}
+    public Picto(){}
 
     public long getId() {
         return id;
@@ -103,28 +103,28 @@ public class Item {
     }
 
     public void delete(){
-        ItemDatabase db = null;
+        ManonDatabase db = null;
         try {
             db = org.eu.nveo.manonparle.db.Database.getConnection();
         } catch (DatabaseException e) {
             e.printStackTrace();
         }
-        RItemGroup[] links = db.ritemgroup().byItemId( getId() );
-        for (RItemGroup link : links) {
-            db.ritemgroup().delete( link );
+        RPictoGroup[] links = db.rpictogroup().byPictoId( getId() );
+        for (RPictoGroup link : links) {
+            db.rpictogroup().delete( link );
         }
-        db.item().delete( this );
+        db.picto().delete( this );
     }
 
 
     public int countGroupIn(){
-        ItemDatabase db = null;
+        ManonDatabase db = null;
         try {
             db = org.eu.nveo.manonparle.db.Database.getConnection();
         } catch (DatabaseException e) {
             e.printStackTrace();
         }
-        return db.ritemgroup().countByItemId( getId() );
+        return db.rpictogroup().countByPictoId( getId() );
 
     }
 }

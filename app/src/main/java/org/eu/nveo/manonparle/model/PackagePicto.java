@@ -6,19 +6,19 @@ import android.arch.persistence.room.PrimaryKey;
 
 @Entity(
         indices = {
-                @Index("itemName"),
-                @Index("itemId"),
+                @Index("pictoName"),
+                @Index("pictoId"),
                 @Index("packageId")
         }
 )
-public class PackageItem {
+public class PackagePicto {
     @PrimaryKey(autoGenerate = true)
     private long id;
     private long packageId;
-    private long itemId;
-    private String itemName;
+    private long pictoId;
+    private String pictoName;
 
-    public PackageItem(){
+    public PackagePicto(){
 
     }
 
@@ -38,19 +38,19 @@ public class PackageItem {
         this.packageId = packageId;
     }
 
-    public long getItemId() {
-        return itemId;
+    public long getPictoId() {
+        return pictoId;
     }
 
-    public void setItemId(long itemId) {
-        this.itemId = itemId;
+    public void setPictoId(long pictoId) {
+        this.pictoId = pictoId;
     }
 
-    public String getItemName() {
-        return itemName;
+    public String getPictoName() {
+        return pictoName;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setPictoName(String pictoName) {
+        this.pictoName = pictoName;
     }
 }

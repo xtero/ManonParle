@@ -16,19 +16,19 @@ import android.widget.ImageButton;
 import org.eu.nveo.manonparle.Activity.BaseActivity;
 import org.eu.nveo.manonparle.helper.Barycentre;
 import org.eu.nveo.manonparle.helper.RotationComputer;
+import org.eu.nveo.manonparle.model.Picto;
 import org.eu.nveo.manonparle.view.SquaredImageButton;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
-import org.eu.nveo.manonparle.model.Item;
-import org.eu.nveo.manonparle.db.ItemDatabase;
+import org.eu.nveo.manonparle.db.ManonDatabase;
 
 import static org.eu.nveo.manonparle.helper.Preferences.*;
 
 public class DisplaySelection extends BaseActivity {
 
     private static final String tag = "Main";
-    private Item itemLeft;
-    private Item itemRight;
+    private Picto pictoLeft;
+    private Picto pictoRight;
     private MediaPlayer mp;
     private Barycentre barycentre;
     private SquaredImageButton btnLeft;
@@ -39,16 +39,16 @@ public class DisplaySelection extends BaseActivity {
     private final View.OnTouchListener btnHandler = new View.OnTouchListener() {
         @Override
         public boolean onTouch( View btn, MotionEvent event ) {
-            Item item;
+            Picto picto;
             Log.v( tag, btn.getContentDescription().toString() );
             if( btn.getContentDescription().toString().equals( "left" ) ) {
-                Log.v(tag, "I set left item");
-                item = itemLeft;
+                Log.v(tag, "I set left picto");
+                picto = pictoLeft;
             } else {
-                Log.v(tag, "I set right item");
-                item = itemRight;
+                Log.v(tag, "I set right picto");
+                picto = pictoRight;
             }
-            boolean isPlayed  = playAudio( item );
+            boolean isPlayed  = playAudio(picto);
             if( isPlayed )
                 blinkButton( (ImageButton) btn );
             return true;
@@ -85,10 +85,10 @@ public class DisplaySelection extends BaseActivity {
     };
     private RotationComputer r;
 
-    private boolean playAudio( Item item ){
-        if( item.hasSound() && ! mp.isPlaying() ) {
+    private boolean playAudio( Picto picto){
+        if( picto.hasSound() && ! mp.isPlaying() ) {
             Log.v( tag, "Playing the new sound ");
-            Uri audioUri = item.getSoundUri( getBaseContext() );
+            Uri audioUri = picto.getSoundUri( getBaseContext() );
             Log.v(tag, audioUri.toString() );
             if( mp != null ){
                 mp.release();
@@ -127,27 +127,27 @@ public class DisplaySelection extends BaseActivity {
         prefs = getSharedPreferences( GLOBAL_PREFS, MODE_PRIVATE );
 
         Intent args = getIntent();
-        String item1 = args.getStringExtra("idLeft");
-        String item2 = args.getStringExtra("idRight");
+        String picto1 = args.getStringExtra("idLeft");
+        String picto2 = args.getStringExtra("idRight");
 
 
-        ItemDatabase db = null;
+        ManonDatabase db = null;
         try {
             db = Database.getConnection();
         } catch (DatabaseException e) {
             e.printStackTrace();
         }
 
-        itemLeft  = db.item().byId( Long.parseLong(item1) );
-        itemRight = db.item().byId( Long.parseLong(item2) );
+        pictoLeft = db.picto().byId( Long.parseLong(picto1) );
+        pictoRight = db.picto().byId( Long.parseLong(picto2) );
 
         mp = new MediaPlayer();
 
         btnLeft = findViewById( R.id.btnLeft );
         btnRight = findViewById( R.id.btnRight );
 
-        btnLeft.setImageURI( itemLeft.getImageUri( getBaseContext() ) );
-        btnRight.setImageURI( itemRight.getImageUri( getBaseContext() ) );
+        btnLeft.setImageURI( pictoLeft.getImageUri( getBaseContext() ) );
+        btnRight.setImageURI( pictoRight.getImageUri( getBaseContext() ) );
 
         btnLeft.setOnTouchListener( btnHandler );
         btnRight.setOnTouchListener( btnHandler );

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/baseOverlay"
     android:orientation="vertical"
-    tools:context=".NewItemShot">
+    tools:context=".PictoForm">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,17 +37,17 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/edit_item_label"
+                    android:id="@+id/edit_picto_label"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/edit_item_name"
+                    android:text="@string/edit_picto_name"
                     android:textColor="@color/colorBaseText"
                     android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/edit_item_label_input"
+                    android:id="@+id/picto_form_label_input"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -59,14 +59,14 @@
                     android:inputType="textPersonName" />
 
                 <Switch
-                    android:id="@+id/edit_item_synth"
+                    android:id="@+id/picto_form_synth"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:checked="true"
                     android:textColor="@color/colorBaseText"
-                    android:textOff="@string/edit_item_rec"
-                    android:textOn="@string/edit_item_synth"
+                    android:textOff="@string/edit_picto_rec"
+                    android:textOn="@string/edit_picto_synth"
                     android:textSize="16sp" />
 
                 <LinearLayout
@@ -77,13 +77,13 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/edit_item_rec_btn"
+                        android:id="@+id/picto_form_rec_btn"
                         android:layout_width="50dp"
                         android:layout_height="match_parent"
                         app:srcCompat="@drawable/ic_record_disabled" />
 
                     <ImageView
-                        android:id="@+id/edit_item_play_btn"
+                        android:id="@+id/picto_form_play_btn"
                         android:layout_width="50dp"
                         android:layout_height="match_parent"
                         app:srcCompat="@drawable/ic_play_disabled" />
@@ -102,12 +102,12 @@
                 android:id="@+id/select_group_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_item_select_group"
+                android:text="@string/edit_picto_select_group"
                 android:textColor="@color/colorBaseText"
                 android:textSize="20sp" />
 
             <GridView
-                android:id="@+id/edit_item_group_select"
+                android:id="@+id/picto_form_group_select"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
@@ -116,7 +116,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/valid_item"
+        android:id="@+id/picto_form_valid"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginVertical="20dp"

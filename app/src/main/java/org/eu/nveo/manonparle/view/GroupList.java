@@ -65,7 +65,7 @@ public class GroupList extends LinearLayout {
 
         mImage.setImageURI( g.getImageUri(ctx) );
 
-        String label = g.getName() + " ( "+g.getNbItem()+" images )" ;
+        String label = g.getName() + " ( "+g.getNbPicto()+" images )" ;
         mLabel.setText( label );
         mLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
         mLabel.setTextColor( getResources().getColor(R.color.colorBaseText) );

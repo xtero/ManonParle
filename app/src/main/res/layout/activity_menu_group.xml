@@ -29,7 +29,7 @@
                 tools:layout_editor_absoluteY="727dp" />
 
             <ImageView
-                android:id="@+id/new_item"
+                android:id="@+id/new_picto"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

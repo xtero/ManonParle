@@ -6,24 +6,24 @@ import android.content.Context;
 public class Database {
     private static String dbname = "manon";
     private static String tag = "DB";
-    private static ItemDatabase db;
+    private static ManonDatabase db;
     private static Context ctx;
 
     public static void empty(){
-        db.ritemgroup().deleteAll();
+        db.rpictogroup().deleteAll();
         db.group().deleteAll();
-        db.item().deleteAll();
+        db.picto().deleteAll();
     }
 
     public static void initConnection( Context context ) {
         ctx = context.getApplicationContext();
-        db = Room.databaseBuilder( ctx, ItemDatabase.class, dbname  )
+        db = Room.databaseBuilder( ctx, ManonDatabase.class, dbname  )
                 .allowMainThreadQueries()
                 .fallbackToDestructiveMigration()
                 .build();
     }
 
-    public static ItemDatabase getConnection() throws DatabaseException {
+    public static ManonDatabase getConnection() throws DatabaseException {
         if( db == null ) {
             throw new DatabaseException("Database not initialized");
         }

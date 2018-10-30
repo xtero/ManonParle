@@ -88,7 +88,7 @@ public class GroupGridAdapter extends BaseAdapter {
             }
         }
 
-        Log.v( tag, "nombre d'item checker :" + count);
+        Log.v( tag, "nombre d'picto checker :" + count);
 
         return count;
     }

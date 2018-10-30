@@ -8,30 +8,30 @@ import org.eu.nveo.manonparle.model.Package;
 
 @Database(
         entities = {
-                Item.class,
+                Picto.class,
                 Group.class ,
-                RItemGroup.class,
+                RPictoGroup.class,
                 Package.class,
-                PackageItem.class,
+                PackagePicto.class,
                 PackageGroup.class,
-                PackageRItemGroup.class
+                PackageRPictoGroup.class
         },
         version = 5,
         exportSchema = true
 )
-public abstract class ItemDatabase extends RoomDatabase {
+public abstract class ManonDatabase extends RoomDatabase {
 
-    public abstract ItemDao item();
+    public abstract PictoDao picto();
 
     public abstract GroupDao group();
 
-    public abstract RItemGroupDao ritemgroup();
+    public abstract RPictoGroupDao rpictogroup();
 
     public abstract PackageDao pack();
 
-    public abstract PackageItemDao packitem();
+    public abstract PackagePictoDao packpicto();
 
     public abstract PackageGroupDao packgroup();
 
-    public abstract PackageRItemGroupDao packritemgroup();
+    public abstract PackageRPictoGroupDao packrpictogroup();
 }

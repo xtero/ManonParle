@@ -7,7 +7,7 @@ import android.content.Context;
 import android.net.Uri;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
-import org.eu.nveo.manonparle.db.ItemDatabase;
+import org.eu.nveo.manonparle.db.ManonDatabase;
 import org.eu.nveo.manonparle.helper.AssetImporter;
 import org.eu.nveo.manonparle.helper.ImageUtils;
 import java.io.File;
@@ -20,7 +20,7 @@ public class Group {
     @PrimaryKey(autoGenerate = true)
     private long id;
     private String name;
-    private long itemImage;
+    private long pictoImage;
 
     @Ignore
     public Group(){
@@ -30,7 +30,7 @@ public class Group {
     public Group(long id, String name ){
         this.id = id;
         this.name = name;
-        itemImage = -1;
+        pictoImage = -1;
     }
 
     public long getId() {
@@ -49,39 +49,39 @@ public class Group {
         this.name = name;
     }
 
-    public long getImageItemId(){
-        if( itemImage > 0 ) {
-            return itemImage;
-        } else if( getNbItem() > 0 ) {
-            Item i = getFirstItem();
+    public long getImagePictoId(){
+        if( pictoImage > 0 ) {
+            return pictoImage;
+        } else if( getNbPicto() > 0 ) {
+            Picto i = getFirstPicto();
             Log.v( tag , i.getName() +":"+i.getId() );
             return i.getId();
         }
         return -1;
     }
 
-    public long getItemImage() {
-        return itemImage;
+    public long getPictoImage() {
+        return pictoImage;
     }
 
-    public void setItemImage(long itemImage) {
-        this.itemImage = itemImage;
+    public void setPictoImage(long pictoImage) {
+        this.pictoImage = pictoImage;
     }
 
-    public int getNbItem(){
+    public int getNbPicto(){
         int nb = 0;
         try {
-            nb = Database.getConnection().ritemgroup().countByGroupId( id );
+            nb = Database.getConnection().rpictogroup().countByGroupId( id );
         } catch (DatabaseException e) {
             e.printStackTrace();
         }
         return nb;
     }
 
-    public Item getFirstItem(){
-        Item i = null;
+    public Picto getFirstPicto(){
+        Picto i = null;
         try {
-            i = Database.getConnection().ritemgroup().firstGroupItem( id );
+            i = Database.getConnection().rpictogroup().firstGroupPicto( id );
         } catch (DatabaseException e) {
             e.printStackTrace();
         }
@@ -89,7 +89,7 @@ public class Group {
     }
 
     public Uri getImageUri( Context ctx ){
-        long imgId = getImageItemId();
+        long imgId = getImagePictoId();
         File dir = AssetImporter.getDataFolder( ctx );
         if( imgId != -1 ) {
             File image = new File(dir, imgId + ".png");
@@ -101,13 +101,13 @@ public class Group {
     }
 
     public boolean isEmpty(){
-        ItemDatabase db = null;
+        ManonDatabase db = null;
         try {
             db = Database.getConnection();
         } catch (DatabaseException e) {
             e.printStackTrace();
         }
-        int nb = db.ritemgroup().countByGroupId( getId() );
+        int nb = db.rpictogroup().countByGroupId( getId() );
         return nb == 0;
     }
 }
