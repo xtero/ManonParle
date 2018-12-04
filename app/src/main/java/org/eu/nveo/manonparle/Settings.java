@@ -3,6 +3,7 @@ package org.eu.nveo.manonparle;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -16,7 +17,7 @@ import top.defaults.colorpicker.ColorPickerPopup;
 import static org.eu.nveo.manonparle.helper.ImageUtils.*;
 import static org.eu.nveo.manonparle.helper.Preferences.*;
 
-public class Settings extends FullscreenActivity {
+public class Settings extends AppCompatActivity {
     private String tag = "Settings";
 
     private TextView skew_left;
@@ -29,22 +30,6 @@ public class Settings extends FullscreenActivity {
 
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
-
-    /*
-    private void resetGlowEffect( View v ){
-        TextView text = (TextView) v;
-        text.setShadowLayer( 0, 0,0, getResources().getColor(R.color.baseOverlay) );
-        text.setTextColor( getResources().getColor(R.color.colorBaseText) );
-    }
-
-    private void setGlowEffect( View v ){
-        TextView text = (TextView) v;
-        int color = getResources().getColor(R.color.glowSetting) ;
-        text.setShadowLayer( 10, 0,0, color);
-        text.setTextColor( color );
-
-    }
-    */
 
     private void setSkewEdit( boolean enabled ){
         skew.setEnabled( enabled );
@@ -123,14 +108,6 @@ public class Settings extends FullscreenActivity {
                 int skew_factor = Integer.parseInt( s.toString() );
                 editor.putInt( "skew_factor", skew_factor );
                 editor.commit();
-            }
-        });
-        skew.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if( ! hasFocus ){
-                    ensureFullscreen();
-                }
             }
         });
 
