@@ -33,4 +33,6 @@ public interface RPictoGroupDao {
     @Delete
     void delete( RPictoGroup rPictoGroup);
 
+    @Query("SELECT * FROM RPictoGroup WHERE groupId = :groupId and pictoId = :pictoId ")
+    RPictoGroup byGroupIdPictoId(long groupId, long pictoId );
 }

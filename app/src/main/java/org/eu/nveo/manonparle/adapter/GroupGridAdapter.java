@@ -10,13 +10,14 @@ import android.widget.GridView;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
 import org.eu.nveo.manonparle.model.Group;
-import org.eu.nveo.manonparle.view.GroupGrid;
+import org.eu.nveo.manonparle.view.GroupGridView;
 
 public class GroupGridAdapter extends BaseAdapter {
 
     private String tag = "GroupGridAdapter";
 
     private Group[] groups;
+    private GroupGridView[] groupGirds;
     private boolean[] checked;
     private Context ctx;
     private int basedPadding = 2;
@@ -32,6 +33,7 @@ public class GroupGridAdapter extends BaseAdapter {
         for (int i = 0; i < checked.length; i++) {
             checked[i] = false;
         }
+        groupGirds = new GroupGridView[groups.length];
     }
 
     @Override
@@ -52,31 +54,45 @@ public class GroupGridAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         GridView grid = (GridView) parent;
-        GroupGrid groupGrid = new GroupGrid( ctx );
+        if( convertView == null ) {
+            groupGirds[position] = new GroupGridView( ctx );
+        }
+        GroupGridView groupGridView = groupGirds[position];
         Group g = groups[position];
-        groupGrid.setGroup( g );
-        groupGrid.setOnClickListener(new View.OnClickListener() {
+        groupGridView.setGroup( g );
+        groupGridView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GroupGrid group = (GroupGrid)  v;
+                GroupGridView group = (GroupGridView)  v;
                 checked[position] = group.toggleChecked();
 
             }
         });
-        //checked[position] = groupGrid.isChecked();
-        groupGrid.setChecked( checked[position]);
+        groupGridView.setChecked( checked[position] );
 
 
         int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, basedPadding, ctx.getResources().getDisplayMetrics());
         int width = (parent.getWidth() / grid.getNumColumns()) - (2 * padding);
-        groupGrid.setLayoutParams(new ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT));
-        groupGrid.setPadding(padding, padding, padding, padding);
+        groupGridView.setLayoutParams(new ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT));
+        groupGridView.setPadding(padding, padding, padding, padding);
 
-        return groupGrid;
+        return groupGridView;
     }
 
     public boolean isChecked( int index ) {
-        return checked[ index ];
+        return groupGirds[ index ].isChecked();
+    }
+
+    public boolean toogleChecked( int index ) {
+        return groupGirds[index].toggleChecked();
+    }
+
+    public void setChecked( int index, boolean value ) {
+        checked[ index ] = value;
+        // FIXME avoid this crappy way to sneak around not initialized view
+        if( groupGirds[index] != null ) {
+            groupGirds[index].setChecked(value);
+        }
     }
 
     public int countChecked(){

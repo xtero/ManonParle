@@ -10,13 +10,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import org.eu.nveo.manonparle.Activity.BaseActivity;
+import org.eu.nveo.manonparle.Activity.FullscreenActivity;
 import top.defaults.colorpicker.ColorPickerPopup;
 
 import static org.eu.nveo.manonparle.helper.ImageUtils.*;
 import static org.eu.nveo.manonparle.helper.Preferences.*;
 
-public class Settings extends BaseActivity {
+public class Settings extends FullscreenActivity {
     private String tag = "Settings";
 
     private TextView skew_left;
@@ -145,8 +145,8 @@ public class Settings extends BaseActivity {
                 new ColorPickerPopup.Builder( Settings.this )
                         .initialColor( prefs.getInt("confirm_color", CONFIRM_COLOR ) )
                         .enableAlpha(true)
-                        .okTitle((String) getResources().getText(R.string.select))
-                        .cancelTitle((String) getResources().getText(R.string.cancel))
+                        .okTitle((String) getResources().getText(R.string.common_select))
+                        .cancelTitle((String) getResources().getText(R.string.common_cancel))
                         .showIndicator(true)
                         .showValue(true)
                         .build()

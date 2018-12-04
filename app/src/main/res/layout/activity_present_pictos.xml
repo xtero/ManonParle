@@ -3,7 +3,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:background="@color/baseOverlay"
-             tools:context="org.eu.nveo.manonparle.DisplaySelection" android:id="@+id/fullscreen_content"
+             tools:context="org.eu.nveo.manonparle.PresentPictos" android:id="@+id/fullscreen_content"
              android:layout_centerVertical="true">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:id="@+id/mth"
     >
-        <org.eu.nveo.manonparle.view.SquaredImageButton
+        <org.eu.nveo.manonparle.view.SquaredImageButtonView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/btnLeft"
@@ -29,7 +29,7 @@
                 android:background="@color/baseOverlay"
                 android:padding="5dp"
                 app:srcCompat="@mipmap/placeholder"/>
-        <org.eu.nveo.manonparle.view.SquaredImageButton
+        <org.eu.nveo.manonparle.view.SquaredImageButtonView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/btnRight"

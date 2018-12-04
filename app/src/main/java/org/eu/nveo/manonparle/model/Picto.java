@@ -3,6 +3,7 @@ package org.eu.nveo.manonparle.model;
 import android.arch.persistence.room.*;
 import android.content.Context;
 import android.net.Uri;
+import org.eu.nveo.manonparle.R;
 import org.eu.nveo.manonparle.db.DatabaseException;
 import org.eu.nveo.manonparle.db.ManonDatabase;
 import org.eu.nveo.manonparle.helper.AssetImporter;
@@ -83,9 +84,13 @@ public class Picto {
 
 
     public Uri getImageUri( Context ctx ){
-        File dir = AssetImporter.getDataFolder( ctx );
-        File image = new File( dir, id+"." + imageExt);
-        return Uri.fromFile( image );
+        if( id == -1 ) {
+            return Uri.parse( "android.resource://org.eu.nveo.manonparle/"+R.mipmap.add_image );
+        } else {
+            File dir = AssetImporter.getDataFolder(ctx);
+            File image = new File(dir, id + "." + imageExt);
+            return Uri.fromFile(image);
+        }
     }
 
     public Uri getSoundUri( Context ctx ){
@@ -126,6 +131,17 @@ public class Picto {
         }
         return db.rpictogroup().countByPictoId( getId() );
 
+    }
+
+    public boolean isLinkedTo( Group g ) {
+        ManonDatabase db = null;
+        try {
+            db = org.eu.nveo.manonparle.db.Database.getConnection();
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
+        RPictoGroup link = db.rpictogroup().byGroupIdPictoId( g.getId(), id );
+        return link != null;
     }
 }
 

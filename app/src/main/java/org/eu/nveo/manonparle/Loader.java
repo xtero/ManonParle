@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import org.eu.nveo.manonparle.Activity.BaseActivity;
+import org.eu.nveo.manonparle.Activity.FullscreenActivity;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.helper.AssetImporter;
 import org.eu.nveo.manonparle.helper.FileUtils;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import static org.eu.nveo.manonparle.helper.ImageUtils.setGlowEffect;
 import static org.eu.nveo.manonparle.helper.Preferences.GLOBAL_PREFS;
 
-public class Loader extends BaseActivity {
+public class Loader extends FullscreenActivity {
     private static String tag = "Loader";
 
     private Handler deffered = new Handler();
@@ -77,7 +77,7 @@ public class Loader extends BaseActivity {
             cancel.setOnClickListener(v -> {
 
                 popup.dismiss();
-                Intent next = new Intent( Loader.this, MenuGroup.class );
+                Intent next = new Intent( Loader.this, SelectGroup.class );
                 next.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity( next );
             });
@@ -94,7 +94,7 @@ public class Loader extends BaseActivity {
                 popup.showAtLocation( root , Gravity.CENTER,0,0);
             }, 100);
         } else {
-            Intent next = new Intent( Loader.this, MenuGroup.class );
+            Intent next = new Intent( Loader.this, SelectGroup.class );
             next.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity( next );
         }

@@ -5,15 +5,15 @@
     android:layout_height="match_parent"
     android:background="@color/baseOverlay"
     android:orientation="vertical"
-    tools:context=".EditGroup">
+    tools:context=".FormGroup">
 
     <TextView
         android:id="@+id/title"
-        android:textColor="@color/colorBaseText"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/edit_group_title" />
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:text="@string/form_group_title"
+        android:textColor="@color/colorBaseText"
+        android:textSize="24sp" />
 </LinearLayout>

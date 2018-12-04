@@ -5,18 +5,18 @@ import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import org.eu.nveo.manonparle.Select;
+import org.eu.nveo.manonparle.SelectPictos;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
 import org.eu.nveo.manonparle.model.Group;
-import org.eu.nveo.manonparle.view.GroupList;
+import org.eu.nveo.manonparle.view.GroupListView;
 
-public class GroupAdapter extends BaseAdapter {
+public class GroupListAdapter extends BaseAdapter {
     private Group[] groups;
     private Context ctx;
 
 
-    public GroupAdapter(Context context ){
+    public GroupListAdapter(Context context ){
         ctx = context;
         try {
             groups = Database.getConnection().group().all();
@@ -41,18 +41,18 @@ public class GroupAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final GroupList groupList = new GroupList( ctx );
+        final GroupListView groupListView = new GroupListView( ctx );
         Group g = groups[position];
-        groupList.setGroup( g );
-        groupList.setOnClickListener(new View.OnClickListener() {
+        groupListView.setGroup( g );
+        groupListView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent( ctx, Select.class);
-                i.putExtra("groupId", groupList.getContentDescription() );
+                Intent i = new Intent( ctx, SelectPictos.class);
+                i.putExtra("groupId", groupListView.getContentDescription() );
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 ctx.startActivity(i);
             }
         });
-        return groupList;
+        return groupListView;
     }
 }

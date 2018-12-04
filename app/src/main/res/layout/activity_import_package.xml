@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="@string/report_live_picto"
+                    android:text="@string/import_package_report_live_picto"
                     android:textColor="@color/colorBaseText"
                     android:textSize="20sp" />
 
@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="@string/report_live_group"
+                    android:text="@string/import_package_report_live_group"
                     android:textColor="@color/colorBaseText"
                     android:textSize="20sp" />
 
@@ -89,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="@string/report_live_links"
+                    android:text="@string/import_package_report_live_links"
                     android:textColor="@color/colorBaseText"
                     android:textSize="20sp" />
 
@@ -127,7 +127,7 @@
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/waiting_tts"
+            android:text="@string/import_package_waiting_tts"
             android:textColor="@color/colorBaseText" />
     </LinearLayout>
 </FrameLayout>

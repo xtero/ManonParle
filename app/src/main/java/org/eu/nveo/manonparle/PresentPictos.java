@@ -13,26 +13,26 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.ImageButton;
-import org.eu.nveo.manonparle.Activity.BaseActivity;
+import org.eu.nveo.manonparle.Activity.FullscreenActivity;
 import org.eu.nveo.manonparle.helper.Barycentre;
 import org.eu.nveo.manonparle.helper.RotationComputer;
 import org.eu.nveo.manonparle.model.Picto;
-import org.eu.nveo.manonparle.view.SquaredImageButton;
+import org.eu.nveo.manonparle.view.SquaredImageButtonView;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
 import org.eu.nveo.manonparle.db.ManonDatabase;
 
 import static org.eu.nveo.manonparle.helper.Preferences.*;
 
-public class DisplaySelection extends BaseActivity {
+public class PresentPictos extends FullscreenActivity {
 
     private static final String tag = "Main";
     private Picto pictoLeft;
     private Picto pictoRight;
     private MediaPlayer mp;
     private Barycentre barycentre;
-    private SquaredImageButton btnLeft;
-    private SquaredImageButton btnRight;
+    private SquaredImageButtonView btnLeft;
+    private SquaredImageButtonView btnRight;
     private int previousOrientation = -1;
     private SharedPreferences prefs;
 
@@ -122,7 +122,7 @@ public class DisplaySelection extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_selection);
+        setContentView(R.layout.activity_present_pictos);
 
         prefs = getSharedPreferences( GLOBAL_PREFS, MODE_PRIVATE );
 

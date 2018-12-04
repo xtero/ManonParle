@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/baseOverlay"
     android:orientation="vertical"
-    tools:context=".PictoForm">
+    tools:context=".FormPicto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView4"
+                android:id="@+id/picto_form_image"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="10dp"
@@ -42,9 +42,9 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/edit_picto_name"
+                    android:text="@string/form_picto_name"
                     android:textColor="@color/colorBaseText"
-                    android:textSize="16sp" />
+                    android:textSize="24sp" />
 
                 <EditText
                     android:id="@+id/picto_form_label_input"
@@ -58,16 +58,42 @@
                     android:gravity="center"
                     android:inputType="textPersonName" />
 
-                <Switch
-                    android:id="@+id/picto_form_synth"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:checked="true"
-                    android:textColor="@color/colorBaseText"
-                    android:textOff="@string/edit_picto_rec"
-                    android:textOn="@string/edit_picto_synth"
-                    android:textSize="16sp" />
+                    android:orientation="horizontal">
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Switch
+                        android:id="@+id/picto_form_synth"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:textColor="@color/colorBaseText"
+                        android:textOff="@string/form_picto_rec"
+                        android:textOn="@string/form_picto_synth"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/picto_form_synth_text"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"
+                        android:text="placeHolder"
+                        android:textColor="@color/colorBaseText"
+                        android:textSize="16sp" />
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -76,17 +102,29 @@
                     android:gravity="center_horizontal"
                     android:orientation="horizontal">
 
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2" />
+
                     <ImageView
                         android:id="@+id/picto_form_rec_btn"
-                        android:layout_width="50dp"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         app:srcCompat="@drawable/ic_record_disabled" />
 
                     <ImageView
                         android:id="@+id/picto_form_play_btn"
-                        android:layout_width="50dp"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         app:srcCompat="@drawable/ic_play_disabled" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -102,9 +140,10 @@
                 android:id="@+id/select_group_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_picto_select_group"
+                android:gravity="center"
+                android:text="@string/form_picto_select_group"
                 android:textColor="@color/colorBaseText"
-                android:textSize="20sp" />
+                android:textSize="24sp" />
 
             <GridView
                 android:id="@+id/picto_form_group_select"
@@ -115,12 +154,35 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/picto_form_valid"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginVertical="20dp"
         android:layout_weight="0.1"
-        app:srcCompat="@drawable/ic_valid" />
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2" />
+
+        <ImageView
+            android:id="@+id/picto_form_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_cancel" />
+
+        <ImageView
+            android:id="@+id/picto_form_valid"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_valid" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2" />
+    </LinearLayout>
 
 </LinearLayout>

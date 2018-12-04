@@ -1,53 +1,53 @@
 <resources>
     <string name="app_name">ManonParle</string>
 
-    <string name="title_activity_welcome">Welcome</string>
+    <string name="common_left">gauche</string>
+    <string name="common_right">droite</string>
+    <string name="common_neutral">neutre</string>
+    <string name="common_select">choisir</string>
+    <string name="common_cancel">annuler</string>
+    <string name="common_warn">attention</string>
+    <string name="common_pictos">pictogrammes</string>
+    <string name="common_groups">groupes</string>
+    <string name="common_links">liens</string>
+    <string name="common_fast">rapide</string>
+    <string name="common_slow">lent</string>
 
-    <string name="choice">Choisissez les images à présenter</string>
-    <string name="please_select">Il faut selectionner 2 images</string>
-    <string name="menu_group_title">Choix du groupe d\'image à présenter</string>
-    <string name="settings_title">Paramétrage de l\'application</string>
-    <string name="edit_group_title">Edition du groupe</string>
+    <string name="form_group_title">Edition du groupe</string>
 
-    <string name="skew_text">Renfort des doigts de la main à</string>
+    <string name="form_picto_name">Nom du pictogramme</string>
+    <string name="form_picto_synth">Synthèse vocal</string>
+    <string name="form_picto_rec">Enregistrement vocal</string>
+    <string name="form_picto_select_group">Groupes du pictogramme</string>
+    <string name="form_picto_not_complete">Le formulaire n\'est pas complet</string>
 
-    <string name="left">gauche</string>
-    <string name="right">droite</string>
-    <string name="neutral">neutre</string>
-    <string name="select">choisir</string>
-    <string name="cancel">annuler</string>
-    <string name="warn">attention</string>
-    <string name="pictos">éléments</string>
-    <string name="groups">groupes</string>
-    <string name="links">liens</string>
+    <string name="import_package_waiting_tts">Initialisation du module de syntèse vocale</string>
+    <string name="import_package_tts_offline">Impossible de démarrer le module de syntèse vocale. <br />Voulez vous quand même importer le package</string>
+    <string name="import_package_import_complete">L\'import du package est terminé</string>
+    <string name="import_package_report_picto">Elements importés : %1$d/%2$d</string>
+    <string name="import_package_report_group">Groups importés : %1$d/%2$d</string>
+    <string name="import_package_report_links">Liens créés : %1$d/%2$d</string>
+    <string name="import_package_report_live_picto">Elements importés</string>
+    <string name="import_package_report_live_group">Groups importés</string>
+    <string name="import_package_report_live_links">Liens créés</string>
 
-    <string name="confirm_color_text">Couleur de la confirmation visuel</string>
-    <string name="confirm_color_invite">Taper pour éditer</string>
-
-    <string name="present">Présenter</string>
-
-    <string name="title_activity_loader">Loader</string>
-    <string name="confirm_speed_text">Vitesse de la confirmation visuelle</string>
-    <string name="fast">rapide</string>
-    <string name="slow">lent</string>
-
-    <string name="waiting_tts">Initialisation du module de syntèse vocale</string>
-    <string name="tts_offline">Impossible de démarrer le module de syntèse vocale. <br />Voulez vous quand même importer le package</string>
-    <string name="import_complete">L\'import du package est terminé</string>
-
-    <string name="report_picto">Elements importés : %1$d/%2$d</string>
-    <string name="report_group">Groups importés : %1$d/%2$d</string>
-    <string name="report_links">Liens créés : %1$d/%2$d</string>
-
-    <string name="report_live_picto">Elements importés</string>
-    <string name="report_live_group">Groups importés</string>
-    <string name="report_live_links">Liens créés</string>
-
+    <string name="loader_title">Loader</string>
     <string name="loader_first_run">C\'est la première fois que vous lancez l\'application.<br />Voulez vous importer le package d\'image de base</string>
 
-    <string name="edit_picto_name">Nom de la fiche</string>
-    <string name="edit_picto_synth">Synthèse vocal</string>
-    <string name="edit_picto_rec">Enregistrement vocal</string>
-    <string name="edit_picto_select_group">Sélection des groupes de la fiche</string>
-    <string name="picto_form_not_complete">Le formulaire n\'est pas complet</string>
+    <string name="manage_pictos_title">Gestion des pictogrammes</string>
+
+    <string name="select_group_title">Sélection d\'un groupe</string>
+    <string name="select_group_menu_picto">Gérer les pictogrammes</string>
+
+    <string name="select_pictos_title">Sélection de 2 pictogrammes</string>
+    <string name="select_pictos_present">Présenter</string>
+    <string name="select_pictos_choice">Choisissez les images à présenter</string>
+    <string name="select_pictos_toast_please_select">Il faut selectionner 2 images</string>
+
+    <string name="settings_title">Paramétrage de l\'application</string>
+    <string name="settings_skew_text">Renfort des doigts de la main à</string>
+    <string name="settings_confirm_color_text">Couleur de la confirmation visuel</string>
+    <string name="settings_confirm_color_invite">Taper pour éditer</string>
+    <string name="settings_confirm_speed_text">Vitesse de la confirmation visuelle</string>
+
 </resources>

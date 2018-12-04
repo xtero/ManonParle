@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import org.eu.nveo.manonparle.Activity.BaseActivity;
+import org.eu.nveo.manonparle.Activity.FullscreenActivity;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
 import org.eu.nveo.manonparle.db.ManonDatabase;
@@ -31,7 +31,7 @@ import java.util.*;
 import static org.eu.nveo.manonparle.helper.AssetImporter.*;
 import static org.eu.nveo.manonparle.helper.ImageUtils.setGlowEffect;
 
-public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitListener  {
+public class ImportPackage extends FullscreenActivity implements TextToSpeech.OnInitListener  {
 
     private boolean importInProgress = false;
     private boolean hasRun = false;
@@ -65,7 +65,7 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
     };
 
     private void displayReport(){
-        View import_report = getLayoutInflater().inflate( R.layout.popup_import_report, null );
+        View import_report = getLayoutInflater().inflate( R.layout.popup_import_package_report, null );
         PopupWindow popup = new PopupWindow( import_report, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT );
 
         TextView ok = import_report.findViewById( R.id.ok );
@@ -79,17 +79,17 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
         setGlowEffect( ok, getResources().getColor(R.color.glowConfirm));
 
         TextView pictos = import_report.findViewById(R.id.imported_picto);
-        String pictoReport = getResources().getString(R.string.report_picto);
+        String pictoReport = getResources().getString(R.string.import_package_report_picto);
         pictoReport = String.format( pictoReport, pictoImported, def.countPicto() );
         pictos.setText(pictoReport);
 
         TextView groups = import_report.findViewById(R.id.imported_group);
-        String groupReport = getResources().getString(R.string.report_group);
+        String groupReport = getResources().getString(R.string.import_package_report_group);
         groupReport = String.format( groupReport, groupImported, def.countGroup() );
         groups.setText( groupReport );
 
         TextView links = import_report.findViewById(R.id.imported_links);
-        String linksReport = getResources().getString(R.string.report_links);
+        String linksReport = getResources().getString(R.string.import_package_report_links);
         linksReport = String.format( linksReport, linksImported, def.countRPictoGroup() );
         links.setText( linksReport );
 
@@ -100,7 +100,7 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
     private Runnable returnTo = new Runnable() {
         @Override
         public void run() {
-            Intent next = new Intent( ImportPackage.this, MenuGroup.class );
+            Intent next = new Intent( ImportPackage.this, SelectGroup.class );
             next.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(next);
         }
@@ -248,7 +248,7 @@ public class ImportPackage extends BaseActivity implements TextToSpeech.OnInitLi
         } else {
             ttsEnabled = false;
             if( def.hasPictoWithoutSound() ){
-                View tts_offline = getLayoutInflater().inflate( R.layout.popup_import_confirm_no_tts, null);
+                View tts_offline = getLayoutInflater().inflate( R.layout.popup_import_package_confirm_no_tts, null);
                 PopupWindow popup = new PopupWindow( tts_offline, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
                 TextView cancel = tts_offline.findViewById(R.id.cancel);
                 TextView ok = tts_offline.findViewById(R.id.ok);

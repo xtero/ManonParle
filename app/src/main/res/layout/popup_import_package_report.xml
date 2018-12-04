@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/import_complete"
+        android:text="@string/import_package_import_complete"
         android:textSize="24sp"
         android:textColor="@color/colorBaseText" />
 
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/pictos"
+        android:text="@string/common_pictos"
         android:textSize="20sp"
         android:textColor="@color/colorBaseText" />
 
@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/groups"
+        android:text="@string/common_groups"
         android:textSize="20sp"
         android:textColor="@color/colorBaseText" />
 
@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/links"
+        android:text="@string/common_links"
         android:textSize="20sp"
         android:textColor="@color/colorBaseText" />
 

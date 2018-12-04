@@ -5,9 +5,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
         />
+
         <TextView
-                android:id="@+id/minipicto_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-        />
+            android:id="@+id/minipicto_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp" />
 </merge>

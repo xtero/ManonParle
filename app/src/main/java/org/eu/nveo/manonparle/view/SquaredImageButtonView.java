@@ -3,17 +3,17 @@ package org.eu.nveo.manonparle.view;
 import android.content.Context;
 import android.util.AttributeSet;
 
-public class SquaredImageButton extends android.support.v7.widget.AppCompatImageButton {
+public class SquaredImageButtonView extends android.support.v7.widget.AppCompatImageButton {
 
-    public SquaredImageButton(Context context) {
+    public SquaredImageButtonView(Context context) {
         super(context);
     }
 
-    public SquaredImageButton(Context context, AttributeSet attrs ) {
+    public SquaredImageButtonView(Context context, AttributeSet attrs ) {
         super(context, attrs);
     }
 
-    public SquaredImageButton(Context context, AttributeSet attrs, int defStyle ) {
+    public SquaredImageButtonView(Context context, AttributeSet attrs, int defStyle ) {
         super(context, attrs, defStyle );
     }
 

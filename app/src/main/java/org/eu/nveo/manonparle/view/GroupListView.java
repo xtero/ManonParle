@@ -10,29 +10,29 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import org.eu.nveo.manonparle.EditGroup;
+import org.eu.nveo.manonparle.FormGroup;
 import org.eu.nveo.manonparle.R;
 import org.eu.nveo.manonparle.helper.ImageUtils;
 import org.eu.nveo.manonparle.model.Group;
 
-public class GroupList extends LinearLayout {
+public class GroupListView extends LinearLayout {
     private Context ctx;
     private TextView mLabel;
     private ImageView mImage;
     private Group mGroup;
     private ImageView mTool;
 
-    public GroupList(Context context) {
+    public GroupListView(Context context) {
         super(context);
         initializeLayout( context );
     }
 
-    public GroupList(Context context, @Nullable AttributeSet attrs) {
+    public GroupListView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         initializeLayout( context );
     }
 
-    public GroupList(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public GroupListView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initializeLayout( context );
     }
@@ -42,7 +42,7 @@ public class GroupList extends LinearLayout {
 
         this.setOrientation( LinearLayout.HORIZONTAL );
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.view_group_list, this);
+        inflater.inflate(R.layout.view_group_list_view, this);
 
     }
 
@@ -75,7 +75,7 @@ public class GroupList extends LinearLayout {
         mTool.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(ctx, EditGroup.class );
+                Intent i = new Intent(ctx, FormGroup.class );
                 i.putExtra("groupId", Long.toString( mGroup.getId() ) );
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 ctx.startActivity(i);

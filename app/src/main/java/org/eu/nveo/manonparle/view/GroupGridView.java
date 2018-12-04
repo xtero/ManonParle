@@ -17,7 +17,7 @@ import android.widget.TextView;
 import org.eu.nveo.manonparle.R;
 import org.eu.nveo.manonparle.model.Group;
 
-public class GroupGrid extends FrameLayout {
+public class GroupGridView extends FrameLayout {
     private ImageView mImage;
     private TextView mLabel;
     private LinearLayout container;
@@ -25,17 +25,17 @@ public class GroupGrid extends FrameLayout {
     private boolean checked = false;
     private long groupId;
 
-    public GroupGrid(Context context) {
+    public GroupGridView(Context context) {
         super(context);
         initializeLayout( context );
     }
 
-    public GroupGrid(Context context, @Nullable AttributeSet attrs) {
+    public GroupGridView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         initializeLayout( context );
     }
 
-    public GroupGrid(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public GroupGridView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initializeLayout( context );
     }
@@ -44,7 +44,7 @@ public class GroupGrid extends FrameLayout {
         ctx = context;
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.view_group_grid, this);
+        inflater.inflate(R.layout.view_group_grid_view, this);
     }
 
 
@@ -86,9 +86,21 @@ public class GroupGrid extends FrameLayout {
         return groupId;
     }
 
+    // This method should be used for initialization
+    // That's why it will not animate the view
     public void setChecked( boolean value ) {
-        boolean previous = checked;
         checked = value;
+        int color = Color.BLACK;
+        if( checked ) {
+                color = getResources().getColor(R.color.glowConfirm);
+        }
+        this.setBackgroundColor( color );
+
+    }
+
+    public boolean toggleChecked(){
+        checked = ! checked;
+
         int speed = 300;
         int colorFrom;
         int colorTo;
@@ -99,20 +111,15 @@ public class GroupGrid extends FrameLayout {
             colorTo = Color.BLACK;
             colorFrom = getResources().getColor(R.color.glowConfirm);
         }
-        if( previous != checked ) {
-            AnimatedVectorDrawable animate = new AnimatedVectorDrawable();
-            ObjectAnimator anim = ObjectAnimator.ofInt(this, "backgroundColor", colorFrom, colorTo );
-            anim.setDuration( speed );
-            anim.setEvaluator( new ArgbEvaluator() );
-            anim.setRepeatMode( ValueAnimator.RESTART );
-            anim.setRepeatCount( 0 );
-            anim.start();
-        }
-    }
+        AnimatedVectorDrawable animate = new AnimatedVectorDrawable();
+        ObjectAnimator anim = ObjectAnimator.ofInt(this, "backgroundColor", colorFrom, colorTo );
+        anim.setDuration( speed );
+        anim.setEvaluator( new ArgbEvaluator() );
+        anim.setRepeatMode( ValueAnimator.RESTART );
+        anim.setRepeatCount( 0 );
+        anim.start();
 
-    public boolean toggleChecked(){
-        setChecked( ! isChecked() );
-        return isChecked();
+        return checked;
     }
 
     public boolean isChecked(){

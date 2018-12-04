@@ -29,6 +29,9 @@ public interface PictoDao {
     @Query("SELECT Picto.* FROM Picto, RPictoGroup AS link WHERE link.groupId = :groupId AND link.pictoId == Picto.id AND Picto.name LIKE :constrain")
     Picto[] byGroupIdLike(long groupId, String constrain );
 
+    @Query("SELECT Picto.* FROM Picto WHERE Picto.name LIKE :constrain")
+    Picto[] allLike( String constrain );
+
     @Query("DELETE FROM Picto")
     void deleteAll();
 

@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/baseOverlay"
-    tools:context=".MenuGroup">
+    android:orientation="vertical"
+    tools:context=".SelectGroup">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/baseOverlay"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,17 +25,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/menu_group_title"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="15"
-                android:textSize="20sp"
-                android:textColor="@color/colorBaseText"
-                android:text="@string/menu_group_title"
                 android:gravity="center"
+                android:text="@string/select_group_title"
+                android:textColor="@color/colorBaseText"
+                android:textSize="20sp"
                 tools:layout_editor_absoluteY="727dp" />
 
             <ImageView
@@ -50,6 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp" />
+
     </LinearLayout>
 
-</FrameLayout>
+</LinearLayout>

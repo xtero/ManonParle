@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 @SuppressLint("Registered")
-public class BaseActivity extends AppCompatActivity {
+public class FullscreenActivity extends AppCompatActivity {
 
     private final Handler mHideHandler = new Handler();
 
@@ -18,7 +18,7 @@ public class BaseActivity extends AppCompatActivity {
 
             // Delayed removal of status and navigation bar
             ActionBar actionBar = getSupportActionBar();
-            if (actionBar != null) {
+            if (actionBar != null ) {
                 actionBar.hide();
             }
 

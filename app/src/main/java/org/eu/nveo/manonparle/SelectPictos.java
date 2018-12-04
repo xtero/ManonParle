@@ -5,21 +5,21 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.*;
-import org.eu.nveo.manonparle.Activity.BaseActivity;
-import org.eu.nveo.manonparle.adapter.MiniPicto;
+import org.eu.nveo.manonparle.adapter.PictoDraggableGridAdapter;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
 import org.eu.nveo.manonparle.model.Group;
 
-public class Select extends BaseActivity {
-    private String tag = "Select";
+public class SelectPictos extends AppCompatActivity {
+    private String tag = "SelectPictos";
     private ImageView left;
     private ImageView right;
     private GridView grid;
-    private MiniPicto miniPicto;
+    private PictoDraggableGridAdapter gridAdapter;
     private String searchStr;
     private SearchView search;
 
@@ -49,11 +49,11 @@ public class Select extends BaseActivity {
         @Override
         public void run() {
 
-            Filter phil = miniPicto.getFilter();
+            Filter phil = gridAdapter.getFilter();
             phil.filter(searchStr, new Filter.FilterListener() {
                 @Override
                 public void onFilterComplete(int count) {
-                    miniPicto.notifyDataSetChanged();
+                    gridAdapter.notifyDataSetChanged();
                 }
             });
         }
@@ -63,7 +63,7 @@ public class Select extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_select);
+        setContentView(R.layout.activity_select_pictos);
 
         Intent args = getIntent();
         long groupId = Long.parseLong(args.getStringExtra("groupId"));
@@ -77,8 +77,8 @@ public class Select extends BaseActivity {
         grid = findViewById( R.id.picto_list);
         grid.setNumColumns( 2 );
 
-        miniPicto = new MiniPicto( getBaseContext(), group.getId() );
-        grid.setAdapter(miniPicto);
+        gridAdapter = new PictoDraggableGridAdapter( getBaseContext(), group.getId() );
+        grid.setAdapter(gridAdapter);
 
         left = findViewById( R.id.imageView);
         right = findViewById( R.id.imageView2);
@@ -93,12 +93,12 @@ public class Select extends BaseActivity {
             public void onClick(View v) {
 
                 if( left.getContentDescription() == "" || right.getContentDescription() == "" ){
-                    String text = getResources().getString(R.string.please_select);
+                    String text = getResources().getString(R.string.select_pictos_toast_please_select);
                     Toast message = Toast.makeText( getApplicationContext(), text, Toast.LENGTH_SHORT );
                     message.show();
                     return;
                 } else {
-                    Intent i = new Intent(Select.this, DisplaySelection.class);
+                    Intent i = new Intent(SelectPictos.this, PresentPictos.class);
                     String idLeft = (String) left.getContentDescription();
                     String idRight = (String) right.getContentDescription();
                     i.putExtra("idLeft", idLeft);
@@ -116,7 +116,6 @@ public class Select extends BaseActivity {
                 searchHandler.removeCallbacks( refreshGrid );
                 searchHandler.postDelayed( refreshGrid, 500 );
                 search.clearFocus();
-                ensureFullscreen();
                 return true;
             }
 
