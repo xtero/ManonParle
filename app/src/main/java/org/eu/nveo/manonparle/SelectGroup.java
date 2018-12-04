@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,11 +24,21 @@ public class SelectGroup extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_select_group_actionbar, menu);
-        MenuItem item = menu.findItem( R.id.menu_picto);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        MenuItem picto = menu.findItem( R.id.menu_picto );
+        picto.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Intent i = new Intent( SelectGroup.this, ManagePictos.class );
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity( i );
+                return true;
+            }
+        });
+        MenuItem settings = menu.findItem( R.id.menu_settings );
+        settings.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent i = new Intent( SelectGroup.this, Settings.class );
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity( i );
                 return true;
@@ -41,7 +52,11 @@ public class SelectGroup extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.v(tag, "Creating activity SelectGroup");
         setContentView(R.layout.activity_select_group);
-        setSupportActionBar( findViewById(R.id.toolbar) );
+        Toolbar bar = findViewById(R.id.toolbar);
+        bar.setTitle( R.string.app_name );
+        bar.setTitleTextColor( getResources().getColor( R.color.colorBaseText ) );
+        bar.setOverflowIcon( getResources().getDrawable(R.drawable.ic_menu) );
+        setSupportActionBar( bar );
 
 
         ImageView settings = findViewById(R.id.settings);

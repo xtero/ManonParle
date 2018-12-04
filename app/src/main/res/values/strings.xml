@@ -38,6 +38,7 @@
 
     <string name="select_group_title">Sélection d\'un groupe</string>
     <string name="select_group_menu_picto">Gérer les pictogrammes</string>
+    <string name="select_group_menu_settings">Paramètres</string>
 
     <string name="select_pictos_title">Sélection de 2 pictogrammes</string>
     <string name="select_pictos_present">Présenter</string>
