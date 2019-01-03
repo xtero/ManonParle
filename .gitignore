@@ -8,3 +8,6 @@
 /captures
 .externalNativeBuild
 *.apk
+/app/src/main/assets/base.zip
+/app/staging
+.idea/caches
