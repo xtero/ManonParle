@@ -14,9 +14,10 @@ import org.eu.nveo.manonparle.model.Package;
                 Package.class,
                 PackagePicto.class,
                 PackageGroup.class,
-                PackageRPictoGroup.class
+                PackageRPictoGroup.class,
+                Repo.class
         },
-        version = 5,
+        version = 6,
         exportSchema = true
 )
 public abstract class ManonDatabase extends RoomDatabase {
@@ -34,4 +35,6 @@ public abstract class ManonDatabase extends RoomDatabase {
     public abstract PackageGroupDao packgroup();
 
     public abstract PackageRPictoGroupDao packrpictogroup();
+
+    public abstract RepoDao repo();
 }

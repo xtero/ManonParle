@@ -1,11 +1,11 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 5,
-    "identityHash": "99d76afac5e404b0e69b9b084fd28730",
+    "version": 6,
+    "identityHash": "bd1f5631f14a6652b8f788a07af5f3a4",
     "entities": [
       {
-        "tableName": "Item",
+        "tableName": "Picto",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `hasSound` INTEGER, `soundSynth` INTEGER, `audioExt` TEXT, `imageExt` TEXT)",
         "fields": [
           {
@@ -53,19 +53,19 @@
         },
         "indices": [
           {
-            "name": "index_Item_name",
+            "name": "index_Picto_name",
             "unique": false,
             "columnNames": [
               "name"
             ],
-            "createSql": "CREATE  INDEX `index_Item_name` ON `${TABLE_NAME}` (`name`)"
+            "createSql": "CREATE  INDEX `index_Picto_name` ON `${TABLE_NAME}` (`name`)"
           }
         ],
         "foreignKeys": []
       },
       {
         "tableName": "Group",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `itemImage` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `pictoImage` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -80,8 +80,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "itemImage",
-            "columnName": "itemImage",
+            "fieldPath": "pictoImage",
+            "columnName": "pictoImage",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -105,8 +105,8 @@
         "foreignKeys": []
       },
       {
-        "tableName": "RItemGroup",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `groupId` INTEGER NOT NULL, `itemId` INTEGER NOT NULL, FOREIGN KEY(`groupId`) REFERENCES `Group`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`itemId`) REFERENCES `Item`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "tableName": "RPictoGroup",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `groupId` INTEGER NOT NULL, `pictoId` INTEGER NOT NULL, FOREIGN KEY(`groupId`) REFERENCES `Group`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`pictoId`) REFERENCES `Picto`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -121,8 +121,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "itemId",
-            "columnName": "itemId",
+            "fieldPath": "pictoId",
+            "columnName": "pictoId",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -135,20 +135,20 @@
         },
         "indices": [
           {
-            "name": "index_RItemGroup_groupId",
+            "name": "index_RPictoGroup_groupId",
             "unique": false,
             "columnNames": [
               "groupId"
             ],
-            "createSql": "CREATE  INDEX `index_RItemGroup_groupId` ON `${TABLE_NAME}` (`groupId`)"
+            "createSql": "CREATE  INDEX `index_RPictoGroup_groupId` ON `${TABLE_NAME}` (`groupId`)"
           },
           {
-            "name": "index_RItemGroup_itemId",
+            "name": "index_RPictoGroup_pictoId",
             "unique": false,
             "columnNames": [
-              "itemId"
+              "pictoId"
             ],
-            "createSql": "CREATE  INDEX `index_RItemGroup_itemId` ON `${TABLE_NAME}` (`itemId`)"
+            "createSql": "CREATE  INDEX `index_RPictoGroup_pictoId` ON `${TABLE_NAME}` (`pictoId`)"
           }
         ],
         "foreignKeys": [
@@ -164,11 +164,11 @@
             ]
           },
           {
-            "table": "Item",
+            "table": "Picto",
             "onDelete": "NO ACTION",
             "onUpdate": "NO ACTION",
             "columns": [
-              "itemId"
+              "pictoId"
             ],
             "referencedColumns": [
               "id"
@@ -224,8 +224,8 @@
         "foreignKeys": []
       },
       {
-        "tableName": "PackageItem",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `packageId` INTEGER NOT NULL, `itemId` INTEGER NOT NULL, `itemName` TEXT)",
+        "tableName": "PackagePicto",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `packageId` INTEGER NOT NULL, `pictoId` INTEGER NOT NULL, `pictoName` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -240,14 +240,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "itemId",
-            "columnName": "itemId",
+            "fieldPath": "pictoId",
+            "columnName": "pictoId",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "itemName",
-            "columnName": "itemName",
+            "fieldPath": "pictoName",
+            "columnName": "pictoName",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -260,28 +260,28 @@
         },
         "indices": [
           {
-            "name": "index_PackageItem_itemName",
+            "name": "index_PackagePicto_pictoName",
             "unique": false,
             "columnNames": [
-              "itemName"
+              "pictoName"
             ],
-            "createSql": "CREATE  INDEX `index_PackageItem_itemName` ON `${TABLE_NAME}` (`itemName`)"
+            "createSql": "CREATE  INDEX `index_PackagePicto_pictoName` ON `${TABLE_NAME}` (`pictoName`)"
           },
           {
-            "name": "index_PackageItem_itemId",
+            "name": "index_PackagePicto_pictoId",
             "unique": false,
             "columnNames": [
-              "itemId"
+              "pictoId"
             ],
-            "createSql": "CREATE  INDEX `index_PackageItem_itemId` ON `${TABLE_NAME}` (`itemId`)"
+            "createSql": "CREATE  INDEX `index_PackagePicto_pictoId` ON `${TABLE_NAME}` (`pictoId`)"
           },
           {
-            "name": "index_PackageItem_packageId",
+            "name": "index_PackagePicto_packageId",
             "unique": false,
             "columnNames": [
               "packageId"
             ],
-            "createSql": "CREATE  INDEX `index_PackageItem_packageId` ON `${TABLE_NAME}` (`packageId`)"
+            "createSql": "CREATE  INDEX `index_PackagePicto_packageId` ON `${TABLE_NAME}` (`packageId`)"
           }
         ],
         "foreignKeys": []
@@ -350,8 +350,8 @@
         "foreignKeys": []
       },
       {
-        "tableName": "PackageRItemGroup",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `packageId` INTEGER NOT NULL, `ritemgroupId` INTEGER NOT NULL, `itemId` INTEGER NOT NULL, `groupId` INTEGER NOT NULL)",
+        "tableName": "PackageRPictoGroup",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `packageId` INTEGER NOT NULL, `rpictogroupId` INTEGER NOT NULL, `pictoId` INTEGER NOT NULL, `groupId` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -366,14 +366,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "ritemgroupId",
-            "columnName": "ritemgroupId",
+            "fieldPath": "rpictogroupId",
+            "columnName": "rpictogroupId",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "itemId",
-            "columnName": "itemId",
+            "fieldPath": "pictoId",
+            "columnName": "pictoId",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -392,44 +392,82 @@
         },
         "indices": [
           {
-            "name": "index_PackageRItemGroup_ritemgroupId",
+            "name": "index_PackageRPictoGroup_rpictogroupId",
             "unique": false,
             "columnNames": [
-              "ritemgroupId"
+              "rpictogroupId"
             ],
-            "createSql": "CREATE  INDEX `index_PackageRItemGroup_ritemgroupId` ON `${TABLE_NAME}` (`ritemgroupId`)"
+            "createSql": "CREATE  INDEX `index_PackageRPictoGroup_rpictogroupId` ON `${TABLE_NAME}` (`rpictogroupId`)"
           },
           {
-            "name": "index_PackageRItemGroup_itemId",
+            "name": "index_PackageRPictoGroup_pictoId",
             "unique": false,
             "columnNames": [
-              "itemId"
+              "pictoId"
             ],
-            "createSql": "CREATE  INDEX `index_PackageRItemGroup_itemId` ON `${TABLE_NAME}` (`itemId`)"
+            "createSql": "CREATE  INDEX `index_PackageRPictoGroup_pictoId` ON `${TABLE_NAME}` (`pictoId`)"
           },
           {
-            "name": "index_PackageRItemGroup_groupId",
+            "name": "index_PackageRPictoGroup_groupId",
             "unique": false,
             "columnNames": [
               "groupId"
             ],
-            "createSql": "CREATE  INDEX `index_PackageRItemGroup_groupId` ON `${TABLE_NAME}` (`groupId`)"
+            "createSql": "CREATE  INDEX `index_PackageRPictoGroup_groupId` ON `${TABLE_NAME}` (`groupId`)"
           },
           {
-            "name": "index_PackageRItemGroup_packageId",
+            "name": "index_PackageRPictoGroup_packageId",
             "unique": false,
             "columnNames": [
               "packageId"
             ],
-            "createSql": "CREATE  INDEX `index_PackageRItemGroup_packageId` ON `${TABLE_NAME}` (`packageId`)"
+            "createSql": "CREATE  INDEX `index_PackageRPictoGroup_packageId` ON `${TABLE_NAME}` (`packageId`)"
           }
         ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Repo",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `url` TEXT, `lastRefresh` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lastRefresh",
+            "columnName": "lastRefresh",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
         "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"99d76afac5e404b0e69b9b084fd28730\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"bd1f5631f14a6652b8f788a07af5f3a4\")"
     ]
   }
 }
