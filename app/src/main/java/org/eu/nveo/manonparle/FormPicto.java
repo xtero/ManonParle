@@ -18,8 +18,8 @@ import org.eu.nveo.manonparle.adapter.GroupGridAdapter;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
 import org.eu.nveo.manonparle.db.ManonDatabase;
-import org.eu.nveo.manonparle.helper.AssetImporter;
 import org.eu.nveo.manonparle.helper.FileUtils;
+import org.eu.nveo.manonparle.helper.Folders;
 import org.eu.nveo.manonparle.model.Group;
 import org.eu.nveo.manonparle.model.Picto;
 import org.eu.nveo.manonparle.model.RPictoGroup;
@@ -150,7 +150,7 @@ public class FormPicto extends AppCompatActivity implements TextToSpeech.OnInitL
         synth.setOnCheckedChangeListener( synthChange );
         synthChange.onCheckedChanged( synth, synth.isChecked() );
 
-        output = new File( AssetImporter.getTmpFolder( this ), "picto.mp4" );
+        output = new File( Folders.getTmpFolder(), "picto.mp4" );
         if( output.exists() ){
             output.delete();
         }
@@ -243,7 +243,7 @@ public class FormPicto extends AppCompatActivity implements TextToSpeech.OnInitL
             e.printStackTrace();
         }
 
-        Uri pictoUri = picto.getImageUri( FormPicto.this );
+        Uri pictoUri = picto.getImageUri();
         File pictoFile = new File( pictoUri.getPath() );
         try {
             FileUtils.copyFile( new FileInputStream( pictoFile ) , new FileOutputStream( photoFile ) );
@@ -259,7 +259,7 @@ public class FormPicto extends AppCompatActivity implements TextToSpeech.OnInitL
 
         synth.setChecked( picto.getSoundSynth() );
         if( ! picto.getSoundSynth() ) {
-            Uri pictoSoundUri = picto.getSoundUri( FormPicto.this );
+            Uri pictoSoundUri = picto.getSoundUri();
             File pictoSoundFile = new File( pictoSoundUri.getPath() );
             try {
                 FileUtils.copyFile( new FileInputStream( pictoSoundFile ), new FileOutputStream( output ) );
@@ -349,7 +349,7 @@ public class FormPicto extends AppCompatActivity implements TextToSpeech.OnInitL
             }
         }
 
-        File dataFolder = AssetImporter.getDataFolder( FormPicto.this );
+        File dataFolder = Folders.getDataFolder();
         // Save image
         try {
             FileInputStream fis = new FileInputStream( photoFile );

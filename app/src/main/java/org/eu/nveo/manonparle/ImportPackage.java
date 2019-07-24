@@ -20,6 +20,7 @@ import org.eu.nveo.manonparle.db.ManonDatabase;
 import org.eu.nveo.manonparle.helper.AssetImporter;
 import org.eu.nveo.manonparle.helper.Definition;
 import org.eu.nveo.manonparle.helper.FileUtils;
+import org.eu.nveo.manonparle.helper.Folders;
 import org.eu.nveo.manonparle.model.*;
 import org.eu.nveo.manonparle.model.Package;
 
@@ -181,8 +182,8 @@ public class ImportPackage extends FullscreenActivity implements TextToSpeech.On
             e.printStackTrace();
         }
 
-        dataFolder = AssetImporter.getDataFolder( this );
-        tmpFolder = AssetImporter.getTmpFolder( this );
+        dataFolder = Folders.getDataFolder();
+        tmpFolder = Folders.getTmpFolder();
         pictoHash = new HashMap<>();
         groupHash = new HashMap<>();
         rPictogroupHash = new HashMap<>();
@@ -194,13 +195,13 @@ public class ImportPackage extends FullscreenActivity implements TextToSpeech.On
 
         Log.v(tag, packName);
 
-        File pack = new File( AssetImporter.getPackFolder(ImportPackage.this), packName );
+        File pack = new File( Folders.getPackFolder(), packName );
         int integrity =  AssetImporter.checkZipIntegrity( pack );
         if( integrity != PACK_SUCCESS ){
             // TODO treat the case when we have a shity zip file
         }
 
-        AssetImporter.extractPackToTmp( pack, ImportPackage.this );
+        AssetImporter.extractPackToTmp( pack );
 
         try {
             def = new Definition( new FileInputStream( new File( tmpFolder, "definition.json" ) ) );

@@ -24,12 +24,6 @@ public class AssetImporter {
 
     private static String tag = "AssetImporter";
 
-    private static String tmp_path = "tmp";
-    private static String data_path = "picto";
-    private static String pack_path = "pack";
-    private static String indexes_path = "indexes";
-
-
     @Deprecated
     public static void cloneBaseAssetTo( Context ctx, File tmpFolder ){
 
@@ -65,7 +59,7 @@ public class AssetImporter {
     }
 
     public static void cleanDataFolder( Context context ){
-        File dataFolder = getDataFolder(context);
+        File dataFolder = Folders.getDataFolder();
         File[] files = dataFolder.listFiles();
         for (File file : files) {
             file.delete();
@@ -122,9 +116,9 @@ public class AssetImporter {
         return PACK_SUCCESS;
     }
 
-    public static void extractPackToTmp( File pack, Context ctx  ){
+    public static void extractPackToTmp( File pack ){
         ZipFile file;
-        File tmpFolder = getTmpFolder( ctx );
+        File tmpFolder = Folders.getTmpFolder();
         File tmpMediaFolder = new File( tmpFolder, "medias");
         if( ! tmpMediaFolder.exists() ){
             tmpMediaFolder.mkdir();
@@ -147,19 +141,4 @@ public class AssetImporter {
         }
     }
 
-    public static File getTmpFolder( Context ctx ){
-        return ctx.getDir(tmp_path, Context.MODE_PRIVATE );
-    }
-
-    public static File getDataFolder( Context ctx ){
-        return ctx.getDir( data_path, Context.MODE_PRIVATE );
-    }
-
-    public static File getPackFolder( Context ctx ){
-        return ctx.getDir( pack_path, Context.MODE_PRIVATE );
-    }
-
-    public static File getIndexesFolder( Context ctx ) {
-        return ctx.getDir( indexes_path, Context.MODE_PRIVATE );
-    }
 }

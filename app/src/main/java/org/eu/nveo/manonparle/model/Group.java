@@ -8,7 +8,7 @@ import android.net.Uri;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
 import org.eu.nveo.manonparle.db.ManonDatabase;
-import org.eu.nveo.manonparle.helper.AssetImporter;
+import org.eu.nveo.manonparle.helper.Folders;
 import org.eu.nveo.manonparle.helper.ImageUtils;
 import java.io.File;
 
@@ -90,7 +90,7 @@ public class Group {
 
     public Uri getImageUri( Context ctx ){
         long imgId = getImagePictoId();
-        File dir = AssetImporter.getDataFolder( ctx );
+        File dir = Folders.getDataFolder();
         if( imgId != -1 ) {
             File image = new File(dir, imgId + ".png");
             return Uri.fromFile( image );

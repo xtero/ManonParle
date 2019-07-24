@@ -1,12 +1,11 @@
 package org.eu.nveo.manonparle.model;
 
 import android.arch.persistence.room.*;
-import android.content.Context;
 import android.net.Uri;
 import org.eu.nveo.manonparle.R;
 import org.eu.nveo.manonparle.db.DatabaseException;
 import org.eu.nveo.manonparle.db.ManonDatabase;
-import org.eu.nveo.manonparle.helper.AssetImporter;
+import org.eu.nveo.manonparle.helper.Folders;
 
 import java.io.File;
 
@@ -83,21 +82,21 @@ public class Picto {
 
 
 
-    public Uri getImageUri( Context ctx ){
+    public Uri getImageUri(){
         if( id == -1 ) {
             return Uri.parse( "android.resource://org.eu.nveo.manonparle/"+R.mipmap.add_image );
         } else {
-            File dir = AssetImporter.getDataFolder(ctx);
+            File dir = Folders.getDataFolder();
             File image = new File(dir, id + "." + imageExt);
             return Uri.fromFile(image);
         }
     }
 
-    public Uri getSoundUri( Context ctx ){
+    public Uri getSoundUri(){
         if( ! hasSound ) {
             return null;
         }
-        File dir = AssetImporter.getDataFolder( ctx );
+        File dir = Folders.getDataFolder();
         File image = new File( dir, id+"." + audioExt );
         return Uri.fromFile( image );
     }

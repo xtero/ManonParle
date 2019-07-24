@@ -15,8 +15,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import org.eu.nveo.manonparle.Activity.FullscreenActivity;
 import org.eu.nveo.manonparle.db.Database;
-import org.eu.nveo.manonparle.helper.AssetImporter;
 import org.eu.nveo.manonparle.helper.FileUtils;
+import org.eu.nveo.manonparle.helper.Folders;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -56,7 +56,7 @@ public class Loader extends FullscreenActivity {
                 popup.dismiss();
                 String pack = "base.zip";
                 // Copy Zip asset file to app storage
-                File appPathBase = new File( AssetImporter.getPackFolder( Loader.this ), pack );
+                File appPathBase = new File( Folders.getPackFolder(), pack );
                 try {
                     FileInputStream fis = getAssets().openFd( pack ).createInputStream();
                     FileOutputStream fos = new FileOutputStream( appPathBase );
