@@ -19,15 +19,15 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField('String', 'DEFAULT_REPO', "http://10.0.2.2/")
+            buildConfigField('String', 'DEFAULT_REPO', '"http://10.0.2.2/"')
         }
         release {
-            buildConfigField('String', 'DEFAULT_REPO', "http://manonparlerepo.nveo.eu.org/")
+            buildConfigField('String', 'DEFAULT_REPO', '"http://manonparlerepo.nveo.eu.org/"')
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         staging {
-            buildConfigField('String', 'DEFAULT_REPO', "http://manonparlerepo.nveo.eu.org/")
+            buildConfigField('String', 'DEFAULT_REPO', '"http://manonparlerepo.nveo.eu.org/"')
             debuggable true
             jniDebuggable false
             renderscriptDebuggable false

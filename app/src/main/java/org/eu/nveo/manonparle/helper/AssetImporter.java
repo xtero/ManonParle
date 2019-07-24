@@ -27,6 +27,7 @@ public class AssetImporter {
     private static String tmp_path = "tmp";
     private static String data_path = "picto";
     private static String pack_path = "pack";
+    private static String indexes_path = "indexes";
 
 
     @Deprecated
@@ -158,4 +159,7 @@ public class AssetImporter {
         return ctx.getDir( pack_path, Context.MODE_PRIVATE );
     }
 
+    public static File getIndexesFolder( Context ctx ) {
+        return ctx.getDir( indexes_path, Context.MODE_PRIVATE );
+    }
 }

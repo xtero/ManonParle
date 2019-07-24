@@ -36,6 +36,11 @@
 
     <string name="manage_pictos_title">Gestion des pictogrammes</string>
 
+    <string name="manage_packages_nb_groups">Nombre de groupes: %1$d</string>
+    <string name="manage_packages_nb_pictos">Nombre de pictogrames: %1$d</string>
+    <string name="manage_packages_version">Version de l\'archive: %1$d</string>
+    <string name="manage_packages_size">Taille: %1$d</string>
+
     <string name="select_group_title">Sélection d\'un groupe</string>
     <string name="select_group_menu_picto">Gérer les pictogrammes</string>
     <string name="select_group_menu_settings">Paramètres</string>
