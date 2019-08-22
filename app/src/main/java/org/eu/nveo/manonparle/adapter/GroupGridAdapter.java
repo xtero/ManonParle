@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import org.eu.nveo.manonparle.ManonParle;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
 import org.eu.nveo.manonparle.model.Group;
@@ -19,11 +20,9 @@ public class GroupGridAdapter extends BaseAdapter {
     private Group[] groups;
     private GroupGridView[] groupGirds;
     private boolean[] checked;
-    private Context ctx;
     private int basedPadding = 2;
 
-    public GroupGridAdapter(Context context ){
-        ctx = context;
+    public GroupGridAdapter( ){
         try {
             groups = Database.getConnection().group().all();
         } catch (DatabaseException e) {
@@ -53,6 +52,7 @@ public class GroupGridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        Context ctx = ManonParle.getContext();
         GridView grid = (GridView) parent;
         if( convertView == null ) {
             groupGirds[position] = new GroupGridView( ctx );

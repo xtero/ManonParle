@@ -187,7 +187,7 @@ public class FormPicto extends AppCompatActivity implements TextToSpeech.OnInitL
             }
         });
 
-        adapter =  new GroupGridAdapter( this );
+        adapter =  new GroupGridAdapter();
         grid = findViewById( R.id.picto_form_group_select);
         grid.setNumColumns( 2 );
         grid.setAdapter( adapter );
