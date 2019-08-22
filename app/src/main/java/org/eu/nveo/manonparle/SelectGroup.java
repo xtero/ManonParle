@@ -44,6 +44,16 @@ public class SelectGroup extends AppCompatActivity {
                 return true;
             }
         });
+        MenuItem packageManager = menu.findItem(R.id.menu_package_manager);
+        packageManager.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent i = new Intent( SelectGroup.this, ManagePackages.class );
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity( i );
+                return true;
+            }
+        });
         return true;
     }
 
@@ -90,7 +100,7 @@ public class SelectGroup extends AppCompatActivity {
         super.onResume();
 
         ListView list = findViewById( R.id.groups );
-        list.setAdapter(new GroupListAdapter( getApplicationContext() ) );
+        list.setAdapter(new GroupListAdapter() );
 
     }
 

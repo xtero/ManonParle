@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import org.eu.nveo.manonparle.ManonParle;
 import org.eu.nveo.manonparle.SelectPictos;
 import org.eu.nveo.manonparle.db.Database;
 import org.eu.nveo.manonparle.db.DatabaseException;
@@ -13,11 +14,8 @@ import org.eu.nveo.manonparle.view.GroupListView;
 
 public class GroupListAdapter extends BaseAdapter {
     private Group[] groups;
-    private Context ctx;
 
-
-    public GroupListAdapter(Context context ){
-        ctx = context;
+    public GroupListAdapter(){
         try {
             groups = Database.getConnection().group().all();
         } catch (DatabaseException e) {
@@ -41,6 +39,7 @@ public class GroupListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        Context ctx  = ManonParle.getContext();
         final GroupListView groupListView = new GroupListView( ctx );
         Group g = groups[position];
         groupListView.setGroup( g );
