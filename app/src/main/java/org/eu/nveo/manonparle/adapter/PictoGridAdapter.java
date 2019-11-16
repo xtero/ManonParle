@@ -43,7 +43,6 @@ public class PictoGridAdapter extends BaseAdapter {
         return new Picto( pictoType, msg, false );
     }
 
-
     public PictoGridAdapter(Context ctx, long groupId ){
         mContext = ctx;
         mGroupId = groupId;

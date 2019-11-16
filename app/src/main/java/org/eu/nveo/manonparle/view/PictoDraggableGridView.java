@@ -60,7 +60,7 @@ public class PictoDraggableGridView extends PictoGridView implements GestureDete
 
     @Override
     public void onLongPress(MotionEvent e) {
-        String uri = mPicto.getImageUri( mContext ).toString();
+        String uri = mPicto.getImageUri().toString();
         ClipData.Item curi =  new ClipData.Item( uri.subSequence(0, uri.length() ) );
         ClipData.Item cid = new ClipData.Item( Long.toString( mPicto.getId()) );
         String[] mimes = new String[2];

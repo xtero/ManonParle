@@ -88,7 +88,7 @@ public class PresentPictos extends FullscreenActivity {
     private boolean playAudio( Picto picto){
         if( picto.hasSound() && ! mp.isPlaying() ) {
             Log.v( tag, "Playing the new sound ");
-            Uri audioUri = picto.getSoundUri( getBaseContext() );
+            Uri audioUri = picto.getSoundUri();
             Log.v(tag, audioUri.toString() );
             if( mp != null ){
                 mp.release();
@@ -146,8 +146,8 @@ public class PresentPictos extends FullscreenActivity {
         btnLeft = findViewById( R.id.btnLeft );
         btnRight = findViewById( R.id.btnRight );
 
-        btnLeft.setImageURI( pictoLeft.getImageUri( getBaseContext() ) );
-        btnRight.setImageURI( pictoRight.getImageUri( getBaseContext() ) );
+        btnLeft.setImageURI( pictoLeft.getImageUri() );
+        btnRight.setImageURI( pictoRight.getImageUri() );
 
         btnLeft.setOnTouchListener( btnHandler );
         btnRight.setOnTouchListener( btnHandler );

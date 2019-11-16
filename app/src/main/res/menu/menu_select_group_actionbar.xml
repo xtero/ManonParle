@@ -6,6 +6,10 @@
         app:showAsAction="never"
         android:title="@string/select_group_menu_picto" />
     <item
+        android:id="@+id/menu_package_manager"
+        app:showAsAction="never"
+        android:title="@string/select_group_package_manager"/>
+    <item
         android:id="@+id/menu_settings"
         app:showAsAction="never"
         android:title="@string/select_group_menu_settings" />

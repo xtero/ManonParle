@@ -56,7 +56,7 @@ public class PictoGridView extends LinearLayout {
         mPicto = picto;
 
         mImage = this.findViewById( R.id.minipicto_image);
-        mImage.setImageURI( mPicto.getImageUri( mContext ) );
+        mImage.setImageURI( mPicto.getImageUri() );
 
         mLabel = this.findViewById( R.id.minipicto_text);
         mLabel.setText( mPicto.getName() );

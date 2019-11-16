@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 6,
-    "identityHash": "bd1f5631f14a6652b8f788a07af5f3a4",
+    "identityHash": "b374d510fa9f25580c7aed1ef0a5e9a3",
     "entities": [
       {
         "tableName": "Picto",
@@ -428,7 +428,7 @@
       },
       {
         "tableName": "Repo",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `url` TEXT, `lastRefresh` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `url` TEXT, `lastRefresh` INTEGER, `lastRefreshStatus` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -453,6 +453,12 @@
             "columnName": "lastRefresh",
             "affinity": "INTEGER",
             "notNull": false
+          },
+          {
+            "fieldPath": "lastRefreshStatus",
+            "columnName": "lastRefreshStatus",
+            "affinity": "INTEGER",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -467,7 +473,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"bd1f5631f14a6652b8f788a07af5f3a4\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"b374d510fa9f25580c7aed1ef0a5e9a3\")"
     ]
   }
 }

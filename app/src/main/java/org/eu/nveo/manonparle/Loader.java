@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -15,8 +16,10 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import org.eu.nveo.manonparle.Activity.FullscreenActivity;
 import org.eu.nveo.manonparle.db.Database;
+import org.eu.nveo.manonparle.db.DatabaseException;
 import org.eu.nveo.manonparle.helper.FileUtils;
 import org.eu.nveo.manonparle.helper.Folders;
+import org.eu.nveo.manonparle.model.Repo;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -54,6 +57,19 @@ public class Loader extends FullscreenActivity {
             TextView ok = import_popup.findViewById(R.id.ok);
             ok.setOnClickListener(v -> {
                 popup.dismiss();
+
+                // Set default repo
+                Repo defaultRepo = new Repo();
+                defaultRepo.setName("Default Repo");
+                defaultRepo.setUrl(BuildConfig.DEFAULT_REPO);
+                defaultRepo.setLastRefresh(-1);
+                defaultRepo.setLastRefreshStatus(-1);
+                try {
+                    Database.getConnection().repo().insert( defaultRepo );
+                } catch (DatabaseException e) {
+                    e.printStackTrace();
+                }
+
                 String pack = "base.zip";
                 // Copy Zip asset file to app storage
                 File appPathBase = new File( Folders.getPackFolder(), pack );
